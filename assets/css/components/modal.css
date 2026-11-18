@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Modal de confirmação · tipos padrão e perigo
+   Uso: <dialog class="modal"> ... </dialog>
+   ========================================================================== */
+
+.modal {
+  width: var(--modal-largura);
+  max-width: 100%;
+  margin: auto;
+  padding: var(--modal-padding);
+  border: none;
+  border-radius: var(--modal-raio);
+  background: var(--modal-fundo);
+  box-shadow: var(--modal-sombra);
+}
+
+.modal::backdrop {
+  background: var(--cor-fundo-sobreposicao);
+}
+
+.modal__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modal-gap);
+}
+
+.modal__acoes {
+  display: flex;
+  gap: var(--espaco-2);
+}
+
+.modal__acoes > .botao {
+  flex: 1;
+}

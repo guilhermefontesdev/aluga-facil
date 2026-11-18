@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Etiqueta de status do aluguel · 7 status
+   Uso: <span class="etiqueta etiqueta--pendente">Pendente</span>
+   ========================================================================== */
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--etiqueta-gap);
+  padding: var(--etiqueta-padding-y) var(--etiqueta-padding-x);
+  border-radius: var(--etiqueta-raio);
+  font-size: var(--texto-rotulo-pequeno-tamanho);
+  line-height: var(--texto-rotulo-pequeno-altura);
+  font-weight: var(--texto-rotulo-pequeno-peso);
+  letter-spacing: var(--texto-rotulo-pequeno-espacamento);
+  white-space: nowrap;
+}
+
+.etiqueta::before {
+  content: "";
+  width: var(--etiqueta-ponto);
+  height: var(--etiqueta-ponto);
+  border-radius: 50%;
+  background: var(--ponto, currentColor);
+}
+
+.etiqueta--pendente     { --ponto: var(--cor-estado-aviso);         background: var(--cor-estado-aviso-sutil);     color: var(--cor-estado-aviso-texto); }
+.etiqueta--aceito       { --ponto: var(--cor-estado-info);          background: var(--cor-estado-info-sutil);      color: var(--cor-estado-info-texto); }
+.etiqueta--em-andamento { --ponto: var(--cor-marca-secundaria);     background: var(--cor-marca-secundaria-sutil); color: var(--cor-marca-secundaria-texto); }
+.etiqueta--concluido    { --ponto: var(--cor-estado-sucesso);       background: var(--cor-estado-sucesso-sutil);   color: var(--cor-estado-sucesso-texto); }
+.etiqueta--recusado     { --ponto: var(--cor-estado-erro);          background: var(--cor-estado-erro-sutil);      color: var(--cor-estado-erro-texto); }
+.etiqueta--cancelado    { --ponto: var(--cor-texto-secundario);    background: var(--cor-fundo-sutil);            color: var(--cor-texto-secundario); }
+.etiqueta--expirado     { --ponto: var(--cor-borda-forte);         background: var(--cor-fundo-superficie);       color: var(--cor-texto-secundario); border: 1px solid var(--cor-borda-forte); }

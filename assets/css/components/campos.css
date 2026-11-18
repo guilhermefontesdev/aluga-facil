@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Campo de formulário · 02 Componentes › Campo de formulário
+   Uso:
+   <div class="campo">                      (+ .campo--erro quando inválido)
+     <label class="campo__rotulo" for="email">E-mail</label>
+     <input class="campo__caixa" id="email" type="email" placeholder="Digite aqui">
+     <p class="campo__ajuda">Texto de ajuda ou mensagem de erro</p>
+   </div>
+   ========================================================================== */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--campo-gap);
+  width: 100%;
+}
+
+.campo__rotulo {
+  color: var(--campo-rotulo);
+  font-size: var(--texto-rotulo-tamanho);
+  line-height: var(--texto-rotulo-altura);
+  font-weight: var(--texto-rotulo-peso);
+}
+
+.campo__caixa {
+  width: 100%;
+  padding: var(--campo-padding-y) var(--campo-padding-x);
+  background: var(--campo-fundo);
+  color: var(--campo-texto);
+  border: var(--campo-borda-largura) solid var(--campo-borda);
+  border-radius: var(--campo-raio);
+  font-size: var(--texto-corpo-grande-tamanho);
+  line-height: var(--texto-corpo-grande-altura);
+}
+
+.campo__caixa::placeholder {
+  color: var(--campo-placeholder);
+}
+
+/* Foco e erro usam borda de 2 px: o outline completa a diferença sem mexer no tamanho */
+.campo__caixa:focus {
+  outline: 1px solid var(--campo-borda-foco);
+  border-color: var(--campo-borda-foco);
+}
+
+.campo__ajuda {
+  color: var(--campo-ajuda);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+/* Erro */
+.campo--erro .campo__caixa {
+  outline: 1px solid var(--campo-borda-erro);
+  border-color: var(--campo-borda-erro);
+}
+
+.campo--erro .campo__ajuda {
+  color: var(--campo-mensagem-erro);
+}
+
+/* Desabilitado */
+.campo__caixa:disabled {
+  background: var(--campo-desabilitado-fundo);
+  border-color: var(--campo-desabilitado-borda);
+  color: var(--campo-desabilitado-texto);
+  cursor: not-allowed;
+}
+
+.campo--desabilitado .campo__rotulo {
+  color: var(--campo-desabilitado-texto);
+}

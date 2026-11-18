@@ -1,0 +1,342 @@
+
+:root {
+  /* ========================================================================
+     1. PALETA PRIMITIVA (coleção "Primitivos" do Figma)
+     
+     ======================================================================== */
+  --azul-50: #EEF4FB;
+  --azul-100: #D6E4F5;
+  --azul-300: #86ADDF;
+  --azul-500: #1F5FAE;
+  --azul-600: #1A5096;
+  --azul-700: #15417A;
+  --azul-900: #0C2547;
+
+  --verde-agua-50: #E7F6F3;
+  --verde-agua-100: #C4EAE2;
+  --verde-agua-500: #16A08A;
+  --verde-agua-700: #0E6B58;
+
+  --cinza-0: #FFFFFF;
+  --cinza-50: #F7F8FA;
+  --cinza-100: #EEF0F3;
+  --cinza-200: #DDE1E6;
+  --cinza-300: #C3C9D1;
+  --cinza-400: #9AA3AE;
+  --cinza-500: #6B7582;
+  --cinza-600: #4B5563;
+  --cinza-700: #374151;
+  --cinza-800: #1F2937;
+  --cinza-900: #111827;
+
+  --vermelho-50: #FDECEC;
+  --vermelho-500: #D93636;
+  --vermelho-700: #A12424;
+
+  --verde-50: #E8F6EC;
+  --verde-500: #1E8E4A;
+  --verde-700: #146333;
+
+  --amarelo-50: #FFF6E0;
+  --amarelo-500: #E0A100;
+  --amarelo-700: #8A5A00;
+
+  /* ========================================================================
+     2. CORES SEMÂNTICAS (coleção "Cores" do Figma) — use estas
+     ======================================================================== */
+
+  /* Marca */
+  --cor-marca-primaria: var(--azul-500);          /* cor principal */
+  --cor-marca-primaria-hover: var(--azul-700);
+  --cor-marca-primaria-sutil: var(--azul-50);
+  --cor-marca-secundaria: var(--verde-agua-500);  /* cor secundária */
+  --cor-marca-secundaria-texto: var(--verde-agua-700);
+  --cor-marca-secundaria-sutil: var(--verde-agua-50);
+
+  /* Estados */
+  --cor-estado-erro: var(--vermelho-500);
+  --cor-estado-erro-texto: var(--vermelho-700);
+  --cor-estado-erro-sutil: var(--vermelho-50);
+  --cor-estado-sucesso: var(--verde-500);
+  --cor-estado-sucesso-texto: var(--verde-700);
+  --cor-estado-sucesso-sutil: var(--verde-50);
+  --cor-estado-aviso: var(--amarelo-500);
+  --cor-estado-aviso-texto: var(--amarelo-700);
+  --cor-estado-aviso-sutil: var(--amarelo-50);
+  --cor-estado-info: var(--azul-500);
+  --cor-estado-info-texto: var(--azul-700);
+  --cor-estado-info-sutil: var(--azul-50);
+
+  /* Texto */
+  --cor-texto-principal: var(--cinza-900);
+  --cor-texto-secundario: var(--cinza-600);
+  --cor-texto-desabilitado: var(--cinza-400);
+  --cor-texto-inverso: var(--cinza-0);
+  --cor-texto-link: var(--azul-600);
+
+  /* Fundo */
+  --cor-fundo-pagina: var(--cinza-50);
+  --cor-fundo-superficie: var(--cinza-0);   /* cards, campos, modais, cabeçalho */
+  --cor-fundo-sutil: var(--cinza-100);
+  --cor-fundo-desabilitado: var(--cinza-100);
+  --cor-fundo-sobreposicao: rgb(17 24 39 / 0.5); /* fundo escuro atrás de modais (cinza-900; a opacidade de 50% é proposta) */
+
+  /* Borda */
+  --cor-borda-padrao: var(--cinza-200);
+  --cor-borda-forte: var(--cinza-300);
+  --cor-borda-foco: var(--azul-500);
+
+  /* ========================================================================
+     3. TIPOGRAFIA · Inter (Google Fonts)
+     ======================================================================== */
+  --fonte-familia: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fonte-peso-regular: 400;
+  --fonte-peso-medio: 500;
+  --fonte-peso-semibold: 600;
+  --fonte-peso-bold: 700;
+
+  /* Titulo/Display · Bold 32/40 · -0.5px */
+  --texto-display-tamanho: 32px;
+  --texto-display-altura: 40px;
+  --texto-display-peso: var(--fonte-peso-bold);
+  --texto-display-espacamento: -0.5px;
+
+  /* Titulo/H1 · Bold 24/32 · -0.3px */
+  --texto-h1-tamanho: 24px;
+  --texto-h1-altura: 32px;
+  --texto-h1-peso: var(--fonte-peso-bold);
+  --texto-h1-espacamento: -0.3px;
+
+  /* Titulo/H2 · Semi Bold 20/28 */
+  --texto-h2-tamanho: 20px;
+  --texto-h2-altura: 28px;
+  --texto-h2-peso: var(--fonte-peso-semibold);
+
+  /* Titulo/H3 · Semi Bold 18/24 */
+  --texto-h3-tamanho: 18px;
+  --texto-h3-altura: 24px;
+  --texto-h3-peso: var(--fonte-peso-semibold);
+
+  /* Corpo/Grande · Regular 16/24 */
+  --texto-corpo-grande-tamanho: 16px;
+  --texto-corpo-grande-altura: 24px;
+  --texto-corpo-grande-peso: var(--fonte-peso-regular);
+
+  /* Corpo/Medio · Regular 14/20 */
+  --texto-corpo-medio-tamanho: 14px;
+  --texto-corpo-medio-altura: 20px;
+  --texto-corpo-medio-peso: var(--fonte-peso-regular);
+
+  /* Corpo/Destaque · Semi Bold 16/24 */
+  --texto-corpo-destaque-tamanho: 16px;
+  --texto-corpo-destaque-altura: 24px;
+  --texto-corpo-destaque-peso: var(--fonte-peso-semibold);
+
+  /* Rotulo/Padrao · Medium 14/20 */
+  --texto-rotulo-tamanho: 14px;
+  --texto-rotulo-altura: 20px;
+  --texto-rotulo-peso: var(--fonte-peso-medio);
+
+  /* Rotulo/Botao · Semi Bold 16/24 */
+  --texto-rotulo-botao-tamanho: 16px;
+  --texto-rotulo-botao-altura: 24px;
+  --texto-rotulo-botao-peso: var(--fonte-peso-semibold);
+
+  /* Rotulo/Pequeno · Medium 12/16 · +0.2px */
+  --texto-rotulo-pequeno-tamanho: 12px;
+  --texto-rotulo-pequeno-altura: 16px;
+  --texto-rotulo-pequeno-peso: var(--fonte-peso-medio);
+  --texto-rotulo-pequeno-espacamento: 0.2px;
+
+  /* Legenda · Regular 12/16 */
+  --texto-legenda-tamanho: 12px;
+  --texto-legenda-altura: 16px;
+  --texto-legenda-peso: var(--fonte-peso-regular);
+
+  /* ========================================================================
+     4. ESPAÇAMENTO · base de 4 px (padding e gap)
+     ======================================================================== */
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 12px;
+  --espaco-4: 16px;
+  --espaco-6: 24px;
+  --espaco-8: 32px;
+  --espaco-12: 48px;
+  --espaco-16: 64px;
+
+  /* ========================================================================
+     5. CANTOS (border-radius)
+     sm: etiquetas · md: botões, campos e avisos · lg: cards · xl: modais
+     total: avatares, chips e etiquetas de status
+     ======================================================================== */
+  --raio-sm: 4px;
+  --raio-md: 8px;
+  --raio-lg: 12px;
+  --raio-xl: 16px;
+  --raio-total: 999px;
+
+  /* ========================================================================
+     6. SOMBRAS (estilos de efeito do Figma)
+     ======================================================================== */
+  --sombra-baixa: 0 1px 3px rgb(18 23 38 / 0.08);
+  --sombra-media: 0 4px 12px rgb(18 23 38 / 0.10);
+  --sombra-alta: 0 12px 32px rgb(18 23 38 / 0.16);
+
+  /* ========================================================================
+     7. ÍCONES · 24 × 24 px, traço de 2 px
+     ======================================================================== */
+  --icone-tamanho: 24px;
+  --icone-traco: 2px;
+  --icone-cor: var(--cor-texto-principal);
+
+  /* ========================================================================
+     8. LAYOUT RESPONSIVO (mobile first)
+     Os valores abaixo são do CELULAR. Os blocos @media no fim do arquivo
+     trocam esses valores no tablet e no computador.
+
+     Breakpoints (use nos @media, variável CSS não funciona dentro de @media):
+       celular     até 767 px   (Figma: 390 px, 4 colunas)
+       tablet      768 px +     (proposta: 8 colunas)
+       computador  1024 px +    (Figma: 1440 px, 12 colunas de 72 px)
+     ======================================================================== */
+  --grid-colunas: 4;
+  --grid-margem: 16px;           /* espaço nas laterais da tela */
+  --grid-gutter: 16px;           /* espaço entre colunas */
+  --conteudo-largura-max: 100%;
+
+  --cabecalho-altura: 56px;      /* cabeçalho (logado / visitante) */
+  --barra-inferior-altura: 64px; /* menu inferior, só no celular */
+
+  --modal-largura: calc(100% - 2 * var(--grid-margem));
+
+  /* ========================================================================
+     9. COMPONENTE · BOTÃO (02 Componentes › Botão)
+     Altura 48 px: padding 12 px + rótulo 24 px. Canto md. Gap do ícone 8 px.
+     Tipos: Primário (só um por tela), Secundário, Contorno, Texto, Perigo.
+     ======================================================================== */
+  --botao-padding-y: var(--espaco-3);
+  --botao-padding-x: var(--espaco-6);
+  --botao-gap: var(--espaco-2);
+  --botao-raio: var(--raio-md);
+  --botao-borda-largura: 1px;
+
+  --botao-primario-fundo: var(--cor-marca-primaria);
+  --botao-primario-fundo-hover: var(--cor-marca-primaria-hover);
+  --botao-primario-texto: var(--cor-texto-inverso);
+
+  --botao-secundario-fundo: var(--cor-marca-secundaria-sutil);
+  --botao-secundario-texto: var(--cor-marca-secundaria-texto);
+  --botao-secundario-borda: var(--cor-marca-secundaria-texto);
+  --botao-secundario-borda-hover-largura: 1.5px;
+
+  --botao-contorno-fundo: var(--cor-fundo-superficie);
+  --botao-contorno-fundo-hover: var(--cor-fundo-sutil);
+  --botao-contorno-texto: var(--cor-texto-principal);
+  --botao-contorno-borda: var(--cor-borda-forte);
+
+  --botao-texto-fundo-hover: var(--cor-marca-primaria-sutil);
+  --botao-texto-texto: var(--cor-texto-link);
+
+  --botao-perigo-fundo: var(--cor-estado-erro);
+  --botao-perigo-fundo-hover: var(--cor-estado-erro-texto);
+  --botao-perigo-texto: var(--cor-texto-inverso);
+
+  --botao-desabilitado-fundo: var(--cor-fundo-desabilitado); /* "Texto" desabilitado fica sem fundo */
+  --botao-desabilitado-texto: var(--cor-texto-desabilitado);
+
+  /* ========================================================================
+     10. COMPONENTE · CAMPO DE FORMULÁRIO
+     Largura total da coluna (358 px no celular). Rótulo › caixa › ajuda/erro,
+     com 6 px entre eles. Erro sempre abaixo do campo.
+     ======================================================================== */
+  --campo-gap: 6px;
+  --campo-padding-y: var(--espaco-3);
+  --campo-padding-x: var(--espaco-4);
+  --campo-raio: var(--raio-md);
+  --campo-fundo: var(--cor-fundo-superficie);
+  --campo-texto: var(--cor-texto-principal);
+  --campo-placeholder: var(--cor-texto-secundario);
+  --campo-borda: var(--cor-borda-forte);
+  --campo-borda-largura: 1px;
+  --campo-borda-foco: var(--cor-borda-foco);
+  --campo-borda-erro: var(--cor-estado-erro);
+  --campo-borda-destaque-largura: 2px;      /* foco e erro */
+  --campo-rotulo: var(--cor-texto-principal);
+  --campo-ajuda: var(--cor-texto-secundario);
+  --campo-mensagem-erro: var(--cor-estado-erro-texto);
+  --campo-desabilitado-fundo: var(--cor-fundo-desabilitado);
+  --campo-desabilitado-borda: var(--cor-borda-padrao);
+  --campo-desabilitado-texto: var(--cor-texto-desabilitado);
+
+  /* ========================================================================
+     11. COMPONENTE · CARD DE ANÚNCIO
+     ======================================================================== */
+  --card-fundo: var(--cor-fundo-superficie);
+  --card-borda: var(--cor-borda-padrao);
+  --card-raio: var(--raio-lg);
+  --card-padding: var(--espaco-4);
+  --card-foto-fundo: var(--cor-fundo-sutil);
+  --card-preco: var(--cor-marca-primaria);
+
+  /* ========================================================================
+     12. COMPONENTE · ETIQUETA DE STATUS DO ALUGUEL (7 status)
+     Formato pílula, padding 4/12, ponto de 8 px, gap 6 px.
+     ======================================================================== */
+  --etiqueta-padding-y: var(--espaco-1);
+  --etiqueta-padding-x: var(--espaco-3);
+  --etiqueta-gap: 6px;
+  --etiqueta-raio: var(--raio-total);
+  --etiqueta-ponto: 8px;
+
+  /* ========================================================================
+     13. COMPONENTE · AVISO (info, sucesso, aviso, erro)
+     Padding 12/16, gap 12, canto md, borda 1 px na cor do estado.
+     ======================================================================== */
+  --aviso-padding-y: var(--espaco-3);
+  --aviso-padding-x: var(--espaco-4);
+  --aviso-gap: var(--espaco-3);
+  --aviso-raio: var(--raio-md);
+
+  /* ========================================================================
+     14. COMPONENTE · MODAL DE CONFIRMAÇÃO
+     ======================================================================== */
+  --modal-fundo: var(--cor-fundo-superficie);
+  --modal-raio: var(--raio-xl);
+  --modal-padding: var(--espaco-6);
+  --modal-gap: var(--espaco-4);
+  --modal-sombra: var(--sombra-alta);
+}
+
+/* ==========================================================================
+   Tokens que mudam com o tamanho da tela
+   ========================================================================== */
+
+/* Tablet · 768 px ou mais (proposta, o Figma não tem layout de tablet) */
+@media (min-width: 768px) {
+  :root {
+    --grid-colunas: 8;
+    --grid-margem: 32px;
+    --grid-gutter: 24px;
+    --modal-largura: 480px;
+  }
+}
+
+/* Computador · 1024 px ou mais (Figma: 1440 px, 12 colunas de 72 px, gutter 24 px) */
+@media (min-width: 1024px) {
+  :root {
+    --grid-colunas: 12;
+    --grid-margem: 32px;
+    --grid-gutter: 24px;
+    --conteudo-largura-max: 1128px; /* 12 × 72 + 11 × 24 */
+    --cabecalho-altura: 72px;       /* proposta para o cabeçalho com menu no computador */
+    --barra-inferior-altura: 0px;   /* no computador o menu fica no cabeçalho */
+
+    /* Títulos um pouco maiores no computador (proposta) */
+    --texto-display-tamanho: 40px;
+    --texto-display-altura: 48px;
+    --texto-h1-tamanho: 28px;
+    --texto-h1-altura: 36px;
+  }
+}

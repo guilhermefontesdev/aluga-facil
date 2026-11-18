@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Aviso · info, sucesso, aviso, erro
+   Uso: <div class="aviso aviso--info" role="status">Mensagem</div>
+   ========================================================================== */
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--aviso-gap);
+  padding: var(--aviso-padding-y) var(--aviso-padding-x);
+  border: 1px solid;
+  border-radius: var(--aviso-raio);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.aviso--info    { background: var(--cor-estado-info-sutil);    border-color: var(--cor-estado-info);    color: var(--cor-estado-info-texto); }
+.aviso--sucesso { background: var(--cor-estado-sucesso-sutil); border-color: var(--cor-estado-sucesso); color: var(--cor-estado-sucesso-texto); }
+.aviso--aviso   { background: var(--cor-estado-aviso-sutil);   border-color: var(--cor-estado-aviso);   color: var(--cor-estado-aviso-texto); }
+.aviso--erro    { background: var(--cor-estado-erro-sutil);    border-color: var(--cor-estado-erro);    color: var(--cor-estado-erro-texto); }

@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Card de anúncio · 02 Componentes › Card de anúncio
+   Estados: padrão e indisponível (.card--indisponivel)
+   ========================================================================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--card-fundo);
+  border: 1px solid var(--card-borda);
+  border-radius: var(--card-raio);
+}
+
+.card__foto {
+  aspect-ratio: 16 / 9;
+  background: var(--card-foto-fundo);
+  object-fit: cover;
+  width: 100%;
+}
+
+.card__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  padding: var(--card-padding);
+}
+
+.card__preco {
+  color: var(--card-preco);
+  font-size: var(--texto-corpo-destaque-tamanho);
+  line-height: var(--texto-corpo-destaque-altura);
+  font-weight: var(--texto-corpo-destaque-peso);
+}
+
+.card__preco-unidade,
+.card__local {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+  font-weight: var(--fonte-peso-regular);
+}
+
+.card--indisponivel .card__foto {
+  opacity: 0.5;
+}
+
+/* Lista de cards: 1 por linha no celular, 2 no tablet, 3 no computador */
+.lista-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gutter);
+}
+
+@media (min-width: 768px) {
+  .lista-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .lista-cards { grid-template-columns: repeat(3, 1fr); }
+}

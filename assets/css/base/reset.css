@@ -1,0 +1,39 @@
+/* Reset mínimo */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--fonte-familia);
+  font-size: var(--texto-corpo-grande-tamanho);
+  line-height: var(--texto-corpo-grande-altura);
+  color: var(--cor-texto-principal);
+  background-color: var(--cor-fundo-pagina);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--cor-texto-link);
+}

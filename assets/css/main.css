@@ -1,0 +1,18 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Base */
+@import url("base/tokens.css");
+@import url("base/reset.css");
+@import url("base/tipografia.css");
+@import url("base/layout.css");
+
+/* Componentes */
+@import url("components/botoes.css");
+@import url("components/campos.css");
+@import url("components/cards.css");
+@import url("components/etiquetas.css");
+@import url("components/avisos.css");
+@import url("components/modal.css");
+
+

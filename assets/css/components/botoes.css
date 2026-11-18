@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Botão · 02 Componentes › Botão
+   Uso: <button class="botao botao--primario">Alugar</button>
+   Tipos: --primario, --secundario, --contorno, --texto, --perigo
+   Desabilitado: atributo disabled (ou classe .botao--desabilitado em <a>)
+   ========================================================================== */
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--botao-gap);
+  padding: var(--botao-padding-y) var(--botao-padding-x);
+  border: var(--botao-borda-largura) solid transparent;
+  border-radius: var(--botao-raio);
+  font-family: var(--fonte-familia);
+  font-size: var(--texto-rotulo-botao-tamanho);
+  line-height: var(--texto-rotulo-botao-altura);
+  font-weight: var(--texto-rotulo-botao-peso);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.botao:focus-visible {
+  outline: 2px solid var(--cor-borda-foco);
+  outline-offset: 2px;
+}
+
+/* Botão que ocupa a largura toda (comum no celular) */
+.botao--bloco {
+  display: flex;
+  width: 100%;
+}
+
+/* Primário */
+.botao--primario { background: var(--botao-primario-fundo); color: var(--botao-primario-texto); }
+.botao--primario:hover { background: var(--botao-primario-fundo-hover); }
+
+/* Secundário */
+.botao--secundario { background: var(--botao-secundario-fundo); color: var(--botao-secundario-texto); border-color: var(--botao-secundario-borda); }
+.botao--secundario:hover { box-shadow: inset 0 0 0 calc(var(--botao-secundario-borda-hover-largura) - var(--botao-borda-largura)) var(--botao-secundario-borda); }
+
+/* Contorno */
+.botao--contorno { background: var(--botao-contorno-fundo); color: var(--botao-contorno-texto); border-color: var(--botao-contorno-borda); }
+.botao--contorno:hover { background: var(--botao-contorno-fundo-hover); }
+
+/* Texto */
+.botao--texto { background: transparent; color: var(--botao-texto-texto); }
+.botao--texto:hover { background: var(--botao-texto-fundo-hover); }
+
+/* Perigo */
+.botao--perigo { background: var(--botao-perigo-fundo); color: var(--botao-perigo-texto); }
+.botao--perigo:hover { background: var(--botao-perigo-fundo-hover); }
+
+/* Desabilitado (todos os tipos) */
+.botao:disabled,
+.botao--desabilitado {
+  background: var(--botao-desabilitado-fundo);
+  color: var(--botao-desabilitado-texto);
+  border-color: transparent;
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.botao--texto:disabled,
+.botao--texto.botao--desabilitado {
+  background: transparent;
+}

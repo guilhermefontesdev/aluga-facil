@@ -1,0 +1,15 @@
+/* Estilos de texto do Figma. Use como classe ou nas tags h1–h3. */
+
+h1, .texto-h1 { font-size: var(--texto-h1-tamanho); line-height: var(--texto-h1-altura); font-weight: var(--texto-h1-peso); letter-spacing: var(--texto-h1-espacamento); }
+h2, .texto-h2 { font-size: var(--texto-h2-tamanho); line-height: var(--texto-h2-altura); font-weight: var(--texto-h2-peso); }
+h3, .texto-h3 { font-size: var(--texto-h3-tamanho); line-height: var(--texto-h3-altura); font-weight: var(--texto-h3-peso); }
+
+.texto-display { font-size: var(--texto-display-tamanho); line-height: var(--texto-display-altura); font-weight: var(--texto-display-peso); letter-spacing: var(--texto-display-espacamento); }
+.texto-corpo-grande { font-size: var(--texto-corpo-grande-tamanho); line-height: var(--texto-corpo-grande-altura); font-weight: var(--texto-corpo-grande-peso); }
+.texto-corpo-medio { font-size: var(--texto-corpo-medio-tamanho); line-height: var(--texto-corpo-medio-altura); font-weight: var(--texto-corpo-medio-peso); }
+.texto-corpo-destaque { font-size: var(--texto-corpo-destaque-tamanho); line-height: var(--texto-corpo-destaque-altura); font-weight: var(--texto-corpo-destaque-peso); }
+.texto-rotulo { font-size: var(--texto-rotulo-tamanho); line-height: var(--texto-rotulo-altura); font-weight: var(--texto-rotulo-peso); }
+.texto-rotulo-pequeno { font-size: var(--texto-rotulo-pequeno-tamanho); line-height: var(--texto-rotulo-pequeno-altura); font-weight: var(--texto-rotulo-pequeno-peso); letter-spacing: var(--texto-rotulo-pequeno-espacamento); }
+.texto-legenda { font-size: var(--texto-legenda-tamanho); line-height: var(--texto-legenda-altura); font-weight: var(--texto-legenda-peso); }
+
+.texto-secundario { color: var(--cor-texto-secundario); }
