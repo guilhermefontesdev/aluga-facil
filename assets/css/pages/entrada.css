@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Telas de entrada e conta · T01 a T06
+   (cadastro, confirmar e-mail, cadastro concluído, login, esqueci a senha,
+   nova senha)
+
+   Celular: coluna na largura toda, sobre o fundo da página (Figma 390 px).
+   Computador e tablet: a mesma coluna centralizada dentro de um card.
+   ========================================================================== */
+
+.entrada > .container {
+  padding-block: var(--espaco-8) var(--espaco-12);
+}
+
+.entrada__caixa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-6);
+  width: 100%;
+  max-width: var(--entrada-largura-max);
+  margin-inline: auto;
+}
+
+.entrada__topo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+
+.entrada__subtitulo {
+  color: var(--cor-texto-secundario);
+}
+
+/* Formulário: um campo embaixo do outro */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.formulario > .botao {
+  margin-top: var(--espaco-2);
+}
+
+/* Linha "Esqueci a senha", alinhada à direita */
+.formulario__linha-direita {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formulario__linha-direita .botao {
+  padding-inline: var(--espaco-2);
+}
+
+/* Separador "ou" entre Entrar e Criar conta */
+.separador {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+.separador::before,
+.separador::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--cor-borda-padrao);
+}
+
+/* "Já tem conta? Entrar" */
+.entrada__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-1);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.entrada__rodape .botao {
+  padding-inline: var(--espaco-2);
+}
+
+/* Telas de status (T02, T03): ícone no círculo, texto centralizado */
+.entrada__caixa--status {
+  text-align: center;
+}
+
+.entrada__caixa--status .entrada__topo {
+  align-items: center;
+  gap: var(--espaco-4);
+}
+
+.icone-status {
+  display: grid;
+  place-items: center;
+  width: var(--entrada-icone-status);
+  height: var(--entrada-icone-status);
+  margin-inline: auto;
+  border-radius: var(--raio-total);
+}
+
+.icone-status .icone {
+  width: calc(var(--icone-tamanho) * 1.5);
+  height: calc(var(--icone-tamanho) * 1.5);
+}
+
+.icone-status--sucesso { background: var(--cor-estado-sucesso-sutil); color: var(--cor-estado-sucesso); }
+.icone-status--info    { background: var(--cor-estado-info-sutil);    color: var(--cor-estado-info); }
+
+.entrada__caixa--status .aviso {
+  text-align: left;
+}
+
+.entrada__acoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-4);
+}
+
+
+.prototipo {
+  padding: var(--espaco-3);
+  border: 1px dashed var(--cor-borda-forte);
+  border-radius: var(--raio-md);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+  text-align: center;
+}
+
+
+@media (min-width: 768px) {
+  .entrada > .container {
+    padding-block: var(--espaco-12) var(--espaco-16);
+  }
+
+  .entrada__caixa {
+    padding: var(--espaco-8);
+    border: 1px solid var(--cor-borda-padrao);
+    border-radius: var(--raio-xl);
+    background: var(--cor-fundo-superficie);
+    box-shadow: var(--sombra-baixa);
+  }
+}

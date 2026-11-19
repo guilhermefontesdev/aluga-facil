@@ -3,25 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro · AlugaFácil</title>
+  <title>Criar conta · AlugaFácil</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T01 · Cadastro -->
+<body class="layout-simples">
+ 
 
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina entrada">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="entrada__caixa">
+        <div class="entrada__topo">
+          <h1>Criar conta</h1>
+          <p class="entrada__subtitulo">Com uma única conta você anuncia seus itens e aluga os de outras pessoas.</p>
+        </div>
+
+        <form class="formulario" action="confirmar-email.html">
+        
+          <div class="campo">
+            <label class="campo__rotulo" for="nome">Nome completo</label>
+            <input class="campo__caixa" id="nome" type="text" autocomplete="name" placeholder="Como está no seu documento"
+                   required pattern=".*\S+\s+\S+.*" title="Escreva nome e sobrenome, como está no seu documento.">
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="email">E-mail</label>
+            <input class="campo__caixa" id="email" type="email" autocomplete="email" placeholder="nome@email.com" required>
+          </div>
+
+        
+          <div class="campo">
+            <label class="campo__rotulo" for="cpf">CPF</label>
+            <input class="campo__caixa" id="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"
+                   required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Use o formato 000.000.000-00.">
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="nascimento">Data de nascimento</label>
+            
+            <input class="campo__caixa" id="nascimento" type="date" autocomplete="bday" max="2008-11-19"
+                   aria-describedby="nascimento-ajuda" required>
+            <p class="campo__ajuda" id="nascimento-ajuda">Você precisa ter 18 anos ou mais.</p>
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="telefone">Telefone celular</label>
+            <input class="campo__caixa" id="telefone" type="tel" autocomplete="tel-national" placeholder="(71) 99999-9999" maxlength="15"
+                   required pattern="\(\d{2}\) \d{5}-\d{4}" title="Use DDD + 9 dígitos, como (71) 99999-9999.">
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="senha">Senha</label>
+            <input class="campo__caixa" id="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha"
+                   aria-describedby="senha-ajuda" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+                   title="Mínimo de 8 caracteres, com pelo menos uma letra e um número.">
+            <p class="campo__ajuda" id="senha-ajuda">Mínimo de 8 caracteres, com pelo menos uma letra e um número.</p>
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="confirmar-senha">Confirmar senha</label>
+            <input class="campo__caixa" id="confirmar-senha" type="password" autocomplete="new-password" placeholder="Repita a senha"
+                   required minlength="8">
+          </div>
+
+          <div class="caixa-selecao">
+            <input id="termos" type="checkbox" required>
+            <label for="termos">Li e aceito os <a class="link" href="#">Termos de Uso</a> e a <a class="link" href="#">Política de Privacidade</a></label>
+          </div>
+
+          <button class="botao botao--primario botao--bloco" type="submit">Criar conta</button>
+        </form>
+
+        <p class="entrada__rodape">
+          Já tem conta?
+          <a class="botao botao--texto" href="login.html">Entrar</a>
+        </p>
+      </div>
     </div>
   </main>
-
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>

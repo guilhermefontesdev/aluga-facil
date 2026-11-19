@@ -3,25 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login · AlugaFácil</title>
+  <title>Entrar · AlugaFácil</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T04 · Login -->
+<body class="layout-simples">
+  
 
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina entrada">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="entrada__caixa">
+        <div class="entrada__topo">
+          <h1>Entrar</h1>
+          <p class="entrada__subtitulo">Que bom te ver de novo.</p>
+        </div>
+
+      
+
+        <form class="formulario" action="../../index.html">
+          
+          <div class="campo">
+            <label class="campo__rotulo" for="email">E-mail</label>
+            <input class="campo__caixa" id="email" type="email" autocomplete="username" placeholder="nome@email.com" required>
+          </div>
+
+          <div class="campo">
+            <label class="campo__rotulo" for="senha">Senha</label>
+            <input class="campo__caixa" id="senha" type="password" autocomplete="current-password" placeholder="Sua senha" required>
+          </div>
+
+          <div class="formulario__linha-direita">
+            <a class="botao botao--texto" href="esqueci-senha.html">Esqueci a senha</a>
+          </div>
+
+          <button class="botao botao--primario botao--bloco" type="submit">Entrar</button>
+        </form>
+
+        <p class="separador">ou</p>
+
+        <a class="botao botao--contorno botao--bloco" href="cadastro.html">Criar conta</a>
+      </div>
     </div>
   </main>
-
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>
