@@ -6,22 +6,49 @@
   <title>Confirme seu e-mail · AlugaFácil</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T02 · Confirme seu e-mail -->
+<body class="layout-simples">
+  <!-- T02 · Confirme seu e-mail (link vale 24 horas) -->
 
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina entrada">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="entrada__caixa entrada__caixa--status">
+        <div class="entrada__topo">
+          <span class="icone-status icone-status--info"><span class="icone icone--info" aria-hidden="true"></span></span>
+          <h1>Confirme seu e-mail</h1>
+          <p class="entrada__subtitulo texto-corpo-grande">
+            Enviamos um link de confirmação para <strong>maria@email.com</strong>. Ele vale por 24 horas.
+          </p>
+        </div>
+
+        <div class="aviso aviso--info" role="note">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Não chegou? Confira a caixa de spam ou peça um novo link.</p>
+        </div>
+
+        <div class="entrada__acoes">
+          <!-- Depois de reenviar, mostrar a mensagem de retorno:
+               "Enviamos um novo link para maria@email.com." (exemplo em pages/avisos.html) -->
+          <a class="botao botao--contorno botao--bloco" href="confirmar-email.html">Reenviar link</a>
+          <a class="botao botao--texto" href="../../index.html">Voltar ao início</a>
+        </div>
+
+        <p class="prototipo">
+          Protótipo sem servidor:
+          <a class="link" href="cadastro-concluido.html">abrir o link do e-mail</a>
+        </p>
+      </div>
     </div>
   </main>
-
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>

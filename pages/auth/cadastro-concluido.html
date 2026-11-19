@@ -6,22 +6,32 @@
   <title>Cadastro concluído · AlugaFácil</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T03 · Cadastro concluído -->
+<body class="layout-simples">
+  
 
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina entrada">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="entrada__caixa entrada__caixa--status">
+        <div class="entrada__topo">
+          <span class="icone-status icone-status--sucesso"><span class="icone icone--check" aria-hidden="true"></span></span>
+          <h1>Cadastro concluído!</h1>
+          <p class="entrada__subtitulo texto-corpo-grande">Sua conta está ativa. Agora você já pode alugar itens e anunciar os seus.</p>
+        </div>
+
+        <a class="botao botao--primario botao--bloco" href="login.html">Entrar</a>
+      </div>
     </div>
   </main>
-
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>

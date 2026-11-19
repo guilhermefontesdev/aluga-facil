@@ -58,7 +58,10 @@
 .campo--erro .campo__ajuda {
   color: var(--campo-mensagem-erro);
 }
-
+.campo__caixa:user-invalid {
+  outline: 1px solid var(--campo-borda-erro);
+  border-color: var(--campo-borda-erro);
+}
 /* Desabilitado */
 .campo__caixa:disabled {
   background: var(--campo-desabilitado-fundo);
@@ -69,4 +72,54 @@
 
 .campo--desabilitado .campo__rotulo {
   color: var(--campo-desabilitado-texto);
+}
+
+
+.caixa-selecao {
+  display: grid;
+  grid-template-columns: var(--caixa-selecao-tamanho) 1fr;
+  column-gap: var(--espaco-3);
+  row-gap: var(--campo-gap);
+  align-items: start;
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.caixa-selecao input {
+  width: var(--caixa-selecao-tamanho);
+  height: var(--caixa-selecao-tamanho);
+  margin: 0;
+  accent-color: var(--cor-marca-primaria);
+  cursor: pointer;
+}
+
+.caixa-selecao label {
+  cursor: pointer;
+}
+
+.caixa-selecao .campo__ajuda {
+  grid-column: 2;
+}
+
+.caixa-selecao.campo--erro input,
+.caixa-selecao input:user-invalid {
+  outline: var(--campo-borda-destaque-largura) solid var(--campo-borda-erro);
+  outline-offset: 1px;
+}
+
+.caixa-selecao.campo--erro .campo__ajuda {
+  color: var(--campo-mensagem-erro);
+}
+
+/* Links dentro de textos de formulário */
+.link {
+  color: var(--cor-texto-link);
+  font-weight: var(--fonte-peso-semibold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--cor-marca-primaria-hover);
 }

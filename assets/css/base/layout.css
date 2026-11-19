@@ -29,7 +29,7 @@
 .cabecalho {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 10;
+  z-index: var(--camada-cabecalho);
   height: var(--cabecalho-altura);
   background: var(--cor-fundo-superficie);
   border-bottom: 1px solid var(--cor-borda-padrao);
@@ -59,6 +59,10 @@
     display: flex;
     gap: var(--espaco-6);
   }
+}
+
+.layout-simples {
+  --barra-inferior-altura: 0px;
 }
 
 /* Utilitários de visibilidade */

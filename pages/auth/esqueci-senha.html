@@ -3,25 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Esqueci a senha · AlugaFácil</title>
+  <title>Esqueceu a senha · AlugaFácil</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T05 · Esqueci a senha -->
+<body class="layout-simples">
+  
 
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina entrada">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="entrada__caixa">
+        <div class="entrada__topo">
+          <h1>Esqueceu a senha?</h1>
+          <p class="entrada__subtitulo">Informe o e-mail da sua conta. Vamos enviar um link para você criar uma nova senha. O link vale por 1 hora.</p>
+        </div>
+
+      
+
+        <form class="formulario" action="nova-senha.html">
+          
+          <div class="campo">
+            <label class="campo__rotulo" for="email">E-mail</label>
+            <input class="campo__caixa" id="email" type="email" autocomplete="email" placeholder="nome@email.com" required>
+          </div>
+
+          <button class="botao botao--primario botao--bloco" type="submit">Enviar link</button>
+        </form>
+
+        <div class="entrada__acoes">
+          <a class="botao botao--texto" href="login.html">Voltar para o login</a>
+        </div>
+      </div>
     </div>
   </main>
-
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>

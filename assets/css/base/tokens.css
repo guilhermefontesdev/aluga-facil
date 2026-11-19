@@ -307,6 +307,38 @@
   --modal-padding: var(--espaco-6);
   --modal-gap: var(--espaco-4);
   --modal-sombra: var(--sombra-alta);
+
+   --camada-cabecalho: 10;          /* z-index */
+  --camada-menu-conta: 15;
+  --camada-avisos: 30;
+
+  --cabecalho-logo-tamanho: var(--texto-h2-tamanho);
+  --cabecalho-logo-cor: var(--cor-marca-primaria);
+  --menu-item-cor: var(--cor-texto-secundario);
+  --menu-item-cor-ativo: var(--cor-marca-primaria);   /* item ativo = azul da marca */
+  --menu-item-indicador: 2px;                          /* linha embaixo do item ativo (computador) */
+  --barra-inferior-rotulo: var(--texto-legenda-tamanho);
+
+  --avatar-tamanho: 40px;
+  --avatar-fundo: var(--cor-marca-primaria-sutil);
+  --avatar-texto: var(--cor-marca-primaria);
+  --contador-tamanho: 18px;                            /* bolinha vermelha do sino */
+  --contador-fundo: var(--cor-estado-erro);
+  --menu-conta-largura: 240px;
+
+  --botao-compacto-padding-y: var(--espaco-2);         /* Entrar / Cadastrar do cabeçalho */
+  --botao-compacto-padding-x: var(--espaco-4);
+
+  
+  --aviso-flutuante-largura-max: 480px;
+  --aviso-flutuante-sombra: var(--sombra-media);
+  --aviso-flutuante-duracao: 0.2s;
+  --aviso-flutuante-tempo: 5s;                         /* some sozinho depois de 5 s */
+
+  --caixa-selecao-tamanho: 20px;                       /* checkbox dos termos */
+
+  --entrada-largura-max: 440px;                        /* coluna das telas T01–T06 no computador */
+  --entrada-icone-status: 80px;    
 }
 
 /* ==========================================================================
