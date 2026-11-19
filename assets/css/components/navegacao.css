@@ -1,0 +1,242 @@
+/* ==========================================================================
+   Navegação geral · cabeçalho, menu do computador, menu inferior, conta
+   O HTML fica em cada tela (copie de index.html ou pages/notificacoes.html).
+   ========================================================================== */
+
+/* ---------- Cabeçalho ---------- */
+.cabecalho__conteudo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-6);
+  height: 100%;
+}
+
+.cabecalho__logo {
+  color: var(--cabecalho-logo-cor);
+  font-size: var(--cabecalho-logo-tamanho);
+  line-height: var(--texto-h2-altura);
+  font-weight: var(--fonte-peso-bold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  margin-left: auto;
+}
+
+/* Menu do cabeçalho (só aparece no computador, ver layout.css) */
+.cabecalho__menu {
+  align-self: stretch;
+}
+
+.cabecalho__link {
+  display: flex;
+  align-items: center;
+  border-bottom: var(--menu-item-indicador) solid transparent;
+  color: var(--menu-item-cor);
+  font-size: var(--texto-rotulo-tamanho);
+  line-height: var(--texto-rotulo-altura);
+  font-weight: var(--texto-rotulo-peso);
+  text-decoration: none;
+}
+
+.cabecalho__link:hover {
+  color: var(--cor-texto-principal);
+}
+
+.cabecalho__link[aria-current="page"] {
+  border-bottom-color: var(--menu-item-cor-ativo);
+  color: var(--menu-item-cor-ativo);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+/* Sino com contador de não lidas */
+.cabecalho__sino {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--avatar-tamanho);
+  height: var(--avatar-tamanho);
+  border-radius: var(--raio-total);
+  color: var(--icone-cor);
+}
+
+.cabecalho__sino:hover,
+.cabecalho__sino[aria-current="page"] {
+  background: var(--cor-fundo-sutil);
+}
+
+.cabecalho__sino .icone {
+  width: var(--icone-tamanho);
+  height: var(--icone-tamanho);
+}
+
+.contador {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: var(--contador-tamanho);
+  height: var(--contador-tamanho);
+  padding-inline: var(--espaco-1);
+  border: 2px solid var(--cor-fundo-superficie);
+  border-radius: var(--raio-total);
+  background: var(--contador-fundo);
+  color: var(--cor-texto-inverso);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: 1;
+  font-weight: var(--fonte-peso-bold);
+  box-sizing: content-box;
+}
+
+/* ---------- Avatar e menu da conta ---------- */
+.avatar {
+  display: grid;
+  place-items: center;
+  width: var(--avatar-tamanho);
+  height: var(--avatar-tamanho);
+  border-radius: var(--raio-total);
+  background: var(--avatar-fundo);
+  color: var(--avatar-texto);
+  font-size: var(--texto-rotulo-tamanho);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.menu-conta {
+  position: relative;
+}
+
+.menu-conta__botao {
+  display: block;
+  border-radius: var(--raio-total);
+  cursor: pointer;
+  list-style: none;
+}
+
+.menu-conta__botao::-webkit-details-marker {
+  display: none;
+}
+
+.menu-conta__botao:focus-visible,
+.cabecalho__sino:focus-visible,
+.cabecalho__link:focus-visible,
+.cabecalho__logo:focus-visible,
+.barra-inferior__item:focus-visible {
+  outline: 2px solid var(--cor-borda-foco);
+  outline-offset: 2px;
+}
+
+.menu-conta__painel {
+  position: absolute;
+  top: calc(100% + var(--espaco-2));
+  right: 0;
+  z-index: var(--camada-menu-conta);
+  display: flex;
+  flex-direction: column;
+  width: var(--menu-conta-largura);
+  padding: var(--espaco-2);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  background: var(--cor-fundo-superficie);
+  box-shadow: var(--sombra-media);
+}
+
+.menu-conta__nome {
+  padding: var(--espaco-2) var(--espaco-3) 0;
+  font-size: var(--texto-corpo-destaque-tamanho);
+  line-height: var(--texto-corpo-destaque-altura);
+  font-weight: var(--texto-corpo-destaque-peso);
+}
+
+.menu-conta__email {
+  padding: 0 var(--espaco-3) var(--espaco-2);
+  margin-bottom: var(--espaco-2);
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+  overflow-wrap: anywhere;
+}
+
+.menu-conta__item {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  width: 100%;
+  padding: var(--espaco-2) var(--espaco-3);
+  border: none;
+  border-radius: var(--raio-md);
+  background: transparent;
+  color: var(--cor-texto-principal);
+  font-family: var(--fonte-familia);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-conta__item:hover,
+.menu-conta__item:focus-visible {
+  background: var(--cor-fundo-sutil);
+  outline: none;
+}
+
+.menu-conta__item .icone {
+  width: var(--icone-tamanho);
+  height: var(--icone-tamanho);
+  color: var(--cor-texto-secundario);
+}
+
+.menu-conta__sair {
+  color: var(--cor-estado-erro-texto);
+}
+
+.menu-conta__sair .icone {
+  color: currentColor;
+}
+
+/* ---------- Menu inferior (celular e tablet) ---------- */
+.barra-inferior__lista {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  height: 100%;
+  max-width: var(--aviso-flutuante-largura-max);
+  margin-inline: auto;
+  list-style: none;
+}
+
+.barra-inferior__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-1);
+  height: 100%;
+  color: var(--menu-item-cor);
+  font-size: var(--barra-inferior-rotulo);
+  line-height: var(--texto-legenda-altura);
+  font-weight: var(--fonte-peso-medio);
+  text-decoration: none;
+}
+
+.barra-inferior__item .icone {
+  width: var(--icone-tamanho);
+  height: var(--icone-tamanho);
+}
+
+.barra-inferior__item[aria-current="page"] {
+  color: var(--menu-item-cor-ativo);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+/* ---------- Computador ---------- */
+@media (min-width: 1024px) {
+  .cabecalho__conteudo {
+    gap: var(--espaco-8);
+  }
+}
