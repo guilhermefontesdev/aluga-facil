@@ -18,3 +18,101 @@
 .aviso--sucesso { background: var(--cor-estado-sucesso-sutil); border-color: var(--cor-estado-sucesso); color: var(--cor-estado-sucesso-texto); }
 .aviso--aviso   { background: var(--cor-estado-aviso-sutil);   border-color: var(--cor-estado-aviso);   color: var(--cor-estado-aviso-texto); }
 .aviso--erro    { background: var(--cor-estado-erro-sutil);    border-color: var(--cor-estado-erro);    color: var(--cor-estado-erro-texto); }
+
+.aviso__icone {
+  flex-shrink: 0;
+  width: var(--icone-tamanho);
+  height: var(--icone-tamanho);
+}
+
+.aviso__texto {
+  flex: 1;
+  /* alinha a 1ª linha do texto com o centro do ícone de 24 px */
+  padding-top: calc((var(--icone-tamanho) - var(--texto-corpo-medio-altura)) / 2);
+}
+
+/* Botão de fechar: é um label ligado a um checkbox escondido.
+   Marcar o checkbox esconde o aviso (CSS puro, sem JavaScript). */
+.aviso__controle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.aviso__controle:checked + .aviso {
+  display: none;
+}
+
+.aviso__fechar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--raio-sm);
+  color: inherit;
+  cursor: pointer;
+}
+
+.aviso__controle:focus-visible + .aviso .aviso__fechar {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Avisos flutuantes: aparecem no topo da tela, logo abaixo do cabeçalho,
+   e somem sozinhos depois de 5 s (animação CSS)
+   -------------------------------------------------------------------------- */
+.avisos-flutuantes {
+  position: fixed;
+  top: calc(var(--cabecalho-altura) + var(--espaco-3));
+  left: 50%;
+  z-index: var(--camada-avisos);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  width: min(calc(100% - 2 * var(--grid-margem)), var(--aviso-flutuante-largura-max));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.aviso--flutuante {
+  box-shadow: var(--aviso-flutuante-sombra);
+  pointer-events: auto;
+  animation:
+    aviso-entrar var(--aviso-flutuante-duracao) ease-out,
+    aviso-sumir var(--aviso-flutuante-duracao) ease-in var(--aviso-flutuante-tempo) forwards;
+}
+
+/* Erro não some sozinho: fica até a pessoa fechar */
+.aviso--flutuante.aviso--erro {
+  animation: aviso-entrar var(--aviso-flutuante-duracao) ease-out;
+}
+
+/* Enquanto o mouse está em cima, não some */
+.aviso--flutuante:hover {
+  animation-play-state: paused;
+}
+
+@keyframes aviso-entrar {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--espaco-2))); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes aviso-sumir {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aviso--flutuante { animation: aviso-sumir 0s var(--aviso-flutuante-tempo) forwards; }
+  .aviso--flutuante.aviso--erro { animation: none; }
+}
+
+/* Na página de exemplos os avisos flutuantes ficam parados no fluxo da página */
+.avisos-flutuantes--exemplo {
+  position: static;
+  width: 100%;
+  transform: none;
+}
+
+.avisos-flutuantes--exemplo .aviso--flutuante {
+  animation: none;
+}
