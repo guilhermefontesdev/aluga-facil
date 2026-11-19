@@ -33,7 +33,9 @@
   display: flex;
   width: 100%;
 }
-
+.botao--compacto {
+  padding: var(--botao-compacto-padding-y) var(--botao-compacto-padding-x);
+}
 /* Primário */
 .botao--primario { background: var(--botao-primario-fundo); color: var(--botao-primario-texto); }
 .botao--primario:hover { background: var(--botao-primario-fundo-hover); }

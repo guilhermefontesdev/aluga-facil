@@ -8,11 +8,13 @@
 @import url("base/layout.css");
 
 /* Componentes */
+@import url("components/icones.css");
 @import url("components/botoes.css");
 @import url("components/campos.css");
 @import url("components/cards.css");
 @import url("components/etiquetas.css");
 @import url("components/avisos.css");
 @import url("components/modal.css");
-
+@import url("components/navegacao.css");
+@import url("pages/entrada.css");  
 
