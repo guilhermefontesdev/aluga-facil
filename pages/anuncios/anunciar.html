@@ -9,20 +9,125 @@
 <body>
   <!-- T13 · Anunciar / Editar item -->
 
+  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html" aria-current="page">Anunciar</a>
+        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
+          <span class="icone icone--sino" aria-hidden="true"></span>
+          <span class="contador" aria-hidden="true">3</span>
+        </a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta">
+            <span class="avatar" aria-hidden="true">MS</span>
+          </summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p>
+            <p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina anuncios">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="anuncios__topo anuncio-form">
+        <div>
+          <h1 id="anuncio-titulo">Anunciar item</h1>
+          <p class="anuncios__subtitulo" id="anuncio-subtitulo">Preencha os dados do item. Depois de publicado, ele aparece na busca.</p>
+        </div>
+      </div>
+
+      <!-- novalidate: quem confere os campos é o JavaScript (assets/js/pages/anunciar.js),
+           que mostra a mensagem de erro embaixo de cada campo -->
+      <form class="formulario anuncio-form" id="anuncio-form" action="meus-anuncios.html" novalidate>
+        <div class="campo">
+          <label class="campo__rotulo" for="nome">Nome do item</label>
+          <input class="campo__caixa" id="nome" type="text" placeholder="Ex.: Furadeira de impacto Bosch" maxlength="80" required>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="categoria">Categoria</label>
+          <select class="campo__caixa" id="categoria" required>
+            <option value="">Escolha uma categoria</option>
+            <option>Ferramentas</option>
+            <option>Eletrodomésticos</option>
+            <option>Eletrônicos e câmeras</option>
+            <option>Esportes e lazer</option>
+            <option>Festas e eventos</option>
+            <option>Jardinagem</option>
+            <option>Outros</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="descricao">Descrição</label>
+          <textarea class="campo__caixa campo__caixa--texto-longo" id="descricao" maxlength="1000"
+                    placeholder="Estado do item, o que acompanha, cuidados de uso" required></textarea>
+          <p class="campo__ajuda">Mínimo de 20 caracteres.</p>
+          <span class="campo__contador" id="descricao-contador" aria-live="polite">0/1000</span>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="preco">Preço por dia</label>
+          <div class="campo__prefixo">
+            <span aria-hidden="true">R$</span>
+            <input class="campo__caixa" id="preco" type="text" inputmode="decimal" placeholder="0,00" required>
+          </div>
+        </div>
+
+        <div class="campo">
+          <span class="campo__rotulo" id="foto-rotulo">Foto (opcional)</span>
+          <div class="foto-previa" id="foto-previa" aria-live="polite">A foto aparece aqui</div>
+          <div class="foto-previa__acoes">
+            <input class="foto-previa__arquivo" id="foto-arquivo" type="file" accept="image/jpeg,image/png,image/webp">
+            <label class="botao botao--contorno botao--compacto" for="foto-arquivo">Enviar foto do aparelho</label>
+            <button class="botao botao--texto botao--compacto" id="foto-remover" type="button" hidden>Remover foto</button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="foto-url">Ou cole o endereço (URL) da foto</label>
+          <input class="campo__caixa" id="foto-url" type="url" placeholder="https://..." inputmode="url">
+          <p class="campo__ajuda">JPG, PNG ou WebP de até 5 MB.</p>
+        </div>
+
+        <div class="anuncio-form__acoes">
+          <a class="botao botao--contorno" href="meus-anuncios.html">Cancelar</a>
+          <button class="botao botao--primario" id="anuncio-salvar" type="submit">Publicar anúncio</button>
+        </div>
+      </form>
     </div>
   </main>
 
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html" aria-current="page"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/pages/anunciar.js" defer></script>
 </body>
 </html>

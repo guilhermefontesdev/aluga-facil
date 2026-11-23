@@ -16,5 +16,6 @@
 @import url("components/avisos.css");
 @import url("components/modal.css");
 @import url("components/navegacao.css");
-@import url("pages/entrada.css");  
+@import url("pages/entrada.css");
+@import url("pages/anuncios.css");       /* T12, T13, T14 */
 
