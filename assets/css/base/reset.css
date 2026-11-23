@@ -37,3 +37,8 @@ select {
 a {
   color: var(--cor-texto-link);
 }
+
+/* O atributo hidden sempre esconde, mesmo em elementos com display: flex/grid */
+[hidden] {
+  display: none !important;
+}
