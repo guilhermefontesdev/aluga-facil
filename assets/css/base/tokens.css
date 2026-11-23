@@ -338,6 +338,8 @@
   --caixa-selecao-tamanho: 20px;                       /* checkbox dos termos */
 
   --entrada-largura-max: 440px;                        /* coluna das telas T01–T06 no computador */
+  --anuncio-form-largura-max: 640px;                   /* coluna do formulário T13 */
+  --anuncio-descricao-altura: 140px;                   /* altura inicial da descrição (T13) */
   --entrada-icone-status: 80px;    
 }
 

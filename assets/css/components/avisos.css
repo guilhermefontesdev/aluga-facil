@@ -52,6 +52,18 @@
   cursor: pointer;
 }
 
+/* Versão com JavaScript: o X é um <button> (avisos criados por assets/js/utils/avisos.js) */
+button.aviso__fechar {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+button.aviso__fechar:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .aviso__controle:focus-visible + .aviso .aviso__fechar {
   outline: 2px solid currentColor;
   outline-offset: 2px;
