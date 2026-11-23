@@ -9,20 +9,106 @@
 <body>
   <!-- T12 · Meus anúncios -->
 
+  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html" aria-current="page">Anunciar</a>
+        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
+          <span class="icone icone--sino" aria-hidden="true"></span>
+          <span class="contador" aria-hidden="true">3</span>
+        </a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta">
+            <span class="avatar" aria-hidden="true">MS</span>
+          </summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p>
+            <p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina anuncios">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="anuncios__topo">
+        <div>
+          <h1 tabindex="-1">Meus anúncios</h1>
+          <p class="anuncios__subtitulo" id="meus-anuncios-total" aria-live="polite">0 anúncios</p>
+        </div>
+        <a class="botao botao--primario" href="anunciar.html">
+          <span class="icone icone--anunciar" aria-hidden="true"></span>
+          Anunciar item
+        </a>
+      </div>
+
+      <!-- Os cards são criados pelo JavaScript (assets/js/pages/meus-anuncios.js)
+           a partir do modelo <template> logo abaixo -->
+      <ul class="lista-cards" id="meus-anuncios-lista" aria-label="Seus anúncios" hidden></ul>
+
+      <template id="modelo-card-meu-anuncio">
+        <article class="card">
+          <img class="card__foto" data-campo="foto" alt="">
+          <div class="card__conteudo">
+            <span class="card__categoria" data-campo="categoria"></span>
+            <h2 class="card__titulo" data-campo="nome"></h2>
+            <p class="card__descricao" data-campo="descricao"></p>
+            <p><span class="card__preco" data-campo="preco"></span> <span class="card__preco-unidade">/dia</span></p>
+            <div class="card__acoes">
+              <a class="botao botao--contorno botao--compacto" href="anunciar.html" data-link="editar">Editar</a>
+              <button class="botao botao--texto botao--compacto" type="button" data-acao="excluir">Excluir</button>
+            </div>
+          </div>
+        </article>
+      </template>
+
+      <div class="lista-vazia" id="meus-anuncios-vazio" hidden>
+        <p>Você ainda não tem anúncios. Anuncie um item parado em casa e ganhe com ele.</p>
+        <a class="botao botao--primario" href="anunciar.html">Anunciar meu primeiro item</a>
+      </div>
     </div>
   </main>
 
+  <!-- Confirmação antes de excluir (modal de perigo) -->
+  <dialog class="modal" id="modal-excluir" aria-labelledby="modal-excluir-titulo">
+    <form class="modal__conteudo" method="dialog">
+      <h2 id="modal-excluir-titulo">Excluir anúncio?</h2>
+      <p>O anúncio <strong id="modal-excluir-nome"></strong> sai da busca e não pode ser recuperado.</p>
+      <div class="modal__acoes">
+        <button class="botao botao--contorno" value="cancelar" autofocus>Cancelar</button>
+        <button class="botao botao--perigo" id="modal-excluir-confirmar" type="button">Excluir</button>
+      </div>
+    </form>
+  </dialog>
+
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html" aria-current="page"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/pages/meus-anuncios.js" defer></script>
 </body>
 </html>
