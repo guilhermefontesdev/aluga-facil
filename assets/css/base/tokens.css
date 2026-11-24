@@ -374,3 +374,16 @@
     --texto-h1-altura: 36px;
   }
 }
+
+/* ==========================================================================
+   16. ALUGUÉIS E NOTIFICAÇÕES · T08, T09, T16, T17, T18
+   (bloco separado: cole no fim de tokens.css)
+   ========================================================================== */
+:root {
+  --aluguel-largura-max: 640px;      /* coluna das telas de aluguel no computador */
+  --aluguel-foto-tamanho: 56px;      /* foto pequena do item na lista e nos resumos */
+  --estrela-tamanho: 32px;           /* estrelas da avaliação (T09) */
+  --estrela-nota-tamanho: 16px;      /* estrela da nota e ícones pequenos */
+  --notificacao-ponto: 8px;          /* ponto azul da notificação não lida */
+  --paginacao-item-tamanho: 36px;
+}
