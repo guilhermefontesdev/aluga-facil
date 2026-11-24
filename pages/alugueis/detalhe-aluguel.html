@@ -9,18 +9,401 @@
 <body>
   <!-- T09 · Detalhe do aluguel -->
 
+  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html">Anunciar</a>
+        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html" aria-current="page">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
+          <span class="icone icone--sino" aria-hidden="true"></span>
+          <span class="contador" aria-hidden="true">3</span>
+        </a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta">
+            <span class="avatar" aria-hidden="true">MS</span>
+          </summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p>
+            <p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina alugueis">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <!-- Esta tela tem um estado para cada status do aluguel. Sem JavaScript,
+           o estado aparece pelo # do endereço (:target no CSS):
+             detalhe-aluguel.html#aceito        (padrão, quando não há #)
+             detalhe-aluguel.html#pendente      locatário esperando resposta
+             detalhe-aluguel.html#recebida      anunciante: aceitar ou recusar
+             detalhe-aluguel.html#em-andamento  anunciante: confirmar devolução
+             detalhe-aluguel.html#concluido     avaliação mútua
+             detalhe-aluguel.html#expirado      sem resposta em 48 horas
+             detalhe-aluguel.html#cancelado     depois do T17
+           Os modais abrem com commandfor/command (HTML puro, sem script). -->
+
+      <!-- ===== Aceito · visão do locatário (Figura 17, à direita) ===== -->
+      <section class="aluguel-estado" id="aceito" aria-labelledby="aceito-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--aceito">Aceito</span>
+          <span class="aluguel__numero">Solicitação nº 4821</span>
+        </div>
+        <h1 id="aceito-titulo">Furadeira de impacto 650W</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">12/10 a 14/10/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>3 diárias × R$ 25,00</dt><dd>R$ 75,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 75,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Anunciante</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">C</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Carlos</a>
+              <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 23 avaliações como anunciante</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aviso aviso--sucesso" role="status">
+          <span class="icone icone--check aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Carlos aceitou seu pedido! Combine a retirada pelo telefone.</p>
+        </div>
+
+        <div class="bloco">
+          <h2 class="bloco__titulo">Contato do anunciante</h2>
+          <p>Endereço: Rua Fonte do Boi, 120 · Rio Vermelho, Salvador</p>
+          <p>Telefone: <a class="link" href="tel:+5571998765432">(71) 99876-5432</a></p>
+        </div>
+
+        <div class="aluguel__acoes">
+          <a class="botao botao--texto" href="cancelar-aluguel.html">Cancelar aluguel</a>
+        </div>
+      </section>
+
+      <!-- ===== Pendente · visão do locatário (Figura 13, à direita) ===== -->
+      <section class="aluguel-estado" id="pendente" aria-labelledby="pendente-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--pendente">Pendente</span>
+          <span class="aluguel__numero">Solicitação nº 4821</span>
+        </div>
+        <h1 id="pendente-titulo">Furadeira de impacto 650W</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">12/10 a 14/10/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>3 diárias × R$ 25,00</dt><dd>R$ 75,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 75,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Anunciante</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">C</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Carlos</a>
+              <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 23 avaliações como anunciante</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aviso aviso--info" role="status">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Aguardando a resposta de Carlos até 01/10 às 22h. Você será avisado por e-mail e WhatsApp.</p>
+        </div>
+
+        <div class="aluguel__acoes">
+          <button class="botao botao--texto" type="button" commandfor="modal-desistir" command="show-modal">Desistir da solicitação</button>
+        </div>
+
+        <dialog class="modal" id="modal-desistir" aria-labelledby="modal-desistir-titulo">
+          <form class="modal__conteudo" action="meus-alugueis.html">
+            <h2 id="modal-desistir-titulo">Desistir da solicitação?</h2>
+            <p>Carlos ainda não respondeu, então não há multa. O pedido sai da lista dele.</p>
+            <div class="modal__acoes">
+              <button class="botao botao--contorno" type="button" commandfor="modal-desistir" command="close" autofocus>Voltar</button>
+              <button class="botao botao--perigo" type="submit">Desistir</button>
+            </div>
+          </form>
+        </dialog>
+      </section>
+
+      <!-- ===== Pendente · visão do anunciante (Figura 17, à esquerda e no meio) ===== -->
+      <section class="aluguel-estado" id="recebida" aria-labelledby="recebida-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--pendente">Pendente</span>
+          <span class="aluguel__numero">Solicitação nº 4830</span>
+        </div>
+        <h1 id="recebida-titulo">Escada de alumínio 7 degraus</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">20/10 a 22/10/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>3 diárias × R$ 15,00</dt><dd>R$ 45,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 45,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Locatária</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">A</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Ana</a>
+              <p class="pessoa__nota"><span class="selo-novo">Novo usuário</span> 2 avaliações como locatária</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Mensagem de Ana</p>
+          <blockquote class="bloco__mensagem">"Oi! Preciso da escada para pintar o quarto no fim de semana."</blockquote>
+        </div>
+
+        <div class="aviso aviso--aviso" role="status">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Responda até 01/10 às 14h. Depois disso, a solicitação expira.</p>
+        </div>
+
+        <div class="aluguel__acoes aluguel__acoes--lado-a-lado">
+          <button class="botao botao--contorno" type="button" commandfor="modal-recusar" command="show-modal">Recusar</button>
+          <!-- Ao aceitar: as datas são bloqueadas na agenda (RF17) e o contato é liberado (RF16) -->
+          <a class="botao botao--primario" href="meus-alugueis.html">Aceitar</a>
+        </div>
+
+        <dialog class="modal" id="modal-recusar" aria-labelledby="modal-recusar-titulo">
+          <form class="modal__conteudo" action="meus-alugueis.html">
+            <h2 id="modal-recusar-titulo">Recusar solicitação?</h2>
+            <p>Ana será avisada por e-mail e WhatsApp. Essa resposta não pode ser alterada depois.</p>
+            <div class="campo">
+              <label class="campo__rotulo" for="recusar-motivo">Motivo (opcional)</label>
+              <input class="campo__caixa" id="recusar-motivo" type="text" maxlength="200" placeholder="Ex.: a escada estará em uso nessas datas">
+            </div>
+            <div class="modal__acoes">
+              <button class="botao botao--contorno" type="button" commandfor="modal-recusar" command="close" autofocus>Cancelar</button>
+              <button class="botao botao--perigo" type="submit">Recusar</button>
+            </div>
+          </form>
+        </dialog>
+      </section>
+
+      <!-- ===== Em andamento · anunciante confirma a devolução (Figura 18, à esquerda) ===== -->
+      <section class="aluguel-estado" id="em-andamento" aria-labelledby="em-andamento-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--em-andamento">Em andamento</span>
+          <span class="aluguel__numero">Aluguel nº 4790</span>
+        </div>
+        <h1 id="em-andamento-titulo">Escada de alumínio 7 degraus</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">28/09 a 30/09/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>3 diárias × R$ 15,00</dt><dd>R$ 45,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 45,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Locatário</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">B</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Bruno</a>
+              <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,9</strong> 8 avaliações como locatário</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aluguel__acoes">
+          <button class="botao botao--primario botao--bloco" type="button" commandfor="modal-devolucao" command="show-modal">Confirmar devolução</button>
+        </div>
+
+        <dialog class="modal" id="modal-devolucao" aria-labelledby="modal-devolucao-titulo">
+          <form class="modal__conteudo" action="detalhe-aluguel.html#concluido">
+            <div class="modal__topo">
+              <h2 id="modal-devolucao-titulo">Confirmar devolução</h2>
+              <button class="modal__fechar" type="button" commandfor="modal-devolucao" command="close" aria-label="Fechar"><span class="icone icone--fechar" aria-hidden="true"></span></button>
+            </div>
+            <p>Confirme que Bruno devolveu a escada. Os dias livres voltam a aparecer na busca e a avaliação é liberada.</p>
+            <div class="modal__acoes">
+              <button class="botao botao--contorno" type="button" commandfor="modal-devolucao" command="close">Cancelar</button>
+              <button class="botao botao--primario" type="submit">Confirmar</button>
+            </div>
+          </form>
+        </dialog>
+      </section>
+
+      <!-- ===== Concluído · avaliação mútua (Figura 18, no meio) ===== -->
+      <section class="aluguel-estado" id="concluido" aria-labelledby="concluido-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--concluido">Concluído</span>
+          <span class="aluguel__numero">Aluguel nº 4755</span>
+        </div>
+        <h1 id="concluido-titulo">Escada de alumínio 7 degraus</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">20/09 a 22/09/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>3 diárias × R$ 15,00</dt><dd>R$ 45,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 45,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Locatária</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">A</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Ana</a>
+              <p class="pessoa__nota"><span class="selo-novo">Novo usuário</span> 2 avaliações como locatária</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aviso aviso--info" role="status">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">A escada foi devolvida. Avalie Ana até hoje, 29/09.</p>
+        </div>
+
+        <div class="aluguel__acoes">
+          <button class="botao botao--primario botao--bloco" type="button" commandfor="modal-avaliar" command="show-modal">Avaliar Ana</button>
+        </div>
+
+        <dialog class="modal" id="modal-avaliar" aria-labelledby="modal-avaliar-titulo">
+          <form class="modal__conteudo" action="meus-alugueis.html">
+            <div>
+              <h2 id="modal-avaliar-titulo">Como foi alugar com Ana?</h2>
+              <p class="texto-secundario">Sua nota vai para a reputação dela como locatária.</p>
+            </div>
+
+            <!-- Estrelas só com CSS: 5 radios em ordem invertida (5 → 1).
+                 Passar o mouse ou marcar uma estrela pinta ela e as anteriores. -->
+            <fieldset class="estrelas">
+              <legend class="visualmente-oculto">Nota de 1 a 5 estrelas</legend>
+              <input class="estrelas__controle" type="radio" name="nota" id="nota-5" required>
+              <label class="estrelas__item icone icone--estrela" for="nota-5"><span class="visualmente-oculto">5 estrelas</span></label>
+              <input class="estrelas__controle" type="radio" name="nota" id="nota-4">
+              <label class="estrelas__item icone icone--estrela" for="nota-4"><span class="visualmente-oculto">4 estrelas</span></label>
+              <input class="estrelas__controle" type="radio" name="nota" id="nota-3">
+              <label class="estrelas__item icone icone--estrela" for="nota-3"><span class="visualmente-oculto">3 estrelas</span></label>
+              <input class="estrelas__controle" type="radio" name="nota" id="nota-2">
+              <label class="estrelas__item icone icone--estrela" for="nota-2"><span class="visualmente-oculto">2 estrelas</span></label>
+              <input class="estrelas__controle" type="radio" name="nota" id="nota-1">
+              <label class="estrelas__item icone icone--estrela" for="nota-1"><span class="visualmente-oculto">1 estrela</span></label>
+            </fieldset>
+
+            <div class="campo">
+              <label class="campo__rotulo" for="avaliar-comentario">Comentário (opcional)</label>
+              <textarea class="campo__caixa campo__caixa--area" id="avaliar-comentario" rows="3" maxlength="500" placeholder="Ex.: devolveu no prazo e bem cuidada"></textarea>
+              <p class="campo__ajuda">Até 500 caracteres.</p>
+            </div>
+            <p class="texto-legenda texto-secundario">Seu prazo termina hoje (29/09). A avaliação só aparece quando os dois avaliarem ou o prazo acabar.</p>
+            <div class="modal__acoes">
+              <button class="botao botao--contorno" type="button" commandfor="modal-avaliar" command="close">Agora não</button>
+              <button class="botao botao--primario" type="submit">Enviar</button>
+            </div>
+          </form>
+        </dialog>
+      </section>
+
+      <!-- ===== Expirado · locatário (Figura 16, à direita) ===== -->
+      <section class="aluguel-estado" id="expirado" aria-labelledby="expirado-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--expirado">Expirado</span>
+          <span class="aluguel__numero">Solicitação nº 4702</span>
+        </div>
+        <h1 id="expirado-titulo">Bicicleta aro 29</h1>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">01/09/2026 · 1 dia</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>1 diária × R$ 30,00</dt><dd>R$ 30,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 30,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Anunciante</p>
+          <div class="pessoa">
+            <span class="avatar" aria-hidden="true">P</span>
+            <div>
+              <a class="pessoa__nome" href="../perfil/perfil-publico.html">Pedro</a>
+              <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 11 avaliações como anunciante</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aviso aviso--aviso" role="status">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Pedro não respondeu em 48 horas e a solicitação expirou. Nenhum valor foi cobrado.</p>
+        </div>
+
+        <div class="aluguel__acoes">
+          <a class="botao botao--texto" href="../anuncios/busca.html">Buscar itens parecidos</a>
+        </div>
+      </section>
+
+      <!-- ===== Cancelado · depois de confirmar no T17 ===== -->
+      <section class="aluguel-estado" id="cancelado" aria-labelledby="cancelado-titulo">
+        <div class="aluguel__topo">
+          <span class="etiqueta etiqueta--cancelado">Cancelado</span>
+          <span class="aluguel__numero">Solicitação nº 4821</span>
+        </div>
+        <h1 id="cancelado-titulo">Furadeira de impacto 650W</h1>
+
+        <div class="aviso aviso--info" role="status">
+          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+          <p class="aviso__texto">Você cancelou este aluguel. Carlos foi avisado por e-mail e WhatsApp e as datas voltaram a ficar livres.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="bloco__rotulo">Período</p>
+          <p class="bloco__destaque">12/10 a 14/10/2026 · 3 dias</p>
+          <dl class="valores">
+            <div class="valores__linha"><dt>Valor da locação</dt><dd>R$ 75,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Multa registrada (0%)</dt><dd>R$ 0,00</dd></div>
+          </dl>
+        </div>
+
+        <div class="aluguel__acoes">
+          <a class="botao botao--texto" href="meus-alugueis.html">Voltar para meus aluguéis</a>
+        </div>
+      </section>
     </div>
   </main>
 
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html" aria-current="page"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
