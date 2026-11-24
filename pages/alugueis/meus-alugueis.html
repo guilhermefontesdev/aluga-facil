@@ -9,18 +9,157 @@
 <body>
   <!-- T08 · Meus aluguéis -->
 
+  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html">Anunciar</a>
+        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html" aria-current="page">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
+          <span class="icone icone--sino" aria-hidden="true"></span>
+          <span class="contador" aria-hidden="true">3</span>
+        </a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta">
+            <span class="avatar" aria-hidden="true">MS</span>
+          </summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p>
+            <p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina alugueis">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <h1>Meus aluguéis</h1>
+
+      <!-- Abas e filtro funcionam só com CSS (assets/css/pages/alugueis.css):
+           cada item da lista tem data-papel e data-status, e o CSS esconde os
+           que não combinam com a aba marcada ou com o status escolhido. -->
+      <fieldset class="abas">
+        <legend class="visualmente-oculto">Ver aluguéis como</legend>
+        <input class="abas__controle" type="radio" name="papel" id="papel-todos" checked>
+        <label class="abas__item" for="papel-todos">Todos</label>
+        <input class="abas__controle" type="radio" name="papel" id="papel-locatario">
+        <label class="abas__item" for="papel-locatario">Locatário</label>
+        <input class="abas__controle" type="radio" name="papel" id="papel-anunciante">
+        <label class="abas__item" for="papel-anunciante">Anunciante</label>
+      </fieldset>
+
+      <div class="filtro-status">
+        <span class="icone icone--filtro" aria-hidden="true"></span>
+        <label for="filtro-status">Status:</label>
+        <select id="filtro-status">
+          <option value="todos" selected>todos</option>
+          <option value="pendente">pendente</option>
+          <option value="aceito">aceito</option>
+          <option value="em-andamento">em andamento</option>
+          <option value="concluido">concluído</option>
+          <option value="recusado">recusado</option>
+          <option value="cancelado">cancelado</option>
+          <option value="expirado">expirado</option>
+        </select>
+      </div>
+
+      <ul class="lista-alugueis" aria-label="Seus aluguéis">
+        <li class="aluguel-item" data-papel="locatario" data-status="aceito">
+          <span class="aluguel-item__foto" aria-hidden="true"></span>
+          <div class="aluguel-item__info">
+            <span class="etiqueta etiqueta--aceito">Aceito</span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#aceito">Furadeira de impacto 650W</a></h2>
+            <p class="aluguel-item__linha">Com Carlos · 12 a 14/10</p>
+            <p class="aluguel-item__linha">R$ 75,00 · Você aluga</p>
+          </div>
+          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
+        </li>
+
+        <li class="aluguel-item" data-papel="anunciante" data-status="pendente">
+          <span class="aluguel-item__foto" aria-hidden="true"></span>
+          <div class="aluguel-item__info">
+            <span class="etiqueta etiqueta--pendente">Pendente</span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#recebida">Escada de alumínio 7 degraus</a></h2>
+            <p class="aluguel-item__linha">Com Ana · 20 a 22/10</p>
+            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
+          </div>
+          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
+        </li>
+
+        <li class="aluguel-item" data-papel="anunciante" data-status="em-andamento">
+          <span class="aluguel-item__foto" aria-hidden="true"></span>
+          <div class="aluguel-item__info">
+            <span class="etiqueta etiqueta--em-andamento">Em andamento</span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#em-andamento">Escada de alumínio 7 degraus</a></h2>
+            <p class="aluguel-item__linha">Com Bruno · 28 a 30/09</p>
+            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
+          </div>
+          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
+        </li>
+
+        <li class="aluguel-item" data-papel="anunciante" data-status="concluido">
+          <span class="aluguel-item__foto" aria-hidden="true"></span>
+          <div class="aluguel-item__info">
+            <span class="etiqueta etiqueta--concluido">Concluído</span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#concluido">Escada de alumínio 7 degraus</a></h2>
+            <p class="aluguel-item__linha">Com Ana · 20 a 22/09</p>
+            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
+          </div>
+          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
+        </li>
+
+        <li class="aluguel-item" data-papel="locatario" data-status="expirado">
+          <span class="aluguel-item__foto" aria-hidden="true"></span>
+          <div class="aluguel-item__info">
+            <span class="etiqueta etiqueta--expirado">Expirado</span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#expirado">Bicicleta aro 29</a></h2>
+            <p class="aluguel-item__linha">Com Pedro · 01/09</p>
+            <p class="aluguel-item__linha">R$ 30,00 · Você aluga</p>
+          </div>
+          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
+        </li>
+      </ul>
+
+      <nav class="paginacao" aria-label="Páginas">
+        <span class="paginacao__item paginacao__item--desabilitado" aria-hidden="true"><span class="icone icone--seta-esquerda"></span></span>
+        <a class="paginacao__item" href="meus-alugueis.html" aria-current="page">1</a>
+        <a class="paginacao__item" href="meus-alugueis.html">2</a>
+        <a class="paginacao__item" href="meus-alugueis.html">3</a>
+        <a class="paginacao__item" href="meus-alugueis.html" aria-label="Próxima página"><span class="icone icone--seta-direita" aria-hidden="true"></span></a>
+      </nav>
+
+      <!-- ESTADO · lista vazia (Figura 16, tela do meio).
+           Para ver, comente as abas, o filtro, a lista e a paginação acima e
+           descomente este bloco.
+      <div class="alugueis-vazio">
+        <span class="icone-status icone-status--info"><span class="icone icone--alugueis" aria-hidden="true"></span></span>
+        <h2>Você ainda não possui aluguéis</h2>
+        <p class="texto-secundario">Quando você alugar ou anunciar um item, ele aparece aqui.</p>
+        <a class="botao botao--primario botao--bloco" href="../anuncios/busca.html">Buscar itens</a>
+      </div>
+      -->
     </div>
   </main>
 
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html" aria-current="page"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
