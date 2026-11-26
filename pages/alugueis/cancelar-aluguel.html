@@ -9,18 +9,108 @@
 <body>
   <!-- T17 · Cancelar aluguel -->
 
+  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html">Anunciar</a>
+        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html" aria-current="page">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
+          <span class="icone icone--sino" aria-hidden="true"></span>
+          <span class="contador" aria-hidden="true">3</span>
+        </a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta">
+            <span class="avatar" aria-hidden="true">MS</span>
+          </summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p>
+            <p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina alugueis">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div>
+        <h1>Cancelar aluguel</h1>
+        <p class="texto-secundario">Confira a multa antes de confirmar.</p>
+      </div>
+
+      <div class="bloco item-resumo">
+        <span class="item-resumo__foto" aria-hidden="true"></span>
+        <div>
+          <p class="item-resumo__titulo">Furadeira de impacto 650W</p>
+          <p class="item-resumo__linha">Com Carlos · 12 a 14/10/2026</p>
+        </div>
+      </div>
+
+      <!-- Multa calculada pela política escolhida pelo anunciante (RF18).
+           Moderada: 0% com 3 dias ou mais, 50% entre 24 h e 3 dias, 100% com menos de 24 h. -->
+      <div class="bloco">
+        <h2 class="bloco__titulo">Política: Moderada</h2>
+        <p class="texto-secundario">Faltam 13 dias para o início. Cancelamentos com 3 dias ou mais de antecedência não pagam multa.</p>
+        <dl class="valores">
+          <div class="valores__linha"><dt>Valor da locação</dt><dd>R$ 75,00</dd></div>
+          <div class="valores__linha valores__linha--total"><dt>Multa (0%)</dt><dd>R$ 0,00</dd></div>
+        </dl>
+        <p class="texto-legenda texto-secundario">Se houver multa, ela fica registrada aqui e é combinada diretamente entre vocês.</p>
+      </div>
+
+      <!-- ESTADO · com multa (faltam menos de 3 dias). Troque o bloco acima por este:
+      <div class="bloco">
+        <h2 class="bloco__titulo">Política: Moderada</h2>
+        <p class="texto-secundario">Falta 1 dia para o início. Entre 24 horas e 3 dias antes, a multa é de 50%.</p>
+        <dl class="valores">
+          <div class="valores__linha"><dt>Valor da locação</dt><dd>R$ 75,00</dd></div>
+          <div class="valores__linha valores__linha--total valores__linha--multa"><dt>Multa (50%)</dt><dd>R$ 37,50</dd></div>
+        </dl>
+        <p class="texto-legenda texto-secundario">A multa fica registrada aqui e é combinada diretamente entre vocês.</p>
+      </div>
+      -->
+
+      <form class="formulario" action="detalhe-aluguel.html#cancelado">
+        <div class="campo">
+          <label class="campo__rotulo" for="motivo-cancelamento">Motivo do cancelamento</label>
+          <select class="campo__caixa" id="motivo-cancelamento" required>
+            <option value="" selected disabled>Escolha um motivo</option>
+            <option>Não vou mais precisar do item</option>
+            <option>Encontrei outra opção</option>
+            <option>Mudei as datas</option>
+            <option>Não consegui falar com o anunciante</option>
+            <option>Outro motivo</option>
+          </select>
+          <p class="campo__ajuda">O anunciante vê o motivo junto com o aviso de cancelamento.</p>
+        </div>
+
+        <div class="aluguel__acoes">
+          <button class="botao botao--perigo botao--bloco" type="submit">Confirmar cancelamento</button>
+          <a class="botao botao--contorno botao--bloco" href="detalhe-aluguel.html#aceito">Manter aluguel</a>
+        </div>
+      </form>
     </div>
   </main>
 
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html" aria-current="page"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
