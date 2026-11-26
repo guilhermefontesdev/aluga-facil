@@ -1,0 +1,237 @@
+/* ==========================================================================
+   Anúncios · T12 Meus anúncios, T13 Anunciar / Editar item, T14 Busca
+   Reaproveita .formulario (entrada.css), .campo, .card, .lista-cards,
+   .modal e .aviso. Aqui ficam só os ajustes destas telas.
+   ========================================================================== */
+
+/* Topo das telas: título + subtítulo; no T12 o botão vai ao lado */
+.anuncios > .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-6);
+  padding-block: var(--espaco-6) var(--espaco-12);
+}
+
+.anuncios__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+}
+
+.anuncios__subtitulo {
+  color: var(--cor-texto-secundario);
+}
+
+/* --------------------------------------------------------------------------
+   T13 · formulário numa coluna estreita, centralizada
+   -------------------------------------------------------------------------- */
+.anuncio-form {
+  width: 100%;
+  max-width: var(--anuncio-form-largura-max);
+  margin-inline: auto;
+}
+
+.campo__caixa--texto-longo {
+  min-height: var(--anuncio-descricao-altura);
+  resize: vertical;
+}
+
+/* Preço com "R$" fixo na frente do campo */
+.campo__prefixo {
+  position: relative;
+}
+
+.campo__prefixo > span {
+  position: absolute;
+  inset-block: 0;
+  left: var(--campo-padding-x);
+  display: flex;
+  align-items: center;
+  color: var(--cor-texto-secundario);
+  pointer-events: none;
+}
+
+.campo__prefixo > .campo__caixa {
+  padding-left: calc(var(--campo-padding-x) + var(--espaco-8));
+}
+
+/* Contador de caracteres da descrição, à direita da ajuda */
+.campo__contador {
+  align-self: flex-end;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+/* Prévia da foto */
+.foto-previa {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--card-foto-fundo);
+  border: 1px dashed var(--cor-borda-forte);
+  border-radius: var(--raio-lg);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  text-align: center;
+}
+
+.foto-previa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foto-previa__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+/* Campo de arquivo: escondido, o label faz papel de botão */
+.foto-previa__arquivo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.foto-previa__arquivo:focus-visible + .botao {
+  outline: 2px solid var(--cor-borda-foco);
+  outline-offset: 2px;
+}
+
+/* Botões do fim do formulário: empilhados no celular, lado a lado no computador */
+.anuncio-form__acoes {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-4);
+}
+
+@media (min-width: 768px) {
+  .anuncio-form__acoes {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Cards de anúncio (T12 e T14)
+   -------------------------------------------------------------------------- */
+.card__foto--vazia {
+  display: grid;
+  place-items: center;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+}
+
+.card__titulo {
+  overflow: hidden;
+  font-size: var(--texto-corpo-grande-tamanho);
+  line-height: var(--texto-corpo-grande-altura);
+  font-weight: var(--fonte-peso-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card__titulo a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* O card inteiro fica clicável pelo link do título */
+.card--link {
+  position: relative;
+}
+
+.card--link .card__titulo a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.card__categoria {
+  align-self: flex-start;
+  padding: var(--espaco-1) var(--espaco-2);
+  border-radius: var(--raio-total);
+  background: var(--cor-marca-primaria-sutil);
+  color: var(--cor-estado-info-texto);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+.card__descricao {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.card__acoes {
+  display: flex;
+  gap: var(--espaco-2);
+  margin-top: auto;
+  padding-top: var(--espaco-2);
+}
+
+.card__acoes > .botao {
+  flex: 1;
+}
+
+/* A lista é um <ul>: sem marcador; cada card ocupa a altura toda da linha */
+ul.lista-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-cards > li {
+  display: flex;
+}
+
+.lista-cards > li > .card {
+  flex: 1;
+}
+
+/* Lista vazia */
+.lista-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-4);
+  padding: var(--espaco-12) var(--espaco-4);
+  background: var(--cor-fundo-superficie);
+  border: 1px dashed var(--cor-borda-forte);
+  border-radius: var(--raio-lg);
+  color: var(--cor-texto-secundario);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   T14 · filtros da busca
+   -------------------------------------------------------------------------- */
+.busca-filtros {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+@media (min-width: 768px) {
+  .busca-filtros { grid-template-columns: 2fr 1fr; }
+}
+
+.busca-resultado {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+/* Ao pular para um campo com erro, ele não fica escondido atrás do cabeçalho fixo */
+.anuncio-form .campo__caixa {
+  scroll-margin-top: calc(var(--cabecalho-altura) + var(--espaco-16));
+}

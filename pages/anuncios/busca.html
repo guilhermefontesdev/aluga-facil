@@ -9,20 +9,92 @@
 <body>
   <!-- T14 · Busca -->
 
+  <!-- Navegação de visitante (Entrar / Cadastrar). Versão logada: ver pages/notificacoes.html -->
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/busca.html" aria-current="page">Buscar</a>
+        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../../pages/auth/login.html">Anunciar</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
+        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina anuncios">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="anuncios__topo">
+        <div>
+          <h1>Buscar itens</h1>
+          <p class="anuncios__subtitulo">Encontre o que você precisa perto de você.</p>
+        </div>
+      </div>
+
+      <form class="busca-filtros" id="busca-form" role="search">
+        <div class="campo">
+          <label class="campo__rotulo" for="busca-texto">O que você procura?</label>
+          <input class="campo__caixa" id="busca-texto" type="search" placeholder="Ex.: furadeira, barraca, projetor">
+        </div>
+        <div class="campo">
+          <label class="campo__rotulo" for="busca-categoria">Categoria</label>
+          <select class="campo__caixa" id="busca-categoria">
+            <option value="">Todas</option>
+            <option>Ferramentas</option>
+            <option>Eletrodomésticos</option>
+            <option>Eletrônicos e câmeras</option>
+            <option>Esportes e lazer</option>
+            <option>Festas e eventos</option>
+            <option>Jardinagem</option>
+            <option>Outros</option>
+          </select>
+        </div>
+      </form>
+
+      <p class="busca-resultado" id="busca-resultado" aria-live="polite"></p>
+
+      <!-- Os cards são criados pelo JavaScript (assets/js/pages/busca.js) com os
+           anúncios cadastrados em Anunciar (T13), a partir do <template> abaixo -->
+      <ul class="lista-cards" id="busca-lista" aria-label="Itens encontrados"></ul>
+
+      <template id="modelo-card-busca">
+        <article class="card card--link">
+          <img class="card__foto" data-campo="foto" alt="">
+          <div class="card__conteudo">
+            <span class="card__categoria" data-campo="categoria"></span>
+            <h2 class="card__titulo"><a href="detalhe-anuncio.html" data-link="detalhe" data-campo="nome"></a></h2>
+            <p class="card__descricao" data-campo="descricao"></p>
+            <p><span class="card__preco" data-campo="preco"></span> <span class="card__preco-unidade">/dia</span></p>
+          </div>
+        </article>
+      </template>
+
+      <div class="lista-vazia" id="busca-vazio" hidden>
+        <p id="busca-vazio-texto">Nenhum item encontrado.</p>
+        <a class="botao botao--contorno" href="../auth/login.html">Entrar para anunciar</a>
+      </div>
     </div>
   </main>
 
   <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
+    <ul class="barra-inferior__lista">
+      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html" aria-current="page"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/anuncios/comparador.html"><span class="icone icone--comparar" aria-hidden="true"></span><span>Comparar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/auth/login.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+      <li><a class="barra-inferior__item" href="../../pages/auth/login.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Entrar</span></a></li>
+    </ul>
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/pages/busca.js" defer></script>
 </body>
 </html>
