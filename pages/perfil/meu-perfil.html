@@ -8,21 +8,67 @@
 </head>
 <body>
   <!-- T07 · Meu perfil -->
-
   <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
+    <div class="container cabecalho__conteudo">
+      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
+      <nav class="cabecalho__menu" aria-label="Menu principal">
+        <a class="cabecalho__link" href="../../index.html">Início</a>
+        <a class="cabecalho__link" href="../anuncios/busca.html">Buscar</a>
+        <a class="cabecalho__link" href="../anuncios/comparador.html">Comparar</a>
+        <a class="cabecalho__link" href="../anuncios/anunciar.html">Anunciar</a>
+        <a class="cabecalho__link" href="../alugueis/meus-alugueis.html">Aluguéis</a>
+      </nav>
+      <div class="cabecalho__acoes">
+        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas"><span class="icone icone--sino" aria-hidden="true"></span><span class="contador" aria-hidden="true">3</span></a>
+        <details class="menu-conta">
+          <summary class="menu-conta__botao" aria-label="Menu da conta"><span class="avatar" aria-hidden="true">MS</span></summary>
+          <div class="menu-conta__painel">
+            <p class="menu-conta__nome">Maria Souza</p><p class="menu-conta__email">maria@email.com</p>
+            <a class="menu-conta__item" href="meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
+            <a class="menu-conta__item" href="../anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a class="menu-conta__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
-  <main class="pagina">
+  <main class="pagina perfil">
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <div class="perfil__topo">
+        <div><h1>Meu perfil</h1><p class="perfil__subtitulo">Mantenha os seus dados atualizados para facilitar os aluguéis.</p></div>
+      </div>
+      <div class="perfil__layout">
+        <aside class="perfil__cartao">
+          <div class="perfil__avatar" aria-hidden="true">MS</div>
+          <h2 class="perfil__nome">Maria Souza</h2>
+          <p class="perfil__meta">Membro desde 2024</p>
+          <a class="botao botao--contorno botao--compacto" href="perfil-publico.html">Ver perfil público</a>
+        </aside>
+        <section class="perfil__bloco" aria-labelledby="dados-titulo">
+          <h2 id="dados-titulo">Dados pessoais</h2>
+          <div class="aviso aviso--sucesso" id="perfil-aviso" role="status" hidden><span class="icone icone--info aviso__icone" aria-hidden="true"></span><p class="aviso__texto"></p></div>
+          <form class="perfil__formulario" id="perfil-form">
+            <div class="campo"><label class="campo__rotulo" for="perfil-nome">Nome completo</label><input class="campo__caixa" id="perfil-nome" type="text" value="Maria Souza" required></div>
+            <div class="campo"><label class="campo__rotulo" for="perfil-email">E-mail</label><input class="campo__caixa" id="perfil-email" type="email" value="maria@email.com" required></div>
+            <div class="campo"><label class="campo__rotulo" for="perfil-telefone">Telefone</label><input class="campo__caixa" id="perfil-telefone" type="tel" placeholder="(11) 99999-9999"></div>
+            <div class="campo"><label class="campo__rotulo" for="perfil-localizacao">Localização</label><input class="campo__caixa" id="perfil-localizacao" type="text" placeholder="Ex.: Pinheiros, São Paulo"></div>
+            <div class="campo campo--amplo"><label class="campo__rotulo" for="perfil-apresentacao">Sobre você</label><textarea class="campo__caixa campo__caixa--texto-longo" id="perfil-apresentacao" maxlength="300" placeholder="Conte um pouco sobre você e os itens que costuma alugar."></textarea></div>
+            <div class="perfil__acoes"><a class="botao botao--contorno" href="../../index.html">Cancelar</a><button class="botao botao--primario" type="submit">Guardar alterações</button></div>
+          </form>
+        </section>
+      </div>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
-
-  <script src="../../assets/js/main.js" defer></script>
+  <nav class="barra-inferior" aria-label="Menu principal"><ul class="barra-inferior__lista">
+    <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
+    <li><a class="barra-inferior__item" href="../anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
+    <li><a class="barra-inferior__item" href="../anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
+    <li><a class="barra-inferior__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
+    <li><a class="barra-inferior__item" href="meu-perfil.html" aria-current="page"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
+  </ul></nav>
+  <script src="../../assets/js/main.js" defer></script><script src="../../assets/js/pages/perfil.js" defer></script>
 </body>
 </html>
