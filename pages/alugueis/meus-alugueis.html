@@ -49,7 +49,7 @@
       <!-- Abas e filtro funcionam só com CSS (assets/css/pages/alugueis.css):
            cada item da lista tem data-papel e data-status, e o CSS esconde os
            que não combinam com a aba marcada ou com o status escolhido. -->
-      <fieldset class="abas">
+      <fieldset class="abas" id="alugueis-abas">
         <legend class="visualmente-oculto">Ver aluguéis como</legend>
         <input class="abas__controle" type="radio" name="papel" id="papel-todos" checked>
         <label class="abas__item" for="papel-todos">Todos</label>
@@ -59,7 +59,7 @@
         <label class="abas__item" for="papel-anunciante">Anunciante</label>
       </fieldset>
 
-      <div class="filtro-status">
+      <div class="filtro-status" id="alugueis-filtro">
         <span class="icone icone--filtro" aria-hidden="true"></span>
         <label for="filtro-status">Status:</label>
         <select id="filtro-status">
@@ -74,64 +74,24 @@
         </select>
       </div>
 
-      <ul class="lista-alugueis" aria-label="Seus aluguéis">
-        <li class="aluguel-item" data-papel="locatario" data-status="aceito">
+      <!-- Os itens são criados pelo JavaScript (assets/js/pages/meus-alugueis.js)
+           com os pedidos feitos no T16, a partir do <template> abaixo -->
+      <ul class="lista-alugueis" id="alugueis-lista" aria-label="Seus aluguéis"></ul>
+
+      <template id="modelo-aluguel-item">
+        <li class="aluguel-item">
           <span class="aluguel-item__foto" aria-hidden="true"></span>
           <div class="aluguel-item__info">
-            <span class="etiqueta etiqueta--aceito">Aceito</span>
-            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#aceito">Furadeira de impacto 650W</a></h2>
-            <p class="aluguel-item__linha">Com Carlos · 12 a 14/10</p>
-            <p class="aluguel-item__linha">R$ 75,00 · Você aluga</p>
+            <span class="etiqueta" data-campo="etiqueta"></span>
+            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html" data-campo="nome"></a></h2>
+            <p class="aluguel-item__linha" data-campo="com-quem"></p>
+            <p class="aluguel-item__linha" data-campo="valor"></p>
           </div>
           <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
         </li>
+      </template>
 
-        <li class="aluguel-item" data-papel="anunciante" data-status="pendente">
-          <span class="aluguel-item__foto" aria-hidden="true"></span>
-          <div class="aluguel-item__info">
-            <span class="etiqueta etiqueta--pendente">Pendente</span>
-            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#recebida">Escada de alumínio 7 degraus</a></h2>
-            <p class="aluguel-item__linha">Com Ana · 20 a 22/10</p>
-            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
-          </div>
-          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
-        </li>
-
-        <li class="aluguel-item" data-papel="anunciante" data-status="em-andamento">
-          <span class="aluguel-item__foto" aria-hidden="true"></span>
-          <div class="aluguel-item__info">
-            <span class="etiqueta etiqueta--em-andamento">Em andamento</span>
-            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#em-andamento">Escada de alumínio 7 degraus</a></h2>
-            <p class="aluguel-item__linha">Com Bruno · 28 a 30/09</p>
-            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
-          </div>
-          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
-        </li>
-
-        <li class="aluguel-item" data-papel="anunciante" data-status="concluido">
-          <span class="aluguel-item__foto" aria-hidden="true"></span>
-          <div class="aluguel-item__info">
-            <span class="etiqueta etiqueta--concluido">Concluído</span>
-            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#concluido">Escada de alumínio 7 degraus</a></h2>
-            <p class="aluguel-item__linha">Com Ana · 20 a 22/09</p>
-            <p class="aluguel-item__linha">R$ 45,00 · Você anuncia</p>
-          </div>
-          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
-        </li>
-
-        <li class="aluguel-item" data-papel="locatario" data-status="expirado">
-          <span class="aluguel-item__foto" aria-hidden="true"></span>
-          <div class="aluguel-item__info">
-            <span class="etiqueta etiqueta--expirado">Expirado</span>
-            <h2 class="aluguel-item__titulo"><a href="detalhe-aluguel.html#expirado">Bicicleta aro 29</a></h2>
-            <p class="aluguel-item__linha">Com Pedro · 01/09</p>
-            <p class="aluguel-item__linha">R$ 30,00 · Você aluga</p>
-          </div>
-          <span class="icone icone--seta-direita aluguel-item__seta" aria-hidden="true"></span>
-        </li>
-      </ul>
-
-      <nav class="paginacao" aria-label="Páginas">
+      <nav class="paginacao" id="alugueis-paginacao" aria-label="Páginas">
         <span class="paginacao__item paginacao__item--desabilitado" aria-hidden="true"><span class="icone icone--seta-esquerda"></span></span>
         <a class="paginacao__item" href="meus-alugueis.html" aria-current="page">1</a>
         <a class="paginacao__item" href="meus-alugueis.html">2</a>
@@ -139,16 +99,14 @@
         <a class="paginacao__item" href="meus-alugueis.html" aria-label="Próxima página"><span class="icone icone--seta-direita" aria-hidden="true"></span></a>
       </nav>
 
-      <!-- ESTADO · lista vazia (Figura 16, tela do meio).
-           Para ver, comente as abas, o filtro, a lista e a paginação acima e
-           descomente este bloco.
-      <div class="alugueis-vazio">
+      <!-- Lista vazia (Figura 16, tela do meio). O JavaScript tira este bloco
+           quando existe algum pedido e tira as abas, o filtro e a lista quando não existe -->
+      <div class="alugueis-vazio" id="alugueis-vazio">
         <span class="icone-status icone-status--info"><span class="icone icone--alugueis" aria-hidden="true"></span></span>
         <h2>Você ainda não possui aluguéis</h2>
         <p class="texto-secundario">Quando você alugar ou anunciar um item, ele aparece aqui.</p>
         <a class="botao botao--primario botao--bloco" href="../anuncios/busca.html">Buscar itens</a>
       </div>
-      -->
     </div>
   </main>
 
@@ -163,5 +121,8 @@
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/pages/meus-alugueis.js" defer></script>
 </body>
 </html>
