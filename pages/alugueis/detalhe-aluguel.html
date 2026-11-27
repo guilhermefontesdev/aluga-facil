@@ -55,6 +55,105 @@
              detalhe-aluguel.html#cancelado     depois do T17
            Os modais abrem com commandfor/command (HTML puro, sem script). -->
 
+      <!-- Com ?id=... (detalhe-aluguel.html?id=...&como=locatario ou &como=anunciante),
+           o JavaScript (assets/js/pages/detalhe-aluguel.js) tira os exemplos abaixo e
+           mostra o pedido salvo no T16, a partir deste <template> -->
+      <div class="bloco" id="aluguel-nao-encontrado" hidden>
+        <h1 class="texto-h2">Aluguel não encontrado</h1>
+        <p class="texto-secundario">Este pedido não existe mais.</p>
+        <a class="botao botao--primario botao--bloco" href="meus-alugueis.html">Voltar para meus aluguéis</a>
+      </div>
+
+      <template id="modelo-aluguel">
+        <section class="aluguel-estado aluguel-estado--real" aria-labelledby="aluguel-titulo">
+          <p class="texto-secundario texto-legenda">Ver como:
+            <a class="link" data-papel-link="locatario" href="#">Solicitante</a> ·
+            <a class="link" data-papel-link="anunciante" href="#">Dono do item</a>
+          </p>
+
+          <div class="aluguel__topo">
+            <span class="etiqueta" data-campo="etiqueta"></span>
+            <span class="aluguel__numero" data-campo="numero"></span>
+          </div>
+          <h1 id="aluguel-titulo" data-campo="nome"></h1>
+
+          <div class="bloco">
+            <p class="bloco__rotulo">Período</p>
+            <p class="bloco__destaque" data-campo="periodo"></p>
+            <dl class="valores">
+              <div class="valores__linha"><dt data-campo="diarias"></dt><dd data-campo="subtotal"></dd></div>
+              <div class="valores__linha valores__linha--total"><dt>Total</dt><dd data-campo="total"></dd></div>
+            </dl>
+          </div>
+
+          <div class="bloco">
+            <p class="bloco__rotulo" data-campo="pessoa-rotulo"></p>
+            <div class="pessoa">
+              <span class="avatar" aria-hidden="true" data-campo="pessoa-inicial"></span>
+              <div>
+                <a class="pessoa__nome" href="../perfil/perfil-publico.html" data-campo="pessoa-nome"></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloco" data-parte="mensagem">
+            <p class="bloco__rotulo" data-campo="mensagem-rotulo"></p>
+            <blockquote class="bloco__mensagem" data-campo="mensagem"></blockquote>
+          </div>
+
+          <div class="aviso" role="status" data-campo="aviso">
+            <span class="icone aviso__icone" aria-hidden="true" data-campo="aviso-icone"></span>
+            <p class="aviso__texto" data-campo="aviso-texto"></p>
+          </div>
+
+          <div class="bloco" data-parte="contato">
+            <h2 class="bloco__titulo">Contato do anunciante</h2>
+            <p>Endereço: Rua Fonte do Boi, 120 · Rio Vermelho, Salvador</p>
+            <p>Telefone: <a class="link" href="tel:+5571998765432">(71) 99876-5432</a></p>
+          </div>
+
+          <div class="aluguel__acoes aluguel__acoes--lado-a-lado" data-parte="decisao">
+            <button class="botao botao--contorno" type="button" commandfor="modal-recusar" command="show-modal">Recusar</button>
+            <!-- Ao aceitar: as datas ficam bloqueadas na agenda (RF17) e o contato é liberado (RF16) -->
+            <button class="botao botao--primario" type="button" data-acao="aceitar">Aceitar</button>
+          </div>
+
+          <div class="aluguel__acoes" data-parte="desistir">
+            <button class="botao botao--texto" type="button" commandfor="modal-desistir" command="show-modal">Desistir da solicitação</button>
+          </div>
+
+          <div class="aluguel__acoes" data-parte="voltar">
+            <a class="botao botao--texto" href="meus-alugueis.html">Voltar para meus aluguéis</a>
+          </div>
+
+          <dialog class="modal" id="modal-recusar" aria-labelledby="modal-recusar-titulo" data-parte="modal-recusar">
+            <form class="modal__conteudo" data-form="recusar">
+              <h2 id="modal-recusar-titulo">Recusar solicitação?</h2>
+              <p data-campo="recusar-texto"></p>
+              <div class="campo">
+                <label class="campo__rotulo" for="recusar-motivo">Motivo (opcional)</label>
+                <input class="campo__caixa" id="recusar-motivo" name="motivo" type="text" maxlength="200" placeholder="Ex.: o item estará em uso nessas datas">
+              </div>
+              <div class="modal__acoes">
+                <button class="botao botao--contorno" type="button" commandfor="modal-recusar" command="close" autofocus>Cancelar</button>
+                <button class="botao botao--perigo" type="submit">Recusar</button>
+              </div>
+            </form>
+          </dialog>
+
+          <dialog class="modal" id="modal-desistir" aria-labelledby="modal-desistir-titulo" data-parte="modal-desistir">
+            <form class="modal__conteudo" data-form="desistir">
+              <h2 id="modal-desistir-titulo">Desistir da solicitação?</h2>
+              <p data-campo="desistir-texto"></p>
+              <div class="modal__acoes">
+                <button class="botao botao--contorno" type="button" commandfor="modal-desistir" command="close" autofocus>Voltar</button>
+                <button class="botao botao--perigo" type="submit">Desistir</button>
+              </div>
+            </form>
+          </dialog>
+        </section>
+      </template>
+
       <!-- ===== Aceito · visão do locatário (Figura 17, à direita) ===== -->
       <section class="aluguel-estado" id="aceito" aria-labelledby="aceito-titulo">
         <div class="aluguel__topo">
@@ -407,5 +506,9 @@
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/pages/detalhe-aluguel.js" defer></script>
 </body>
 </html>

@@ -417,6 +417,11 @@
   display: flex;
 }
 
+/* Com dados de verdade (JavaScript): o estado aparece sem precisar do # */
+.aluguel-estado--real {
+  display: flex;
+}
+
 .aluguel__topo {
   display: flex;
   align-items: center;
