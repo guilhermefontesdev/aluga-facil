@@ -1,94 +1,76 @@
 /* ==========================================================================
-   Aluguéis · pedidos de aluguel salvos no navegador (localStorage)  RF14–RF16
-   Usado por T15 (valida as datas), T16 Confirmar, T08 Meus aluguéis e
-   T09 Detalhe do aluguel.
+   Aluguéis · pedidos de aluguel salvos no navegador (localStorage)  RF14–RF21
+   Usado por T15 (valida as datas), T16 Confirmar, T08 Meus aluguéis,
+   T09 Detalhe do aluguel e T17 Cancelar.
+
+   Quem pede é o usuário logado (locatário); quem responde é o dono do
+   anúncio (anunciante). Cada mudança gera uma notificação para o outro lado.
 
    Uso:
-     AlugaFacil.alugueis.listar()                         -> pedidos (mais novo primeiro)
-     AlugaFacil.alugueis.buscar(id)                       -> um pedido ou null
-     AlugaFacil.alugueis.criar(dados)                     -> pedido criado (status "pendente")
-     AlugaFacil.alugueis.mudarStatus(id, status, extras)  -> pedido atualizado ou null
-     AlugaFacil.alugueis.excluir(id)                      -> true se excluiu
+     AlugaFacil.alugueis.doUsuario(id)          -> pedidos em que a pessoa participa
+     AlugaFacil.alugueis.buscar(id)             -> um pedido ou null
+     AlugaFacil.alugueis.criar(dados)           -> pedido criado (status "pendente")
+     AlugaFacil.alugueis.aceitar(id) / recusar(id, motivo) / desistir(id)
+     AlugaFacil.alugueis.cancelar(id, motivo)   -> cancela com multa (T17)
+     AlugaFacil.alugueis.confirmarDevolucao(id) -> conclui o aluguel
+     AlugaFacil.alugueis.avaliar(id, papelAvaliado, nota, texto)
+     AlugaFacil.alugueis.situacao(pedido)       -> status que aparece na tela
+     AlugaFacil.alugueis.papelDe(pedido, usuarioId) -> "locatario" ou "anunciante"
+     AlugaFacil.alugueis.multa(pedido)          -> { percentual, valor, horas }
      AlugaFacil.alugueis.periodoOcupado(anuncioId, inicio, fim)
-                                                          -> true se bate com um aluguel aceito
 
-   Formato de um pedido:
-     { id, numero, anuncioId, nomeItem, precoDia, inicio, fim, dias, total,
-       mensagem, status, motivo, criadoEm, atualizadoEm }
-     inicio e fim são datas "AAAA-MM-DD". total = dias × precoDia.
-     status: "pendente", "aceito" ou "recusado".
+   Status salvo: pendente, aceito, recusado, cancelado, concluido.
+   Situação na tela (calculada pela data de hoje): também em-andamento,
+   devolucao (acabou e falta o dono confirmar) e expirado (48 h sem resposta).
    ========================================================================== */
 
 window.AlugaFacil = window.AlugaFacil || {};
 
 (function (AF) {
-  var CHAVE = "alugafacil:alugueis";
-  var CHAVE_PAPEL = "alugafacil:papel";
+  var D = AF.dados;
   var PRIMEIRO_NUMERO = 4821;
   var HORAS_PARA_RESPONDER = 48;
-  var UM_DIA_MS = 24 * 60 * 60 * 1000;
+  var UMA_HORA = 60 * 60 * 1000;
+  var UM_DIA = 24 * UMA_HORA;
+  var LINK = "pages/alugueis/detalhe-aluguel.html?id=";
 
-  var STATUS = {
+  var SITUACOES = {
     pendente: "Pendente",
     aceito: "Aceito",
-    recusado: "Recusado"
+    recusado: "Recusado",
+    "em-andamento": "Em andamento",
+    devolucao: "Aguardando devolução",
+    concluido: "Concluído",
+    cancelado: "Cancelado",
+    expirado: "Expirado"
   };
 
-  /* Sem login no protótipo: quem pede é sempre a Maria e o dono do item, o Carlos.
-     O papel mostrado na tela ("locatario" ou "anunciante") é escolhido pelo usuário. */
-  var PESSOAS = {
-    locatario: { nome: "Maria Souza", primeiroNome: "Maria", inicial: "M" },
-    anunciante: { nome: "Carlos", primeiroNome: "Carlos", inicial: "C" }
+  /* Classe da etiqueta (components/etiquetas.css) de cada situação */
+  var ETIQUETAS = {
+    pendente: "pendente", aceito: "aceito", recusado: "recusado", "em-andamento": "em-andamento",
+    devolucao: "em-andamento", concluido: "concluido", cancelado: "cancelado", expirado: "expirado"
   };
 
-  /* ----- armazenamento ----- */
-
-  function ler() {
-    try {
-      var texto = localStorage.getItem(CHAVE);
-      var lista = texto ? JSON.parse(texto) : [];
-      return Array.isArray(lista) ? lista : [];
-    } catch (erro) {
-      return [];
-    }
-  }
+  function ler() { return D.ler("alugueis"); }
 
   function gravar(lista) {
-    try {
-      localStorage.setItem(CHAVE, JSON.stringify(lista));
-      return true;
-    } catch (erro) {
-      return false;
-    }
-  }
-
-  function novoId() {
-    return "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-  }
-
-  function proximoNumero(lista) {
-    return lista.reduce(function (maior, r) { return Math.max(maior, r.numero || 0); }, PRIMEIRO_NUMERO - 1) + 1;
+    if (!D.gravar("alugueis", lista)) throw new Error("armazenamento-cheio");
   }
 
   /* ----- datas ("AAAA-MM-DD") ----- */
 
-  function doisDigitos(n) {
-    return (n < 10 ? "0" : "") + n;
-  }
+  function dois(n) { return (n < 10 ? "0" : "") + n; }
 
-  /* "2026-10-12" -> Date no horário local (meia-noite). Devolve null se não for uma data válida */
   function dataDe(texto) {
     var partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(texto || ""));
     if (!partes) return null;
     var data = new Date(Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]));
-    var confere = data.getFullYear() === Number(partes[1]) &&
-      data.getMonth() === Number(partes[2]) - 1 &&
-      data.getDate() === Number(partes[3]);
+    var confere = data.getFullYear() === Number(partes[1]) && data.getMonth() === Number(partes[2]) - 1 && data.getDate() === Number(partes[3]);
     return confere ? data : null;
   }
 
   function paraISO(data) {
-    return data.getFullYear() + "-" + doisDigitos(data.getMonth() + 1) + "-" + doisDigitos(data.getDate());
+    return data.getFullYear() + "-" + dois(data.getMonth() + 1) + "-" + dois(data.getDate());
   }
 
   function hoje() {
@@ -96,114 +78,95 @@ window.AlugaFacil = window.AlugaFacil || {};
     return new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
   }
 
-  /* Diárias do período, contando o dia do início e o do fim (12 a 14 = 3 diárias).
-     Devolve 0 se alguma data for inválida ou se o fim vier antes do início */
+  /* 12 a 14 = 3 diárias. 0 se alguma data for inválida ou o fim vier antes do início */
   function dias(inicio, fim) {
     var i = dataDe(inicio);
     var f = dataDe(fim);
     if (!i || !f || f < i) return 0;
-    return Math.round((f - i) / UM_DIA_MS) + 1;
+    return Math.round((f - i) / UM_DIA) + 1;
   }
 
-  function total(precoDia, quantidadeDeDias) {
-    return Math.round(Number(precoDia) * quantidadeDeDias * 100) / 100;
+  /* Usa o preço da semana ou do mês quando sai mais barato que as diárias */
+  function total(precoDia, quantidade, precoSemana, precoMes) {
+    var porDia = Number(precoDia) * quantidade;
+    var melhor = porDia;
+    if (precoSemana && quantidade >= 7) {
+      melhor = Math.min(melhor, Math.floor(quantidade / 7) * precoSemana + (quantidade % 7) * precoDia);
+    }
+    if (precoMes && quantidade >= 30) {
+      melhor = Math.min(melhor, Math.floor(quantidade / 30) * precoMes + (quantidade % 30) * precoDia);
+    }
+    return Math.round(melhor * 100) / 100;
   }
 
-  /* "2026-10-12" -> "12/10/2026" (ou "12/10" sem o ano) */
   function formatarData(texto, comAno) {
     var data = dataDe(texto);
     if (!data) return "";
-    var curta = doisDigitos(data.getDate()) + "/" + doisDigitos(data.getMonth() + 1);
+    var curta = dois(data.getDate()) + "/" + dois(data.getMonth() + 1);
     return comAno ? curta + "/" + data.getFullYear() : curta;
   }
 
-  /* "12/10 a 14/10/2026 · 3 dias" */
   function descreverPeriodo(inicio, fim) {
     var quantidade = dias(inicio, fim);
-    var texto = inicio === fim
-      ? formatarData(inicio, true)
-      : formatarData(inicio, false) + " a " + formatarData(fim, true);
+    var texto = inicio === fim ? formatarData(inicio, true) : formatarData(inicio, false) + " a " + formatarData(fim, true);
     return texto + " · " + quantidade + (quantidade === 1 ? " dia" : " dias");
   }
 
-  /* Versão curta para a lista: "12 a 14/10", "28/09 a 02/10" ou "01/09" */
   function periodoCurto(inicio, fim) {
     var i = dataDe(inicio);
     var f = dataDe(fim);
     if (!i || !f) return "";
     if (inicio === fim) return formatarData(inicio, false);
-    if (i.getMonth() === f.getMonth() && i.getFullYear() === f.getFullYear()) {
-      return doisDigitos(i.getDate()) + " a " + formatarData(fim, false);
-    }
+    if (i.getMonth() === f.getMonth() && i.getFullYear() === f.getFullYear()) return dois(i.getDate()) + " a " + formatarData(fim, false);
     return formatarData(inicio, false) + " a " + formatarData(fim, false);
   }
 
-  /* Até quando o dono pode responder: "01/10 às 22h" */
-  function prazoResposta(aluguel) {
-    var limite = new Date(new Date(aluguel.criadoEm).getTime() + HORAS_PARA_RESPONDER * 60 * 60 * 1000);
-    var minutos = limite.getMinutes();
-    return doisDigitos(limite.getDate()) + "/" + doisDigitos(limite.getMonth() + 1) +
-      " às " + limite.getHours() + "h" + (minutos ? doisDigitos(minutos) : "");
+  function limiteResposta(pedido) {
+    return new Date(new Date(pedido.criadoEm).getTime() + HORAS_PARA_RESPONDER * UMA_HORA);
   }
 
-  /* ----- pedidos ----- */
+  function prazoResposta(pedido) {
+    var limite = limiteResposta(pedido);
+    var minutos = limite.getMinutes();
+    return dois(limite.getDate()) + "/" + dois(limite.getMonth() + 1) + " às " + limite.getHours() + "h" + (minutos ? dois(minutos) : "");
+  }
+
+  /* ----- situação calculada ----- */
+
+  function situacao(pedido) {
+    var h = hoje();
+    var inicio = dataDe(pedido.inicio);
+    var fim = dataDe(pedido.fim);
+    if (pedido.status === "pendente") {
+      if (Date.now() > limiteResposta(pedido).getTime() || (inicio && inicio < h)) return "expirado";
+      return "pendente";
+    }
+    if (pedido.status === "aceito") {
+      if (fim && h > fim) return "devolucao";
+      if (inicio && h >= inicio) return "em-andamento";
+      return "aceito";
+    }
+    return pedido.status;
+  }
+
+  function papelDe(pedido, usuarioId) {
+    if (pedido.locatarioId === usuarioId) return "locatario";
+    if (pedido.anuncianteId === usuarioId) return "anunciante";
+    return null;
+  }
+
+  /* ----- consultas ----- */
 
   function listar() {
     return ler().sort(function (a, b) { return b.criadoEm.localeCompare(a.criadoEm); });
   }
 
+  function doUsuario(id) {
+    return listar().filter(function (r) { return r.locatarioId === id || r.anuncianteId === id; });
+  }
+
   function buscar(id) {
     return ler().filter(function (r) { return r.id === id; })[0] || null;
-  }
-
-  function criar(dados) {
-    var lista = ler();
-    var quantidade = dias(dados.inicio, dados.fim);
-    var agora = new Date().toISOString();
-
-    var aluguel = {
-      id: novoId(),
-      numero: proximoNumero(lista),
-      anuncioId: String(dados.anuncioId || ""),
-      nomeItem: String(dados.nomeItem || "").trim(),
-      precoDia: Number(dados.precoDia) || 0,
-      inicio: dados.inicio,
-      fim: dados.fim,
-      dias: quantidade,
-      total: total(dados.precoDia, quantidade),
-      mensagem: String(dados.mensagem || "").trim(),
-      status: "pendente",
-      motivo: "",
-      criadoEm: agora,
-      atualizadoEm: agora
-    };
-
-    lista.push(aluguel);
-    if (!gravar(lista)) throw new Error("armazenamento-cheio");
-    return aluguel;
-  }
-
-  /* O dono só responde uma vez: depois de aceito ou recusado, o status não muda mais */
-  function mudarStatus(id, status, extras) {
-    if (!STATUS[status]) return null;
-
-    var lista = ler();
-    var indice = lista.findIndex(function (r) { return r.id === id; });
-    if (indice === -1 || lista[indice].status !== "pendente") return null;
-
-    lista[indice].status = status;
-    lista[indice].motivo = String((extras && extras.motivo) || "").trim();
-    lista[indice].atualizadoEm = new Date().toISOString();
-    if (!gravar(lista)) throw new Error("armazenamento-cheio");
-    return lista[indice];
-  }
-
-  function excluir(id) {
-    var lista = ler();
-    var restante = lista.filter(function (r) { return r.id !== id; });
-    if (restante.length === lista.length) return false;
-    gravar(restante);
-    return true;
   }
 
   /* As datas de um aluguel aceito ficam bloqueadas para o mesmo anúncio (RF17) */
@@ -213,33 +176,184 @@ window.AlugaFacil = window.AlugaFacil || {};
     });
   }
 
-  /* ----- papel mostrado na tela ----- */
-
-  function papel() {
-    try {
-      return localStorage.getItem(CHAVE_PAPEL) === "anunciante" ? "anunciante" : "locatario";
-    } catch (erro) {
-      return "locatario";
-    }
+  function reservas(anuncioId) {
+    return ler().filter(function (r) { return r.anuncioId === anuncioId && r.status === "aceito" && situacao(r) !== "devolucao"; })
+      .sort(function (a, b) { return a.inicio.localeCompare(b.inicio); });
   }
 
-  function definirPapel(valor) {
-    try {
-      localStorage.setItem(CHAVE_PAPEL, valor === "anunciante" ? "anunciante" : "locatario");
-    } catch (erro) { /* sem armazenamento: volta para o padrão */ }
+  /* ----- mudanças ----- */
+
+  function nomeDe(id) {
+    var u = AF.usuarios.buscar(id);
+    return u ? AF.perfil.primeiroNome(u.nome) : "Alguém";
+  }
+
+  function avisar(usuarioId, tipo, titulo, texto, pedido) {
+    AF.notificacoes.criar(usuarioId, tipo, titulo, texto, LINK + pedido.id);
+  }
+
+  function alterar(id, mudar) {
+    var lista = ler();
+    var pedido = lista.filter(function (r) { return r.id === id; })[0];
+    if (!pedido) return null;
+    if (mudar(pedido) === false) return null;
+    pedido.atualizadoEm = new Date().toISOString();
+    gravar(lista);
+    return pedido;
+  }
+
+  function criar(dados) {
+    var lista = ler();
+    var anuncio = AF.anuncios.buscar(dados.anuncioId);
+    if (!anuncio) throw new Error("anuncio-inexistente");
+    var quantidade = dias(dados.inicio, dados.fim);
+    var agora = new Date().toISOString();
+    var numero = lista.reduce(function (maior, r) { return Math.max(maior, r.numero || 0); }, PRIMEIRO_NUMERO - 1) + 1;
+
+    var pedido = {
+      id: D.novoId("r"),
+      numero: numero,
+      anuncioId: anuncio.id,
+      nomeItem: anuncio.nome,
+      foto: anuncio.foto,
+      anuncianteId: anuncio.donoId,
+      locatarioId: dados.locatarioId,
+      precoDia: anuncio.precoDia,
+      politica: anuncio.politica || "moderada",
+      inicio: dados.inicio,
+      fim: dados.fim,
+      dias: quantidade,
+      total: total(anuncio.precoDia, quantidade, anuncio.precoSemana, anuncio.precoMes),
+      mensagem: String(dados.mensagem || "").trim(),
+      status: "pendente",
+      motivo: "",
+      multa: 0,
+      avaliacoes: {},
+      criadoEm: agora,
+      atualizadoEm: agora
+    };
+    lista.push(pedido);
+    gravar(lista);
+    avisar(pedido.anuncianteId, "solicitacao", "Nova solicitação de aluguel",
+      nomeDe(pedido.locatarioId) + " quer alugar seu item " + pedido.nomeItem + " de " + periodoCurto(pedido.inicio, pedido.fim) + ". Responda em até 48 horas.", pedido);
+    return pedido;
+  }
+
+  function aceitar(id) {
+    var pedido = alterar(id, function (p) {
+      if (situacao(p) !== "pendente") return false;
+      p.status = "aceito";
+    });
+    if (pedido) {
+      avisar(pedido.locatarioId, "aceito", "Solicitação aceita",
+        nomeDe(pedido.anuncianteId) + " aceitou seu pedido do item " + pedido.nomeItem + ". O contato já está liberado.", pedido);
+    }
+    return pedido;
+  }
+
+  function recusar(id, motivo) {
+    var pedido = alterar(id, function (p) {
+      if (situacao(p) !== "pendente") return false;
+      p.status = "recusado";
+      p.motivo = String(motivo || "").trim();
+    });
+    if (pedido) {
+      avisar(pedido.locatarioId, "recusado", "Solicitação recusada",
+        nomeDe(pedido.anuncianteId) + " recusou o pedido do item " + pedido.nomeItem + ". Nenhum valor foi cobrado.", pedido);
+    }
+    return pedido;
+  }
+
+  /* Quem pediu desiste antes da resposta: sem multa */
+  function desistir(id) {
+    var pedido = alterar(id, function (p) {
+      if (situacao(p) !== "pendente") return false;
+      p.status = "cancelado";
+      p.motivo = "Desistiu antes da resposta";
+    });
+    if (pedido) {
+      avisar(pedido.anuncianteId, "cancelado", "Solicitação cancelada",
+        nomeDe(pedido.locatarioId) + " desistiu do pedido do item " + pedido.nomeItem + ".", pedido);
+    }
+    return pedido;
+  }
+
+  /* Multa do cancelamento conforme a política do anúncio (T17) */
+  function multa(pedido) {
+    var politica = AF.anuncios.POLITICAS[pedido.politica] || AF.anuncios.POLITICAS.moderada;
+    var inicio = dataDe(pedido.inicio);
+    var horas = inicio ? Math.max(0, (inicio.getTime() - Date.now()) / UMA_HORA) : 0;
+    var percentual = horas >= politica.semMultaHoras ? 0 : horas >= politica.metadeHoras ? 50 : 100;
+    if (pedido.politica === "flexivel" && horas < politica.semMultaHoras) percentual = 50;
+    return { percentual: percentual, valor: Math.round(pedido.total * percentual) / 100, horas: horas, dias: Math.floor(horas / 24), politica: politica };
+  }
+
+  function cancelar(id, motivo) {
+    var pedido = alterar(id, function (p) {
+      if (situacao(p) !== "aceito") return false;
+      p.multa = multa(p).valor;
+      p.status = "cancelado";
+      p.motivo = String(motivo || "").trim();
+    });
+    if (pedido) {
+      avisar(pedido.anuncianteId, "cancelado", "Aluguel cancelado",
+        nomeDe(pedido.locatarioId) + " cancelou o aluguel do item " + pedido.nomeItem + (pedido.motivo ? ". Motivo: " + pedido.motivo : "") + ".", pedido);
+    }
+    return pedido;
+  }
+
+  function confirmarDevolucao(id) {
+    var pedido = alterar(id, function (p) {
+      var s = situacao(p);
+      if (s !== "devolucao" && s !== "em-andamento") return false;
+      p.status = "concluido";
+    });
+    if (pedido) {
+      avisar(pedido.locatarioId, "avaliacao", "Avaliação disponível",
+        "O aluguel do item " + pedido.nomeItem + " foi concluído. Como foi alugar com " + nomeDe(pedido.anuncianteId) + "?", pedido);
+      avisar(pedido.anuncianteId, "avaliacao", "Avaliação disponível",
+        "Como foi alugar seu item " + pedido.nomeItem + " para " + nomeDe(pedido.locatarioId) + "?", pedido);
+    }
+    return pedido;
+  }
+
+  /* papelAvaliado: "anunciante" (o locatário avalia o dono) ou "locatario" */
+  function avaliar(id, papelAvaliado, nota, texto) {
+    var pedido = alterar(id, function (p) {
+      if (p.status !== "concluido") return false;
+      p.avaliacoes = p.avaliacoes || {};
+      if (p.avaliacoes[papelAvaliado]) return false;
+      p.avaliacoes[papelAvaliado] = { nota: Number(nota), texto: String(texto || "").trim() };
+    });
+    if (pedido) {
+      var avaliadoId = papelAvaliado === "anunciante" ? pedido.anuncianteId : pedido.locatarioId;
+      var autorId = papelAvaliado === "anunciante" ? pedido.locatarioId : pedido.anuncianteId;
+      var autor = AF.usuarios.buscar(autorId);
+      AF.perfil.avaliar({ avaliadoId: avaliadoId, papel: papelAvaliado, autor: autor ? autor.nome : "Usuário", nota: nota, texto: texto });
+      avisar(avaliadoId, "avaliacao", "Você recebeu uma avaliação",
+        nomeDe(autorId) + " deu nota " + nota + " para você no aluguel do item " + pedido.nomeItem + ".", pedido);
+    }
+    return pedido;
   }
 
   AF.alugueis = {
-    STATUS: STATUS,
-    PESSOAS: PESSOAS,
+    SITUACOES: SITUACOES,
+    ETIQUETAS: ETIQUETAS,
     listar: listar,
+    doUsuario: doUsuario,
     buscar: buscar,
     criar: criar,
-    mudarStatus: mudarStatus,
-    excluir: excluir,
+    aceitar: aceitar,
+    recusar: recusar,
+    desistir: desistir,
+    cancelar: cancelar,
+    confirmarDevolucao: confirmarDevolucao,
+    avaliar: avaliar,
+    multa: multa,
+    situacao: situacao,
+    papelDe: papelDe,
     periodoOcupado: periodoOcupado,
-    papel: papel,
-    definirPapel: definirPapel,
+    reservas: reservas,
     hoje: hoje,
     paraISO: paraISO,
     dataDe: dataDe,
