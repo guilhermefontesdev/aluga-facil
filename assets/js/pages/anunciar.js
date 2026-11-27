@@ -1,223 +1,226 @@
 /* ==========================================================================
-   T13 · Anunciar / Editar item                                    RF07, RF09
-   anunciar.html          -> cadastra um anúncio novo
-   anunciar.html?id=XYZ   -> abre o anúncio XYZ para editar
+   T13 · Anunciar / Editar item                                    RF07–RF10
+   Novo:   anunciar.html          Editar: anunciar.html?id=<anúncio>
+   "Publicar" valida tudo; "Salvar rascunho" só pede o nome.
+   A prévia do card ao lado muda enquanto a pessoa digita.
    ========================================================================== */
 
 (function (AF) {
   var form = document.getElementById("anuncio-form");
   if (!form) return;
 
-  var campos = {
-    nome: document.getElementById("nome"),
-    categoria: document.getElementById("categoria"),
-    descricao: document.getElementById("descricao"),
-    preco: document.getElementById("preco"),
-    foto: document.getElementById("foto-url")
-  };
-  var titulo = document.getElementById("anuncio-titulo");
-  var subtitulo = document.getElementById("anuncio-subtitulo");
-  var botaoSalvar = document.getElementById("anuncio-salvar");
-  var contador = document.getElementById("descricao-contador");
-  var arquivo = document.getElementById("foto-arquivo");
-  var previa = document.getElementById("foto-previa");
-  var removerFoto = document.getElementById("foto-remover");
+  var usuario = AF.sessao.usuario();
+  var V = AF.validacao;
+  var $ = function (id) { return document.getElementById(id); };
+  var params = new URLSearchParams(location.search);
+  var editando = params.get("id") ? AF.anuncios.buscar(params.get("id")) : null;
+  var ILUSTRACOES = ["furadeira", "escada", "serra", "lavadora", "batedeira", "caixa-som", "camera", "projetor", "bicicleta", "barraca", "festa", "cortador"];
 
-  var FOTO_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
-  var FOTO_MAX_LADO = 800;              // reduz a foto enviada para caber no localStorage
-
-  var fotoEnviada = "";   // foto escolhida do aparelho, já reduzida (data:image/jpeg...)
-  var avisoErro = null;   // último aviso de erro, para não empilhar vários
-
-  /* ---------- Modo editar ---------- */
-  var id = new URLSearchParams(location.search).get("id");
-  var editando = id ? AF.anuncios.buscar(id) : null;
-
-  if (id && !editando) {
-    AF.avisos.mostrar("Não encontramos esse anúncio. Ele pode ter sido excluído. Você pode cadastrar um novo.", "aviso");
-    history.replaceState(null, "", location.pathname);
+  if (params.get("id") && (!editando || editando.donoId !== usuario.id)) {
+    AF.avisos.depois("Esse anúncio não existe ou não é seu.", "aviso");
+    location.replace("meus-anuncios.html");
+    return;
   }
 
-  if (editando) {
-    document.title = "Editar item · AlugaFácil";
-    titulo.textContent = "Editar item";
-    subtitulo.textContent = "Altere o que precisar e salve. O anúncio atualiza na hora.";
-    botaoSalvar.textContent = "Salvar alterações";
+  // categorias
+  AF.anuncios.CATEGORIAS.forEach(function (c) {
+    var op = document.createElement("option");
+    op.value = c;
+    op.textContent = c;
+    form.elements.categoria.appendChild(op);
+  });
 
-    campos.nome.value = editando.nome;
-    campos.categoria.value = editando.categoria;
-    campos.descricao.value = editando.descricao;
-    campos.preco.value = AF.formatar.precoParaCampo(editando.precoDia);
-    if (editando.foto.indexOf("data:") === 0) fotoEnviada = editando.foto;
-    else campos.foto.value = editando.foto;
-  }
+  // ilustrações prontas
+  $("ilustracoes").innerHTML = ILUSTRACOES.map(function (n) {
+    var src = "assets/img/anuncios/" + n + ".svg";
+    return '<button class="ilustracao" type="button" data-foto="' + src + '" aria-label="Usar ilustração ' + n.replace("-", " ") + '"><img src="' + AF.app.url(src) + '" alt=""></button>';
+  }).join("");
 
-  /* ---------- Contador da descrição ---------- */
-  function atualizarContador() {
-    contador.textContent = campos.descricao.value.length + "/" + campos.descricao.maxLength;
-  }
-  campos.descricao.addEventListener("input", atualizarContador);
-  atualizarContador();
+  var foto = "";
 
-  /* ---------- Foto: prévia, envio do aparelho e endereço (URL) ---------- */
-  function fotoAtual() {
-    return fotoEnviada || campos.foto.value.trim();
-  }
-
-  function mostrarPrevia() {
-    var endereco = fotoAtual();
-    previa.textContent = "";
-    removerFoto.hidden = !endereco;
-
-    if (!endereco) {
-      previa.textContent = "A foto aparece aqui";
-      return;
+  function mostrarFoto() {
+    var previa = $("foto-previa");
+    if (foto) {
+      previa.innerHTML = '<img src="' + AF.app.esc(AF.app.foto(foto)) + '" alt="Foto do item">';
+      previa.querySelector("img").addEventListener("error", function () {
+        previa.innerHTML = '<span class="icone icone--foto" aria-hidden="true"></span><span>Não foi possível abrir esta imagem</span>';
+      });
+    } else {
+      previa.innerHTML = '<span class="icone icone--foto" aria-hidden="true"></span><span>Nenhuma foto escolhida</span>';
     }
-    var img = document.createElement("img");
-    img.alt = "Prévia da foto do item";
-    img.src = endereco;
-    img.addEventListener("error", function () {
-      previa.textContent = "Não conseguimos abrir essa imagem. Confira o endereço.";
-    });
-    previa.appendChild(img);
+    $("foto-remover").hidden = !foto;
+    document.querySelectorAll(".ilustracao").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.foto === foto)); });
+    atualizarPrevia();
   }
 
-  function reduzirFoto(file) {
-    return new Promise(function (resolver, rejeitar) {
-      var leitor = new FileReader();
-      leitor.onerror = rejeitar;
-      leitor.onload = function () {
-        var img = new Image();
-        img.onerror = rejeitar;
-        img.onload = function () {
-          var escala = Math.min(1, FOTO_MAX_LADO / Math.max(img.width, img.height));
-          var tela = document.createElement("canvas");
-          tela.width = Math.round(img.width * escala);
-          tela.height = Math.round(img.height * escala);
-          tela.getContext("2d").drawImage(img, 0, 0, tela.width, tela.height);
-          resolver(tela.toDataURL("image/jpeg", 0.8));
-        };
-        img.src = leitor.result;
+  $("ilustracoes").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-foto]");
+    if (!b) return;
+    foto = b.dataset.foto;
+    form.elements.foto.value = "";
+    mostrarFoto();
+  });
+
+  form.elements.foto.addEventListener("input", function () {
+    foto = form.elements.foto.value.trim();
+    mostrarFoto();
+  });
+
+  $("foto-remover").addEventListener("click", function () {
+    foto = "";
+    form.elements.foto.value = "";
+    $("foto-arquivo").value = "";
+    mostrarFoto();
+  });
+
+  // Foto do computador: reduz para no máximo 900 px para caber no navegador
+  $("foto-arquivo").addEventListener("change", function () {
+    var arquivo = this.files[0];
+    if (!arquivo) return;
+    if (!/^image\/(png|jpeg|webp)$/.test(arquivo.type)) { AF.avisos.mostrar("Use uma foto JPG, PNG ou WebP.", "erro"); return; }
+    if (arquivo.size > 5 * 1024 * 1024) { AF.avisos.mostrar("A foto pode ter no máximo 5 MB.", "erro"); return; }
+    var leitor = new FileReader();
+    leitor.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var escala = Math.min(1, 900 / Math.max(img.width, img.height));
+        var tela = document.createElement("canvas");
+        tela.width = Math.round(img.width * escala);
+        tela.height = Math.round(img.height * escala);
+        tela.getContext("2d").drawImage(img, 0, 0, tela.width, tela.height);
+        foto = tela.toDataURL("image/jpeg", 0.8);
+        form.elements.foto.value = "";
+        mostrarFoto();
+        AF.avisos.mostrar("Foto adicionada.", "sucesso");
       };
-      leitor.readAsDataURL(file);
-    });
+      img.src = leitor.result;
+    };
+    leitor.readAsDataURL(arquivo);
+  });
+
+  // contador da descrição
+  form.elements.descricao.addEventListener("input", function () {
+    $("descricao-contador").textContent = form.elements.descricao.value.length + "/1000";
+  });
+
+  function preco(nome) {
+    var t = form.elements[nome].value.trim();
+    return t === "" ? null : AF.formatar.lerPreco(t);
   }
 
-  arquivo.addEventListener("change", function () {
-    var file = arquivo.files[0];
-    arquivo.value = ""; // deixa escolher a mesma foto de novo depois
-    if (!file) return;
+  function politica() {
+    var marcada = form.querySelector('input[name="politica"]:checked');
+    return marcada ? marcada.value : "";
+  }
 
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
-      AF.avisos.mostrar("Escolha uma foto JPG, PNG ou WebP.", "aviso");
-      return;
-    }
-    if (file.size > FOTO_MAX_BYTES) {
-      AF.avisos.mostrar("Escolha uma foto de até 5 MB.", "aviso");
-      return;
-    }
-    reduzirFoto(file).then(function (dados) {
-      fotoEnviada = dados;
-      campos.foto.value = "";
-      AF.validacao.limparErro(campos.foto);
-      mostrarPrevia();
-    }).catch(function () {
-      AF.avisos.mostrar("Não conseguimos abrir essa foto. Tente outra.", "erro");
-    });
-  });
-
-  campos.foto.addEventListener("change", function () {
-    if (campos.foto.value.trim()) fotoEnviada = "";
-    mostrarPrevia();
-  });
-
-  removerFoto.addEventListener("click", function () {
-    fotoEnviada = "";
-    campos.foto.value = "";
-    AF.validacao.limparErro(campos.foto);
-    mostrarPrevia();
-  });
-
-  mostrarPrevia();
-
-  /* ---------- Preço: mostra sempre com vírgula e 2 casas ---------- */
-  campos.preco.addEventListener("blur", function () {
-    var valor = AF.formatar.lerPreco(campos.preco.value);
-    if (!isNaN(valor) && valor > 0) campos.preco.value = AF.formatar.precoParaCampo(valor);
-  });
-
-  /* ---------- Validação ---------- */
-  function valores() {
+  function dados(status) {
     return {
-      nome: campos.nome.value,
-      categoria: campos.categoria.value,
-      descricao: campos.descricao.value,
-      preco: campos.preco.value,
-      foto: fotoEnviada ? "" : campos.foto.value // foto do aparelho já foi conferida
+      nome: form.elements.nome.value,
+      categoria: form.elements.categoria.value,
+      descricao: form.elements.descricao.value,
+      precoDia: preco("precoDia") || 0,
+      precoSemana: preco("precoSemana"),
+      precoMes: preco("precoMes"),
+      local: form.elements.local.value,
+      regras: form.elements.regras.value,
+      politica: politica(),
+      foto: foto,
+      status: status
     };
   }
 
-  function aplicarErros(erros, somente) {
-    Object.keys(campos).forEach(function (nome) {
-      if (somente && nome !== somente) return;
-      if (erros[nome]) AF.validacao.mostrarErro(campos[nome], erros[nome]);
-      else AF.validacao.limparErro(campos[nome]);
-    });
+  function erros(completo) {
+    var e = {};
+    var d = dados("ativo");
+    var nome = d.nome.trim();
+    if (nome.length < 3) e.nome = "Informe o nome do item, com pelo menos 3 letras.";
+    if (!completo) return e;
+    if (AF.anuncios.CATEGORIAS.indexOf(d.categoria) === -1) e.categoria = "Escolha uma categoria.";
+    if (d.descricao.trim().length < 20) e.descricao = "Escreva pelo menos 20 caracteres na descrição.";
+    var dia = preco("precoDia");
+    if (dia === null) e.precoDia = "Informe o preço por dia.";
+    else if (isNaN(dia) || dia <= 0) e.precoDia = "Use só números, como 25 ou 25,50.";
+    else if (dia > 10000) e.precoDia = "A diária pode ser no máximo R$ 10.000,00.";
+    var semana = preco("precoSemana");
+    if (semana !== null && (isNaN(semana) || semana <= 0)) e.precoSemana = "Use só números, como 140.";
+    else if (semana !== null && dia && semana > dia * 7) e.precoSemana = "A semana deve custar no máximo 7 diárias.";
+    var mes = preco("precoMes");
+    if (mes !== null && (isNaN(mes) || mes <= 0)) e.precoMes = "Use só números, como 500.";
+    else if (mes !== null && dia && mes > dia * 30) e.precoMes = "O mês deve custar no máximo 30 diárias.";
+    if (d.local.trim().length < 3) e.local = "Informe o bairro e a cidade, como Rio Vermelho, Salvador.";
+    if (foto && !/^(https?:\/\/\S+|data:image\/|assets\/img\/)/i.test(foto)) e.foto = "Cole um endereço que comece com http:// ou https://.";
+    if (!d.politica) e.politica = "Escolha uma política de cancelamento.";
+    return e;
   }
 
-  // Depois que o campo já mostrou erro, confere de novo enquanto a pessoa corrige
-  Object.keys(campos).forEach(function (nome) {
-    var evento = nome === "categoria" ? "change" : "input";
-    campos[nome].addEventListener(evento, function () {
-      if (campos[nome].closest(".campo").classList.contains("campo--erro")) {
-        aplicarErros(AF.validacao.validarAnuncio(valores()), nome);
-      }
-    });
-    // ao sair do campo preenchido, já avisa se está errado
-    campos[nome].addEventListener("blur", function () {
-      if (campos[nome].value.trim() !== "") aplicarErros(AF.validacao.validarAnuncio(valores()), nome);
-    });
+  function atualizarPrevia() {
+    var d = dados("ativo");
+    var exemplo = {
+      id: "previa", donoId: usuario.id, nome: d.nome.trim() || "Nome do item",
+      categoria: d.categoria || "Outros", precoDia: d.precoDia || 0,
+      local: d.local.trim() || AF.usuarios.local(usuario) || "Seu bairro", foto: foto
+    };
+    var previa = $("anuncio-previa");
+    previa.innerHTML = AF.cardAnuncio.html(exemplo);
+    AF.cardAnuncio.consertarFotos(previa);
+
+    var falta = AF.anuncios.pendencias({ nome: d.nome.trim(), categoria: d.categoria, descricao: d.descricao.trim(), precoDia: d.precoDia, local: d.local.trim(), politica: d.politica });
+    var itens = [["o nome", "Nome"], ["a categoria", "Categoria"], ["a descrição", "Descrição com 20+ letras"], ["a diária", "Preço por dia"], ["a localização", "Bairro e cidade"], ["a política de cancelamento", "Política de cancelamento"]];
+    $("anuncio-checagem").innerHTML = itens.map(function (i) {
+      var ok = falta.indexOf(i[0]) === -1;
+      return '<li class="checagem__item' + (ok ? " checagem__item--ok" : "") + '"><span class="icone icone--' + (ok ? "check" : "info") + '" aria-hidden="true"></span>' + i[1] + "</li>";
+    }).join("");
+  }
+
+  form.addEventListener("input", atualizarPrevia);
+  form.addEventListener("change", atualizarPrevia);
+  V.limparAoDigitar(form);
+
+  // Editar: preenche o formulário
+  if (editando) {
+    document.title = "Editar anúncio · AlugaFácil";
+    $("anunciar-titulo").textContent = "Editar anúncio";
+    $("anunciar-trilha").textContent = "Editar";
+    $("anuncio-publicar").textContent = editando.status === "rascunho" ? "Publicar anúncio" : "Salvar alterações";
+    ["nome", "categoria", "descricao", "local", "regras"].forEach(function (k) { form.elements[k].value = editando[k] || ""; });
+    ["precoDia", "precoSemana", "precoMes"].forEach(function (k) { if (editando[k]) form.elements[k].value = AF.formatar.precoParaCampo(editando[k]); });
+    if (editando.politica) form.querySelector('input[name="politica"][value="' + editando.politica + '"]').checked = true;
+    form.elements.disponivel.checked = editando.status !== "pausado";
+    foto = editando.foto || "";
+    if (/^https?:/.test(foto)) form.elements.foto.value = foto;
+    $("descricao-contador").textContent = form.elements.descricao.value.length + "/1000";
+  } else {
+    var local = AF.usuarios.local(usuario);
+    if (local && usuario.bairro) form.elements.local.value = local;
+    else $("anunciar-perfil").hidden = false;
+  }
+  mostrarFoto();
+
+  function salvar(status, mensagem) {
+    var d = dados(status);
+    var salvo;
+    try {
+      salvo = editando ? AF.anuncios.atualizar(editando.id, d) : AF.anuncios.criar(d, usuario.id);
+    } catch (erro) {
+      AF.avisos.mostrar("Não foi possível salvar: o navegador está sem espaço. Use uma foto menor ou uma ilustração.", "erro");
+      return;
+    }
+    AF.avisos.depois(mensagem, "sucesso");
+    location.href = status === "rascunho" ? "meus-anuncios.html" : "detalhe-anuncio.html?id=" + encodeURIComponent(salvo.id);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!V.aplicar(form, erros(true))) {
+      AF.avisos.mostrar("Confira os campos destacados antes de publicar.", "aviso");
+      return;
+    }
+    var status = form.elements.disponivel.checked ? "ativo" : "pausado";
+    salvar(status, editando && editando.status !== "rascunho" ? "Alterações salvas." : status === "ativo" ? "Anúncio publicado! Ele já aparece na busca." : "Anúncio salvo e pausado.");
   });
 
-  /* ---------- Salvar ---------- */
-  form.addEventListener("submit", function (evento) {
-    evento.preventDefault();
-    if (avisoErro) avisoErro.remove();
-
-    var erros = AF.validacao.validarAnuncio(valores());
-    aplicarErros(erros);
-
-    var comErro = Object.keys(campos).filter(function (nome) { return erros[nome]; });
-    if (comErro.length) {
-      campos[comErro[0]].focus();
-      avisoErro = AF.avisos.mostrar(
-        comErro.length === 1 ? "Corrija o campo destacado para continuar." : "Corrija os " + comErro.length + " campos destacados para continuar.",
-        "erro"
-      );
-      return;
-    }
-
-    var dados = {
-      nome: campos.nome.value,
-      categoria: campos.categoria.value,
-      descricao: campos.descricao.value,
-      precoDia: AF.formatar.lerPreco(campos.preco.value),
-      foto: fotoAtual()
-    };
-
-    try {
-      if (editando) {
-        AF.anuncios.atualizar(editando.id, dados);
-        AF.avisos.depois("Alterações salvas com sucesso.", "sucesso");
-      } else {
-        AF.anuncios.criar(dados);
-        AF.avisos.depois("Anúncio publicado! Ele já aparece na busca.", "sucesso");
-      }
-    } catch (erro) {
-      avisoErro = AF.avisos.mostrar("Não deu para salvar: o espaço do navegador acabou. Use uma foto menor ou cole o endereço (URL) dela.", "erro");
-      return;
-    }
-
-    location.href = form.getAttribute("action");
+  $("anuncio-rascunho").addEventListener("click", function () {
+    if (!V.aplicar(form, erros(false))) return;
+    salvar("rascunho", "Rascunho salvo. Termine quando quiser em Meus anúncios.");
   });
 })(window.AlugaFacil);

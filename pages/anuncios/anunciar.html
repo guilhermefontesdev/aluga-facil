@@ -3,131 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anunciar / Editar item · AlugaFácil</title>
+  <title>Anunciar item · AlugaFácil</title>
+  <meta name="description" content="Anuncie um item para alugar.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T13 · Anunciar / Editar item -->
+<body data-menu="anunciar" data-acesso="privado" data-motivo="anunciar">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../../index.html">Início</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/busca.html">Buscar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html" aria-current="page">Anunciar</a>
-        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
-          <span class="icone icone--sino" aria-hidden="true"></span>
-          <span class="contador" aria-hidden="true">3</span>
-        </a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta">
-            <span class="avatar" aria-hidden="true">MS</span>
-          </summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p>
-            <p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
-          </div>
-        </details>
+  <main class="pagina">
+    <section class="faixa">
+      <div class="container">
+        <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><a href="meus-anuncios.html">Meus anúncios</a><span class="trilha__sep"></span><span id="anunciar-trilha">Anunciar</span></nav>
+        <h1 id="anunciar-titulo">Anunciar item</h1>
+        <p class="faixa__texto">Preencha as informações abaixo. Se preferir, salve como rascunho e termine depois.</p>
       </div>
-    </div>
-  </header>
+    </section>
 
-  <main class="pagina anuncios">
-    <div class="container">
-      <div class="anuncios__topo anuncio-form">
-        <div>
-          <h1 id="anuncio-titulo">Anunciar item</h1>
-          <p class="anuncios__subtitulo" id="anuncio-subtitulo">Preencha os dados do item. Depois de publicado, ele aparece na busca.</p>
-        </div>
+    <div class="container conteudo">
+      <!-- T13b: perfil sem endereço -->
+      <div class="aviso aviso--aviso anunciar__perfil" id="anunciar-perfil" hidden>
+        <span class="icone aviso__icone icone--info" aria-hidden="true"></span>
+        <p class="aviso__texto">Seu perfil ainda não tem bairro e cidade. Preencha a localização aqui ou <a class="link" href="../perfil/meu-perfil.html">complete o perfil</a> para sugerirmos automaticamente.</p>
       </div>
 
-      <!-- novalidate: quem confere os campos é o JavaScript (assets/js/pages/anunciar.js),
-           que mostra a mensagem de erro embaixo de cada campo -->
-      <form class="formulario anuncio-form" id="anuncio-form" action="meus-anuncios.html" novalidate>
-        <div class="campo">
-          <label class="campo__rotulo" for="nome">Nome do item</label>
-          <input class="campo__caixa" id="nome" type="text" placeholder="Ex.: Furadeira de impacto Bosch" maxlength="80" required>
+      <form class="duas-colunas" id="anuncio-form" novalidate>
+        <div class="pilha">
+          <section class="painel passo" aria-labelledby="passo-1">
+            <span class="passo__numero">1</span>
+            <div class="passo__corpo">
+              <div><h2 class="painel__titulo" id="passo-1">Foto</h2>
+              <p class="painel__texto">A foto aparece nos cards e no anúncio. JPG ou PNG até 5 MB, ou escolha uma ilustração.</p></div>
+              <div class="foto-escolha">
+                <div class="foto-escolha__previa" id="foto-previa"><span class="icone icone--foto" aria-hidden="true"></span><span>Nenhuma foto escolhida</span></div>
+                <div class="foto-escolha__acoes">
+                  <label class="botao botao--contorno" for="foto-arquivo"><span class="icone icone--foto" aria-hidden="true"></span> Enviar foto do computador</label>
+                  <input class="visualmente-oculto" id="foto-arquivo" type="file" accept="image/png, image/jpeg, image/webp">
+                  <div class="campo">
+                    <label class="campo__rotulo" for="foto">Ou cole o endereço (URL) da foto</label>
+                    <input class="campo__caixa" id="foto" name="foto" type="url" placeholder="https://...">
+                  </div>
+                  <button class="link-botao" type="button" id="foto-remover" hidden>Remover foto</button>
+                </div>
+              </div>
+              <div>
+                <p class="campo__rotulo">Ou use uma ilustração</p>
+                <div class="ilustracoes" id="ilustracoes"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-2">
+            <span class="passo__numero">2</span>
+            <div class="passo__corpo">
+              <h2 class="painel__titulo" id="passo-2">Informações</h2>
+              <div class="campo">
+                <label class="campo__rotulo" for="nome">Nome do item</label>
+                <input class="campo__caixa" id="nome" name="nome" type="text" maxlength="80" placeholder="Ex.: Furadeira de impacto Bosch">
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="categoria">Categoria</label>
+                <select class="campo__caixa" id="categoria" name="categoria"><option value="">Escolha uma categoria</option></select>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="descricao">Descrição</label>
+                <textarea class="campo__caixa" id="descricao" name="descricao" rows="5" maxlength="1000" placeholder="Estado do item, o que acompanha, cuidados de uso"></textarea>
+                <p class="campo__ajuda">Mínimo de 20 caracteres. <span id="descricao-contador">0/1000</span></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-3">
+            <span class="passo__numero">3</span>
+            <div class="passo__corpo">
+              <div><h2 class="painel__titulo" id="passo-3">Preços</h2>
+              <p class="painel__texto">Só a diária é obrigatória. Semana e mês saem mais baratos para quem aluga por mais tempo.</p></div>
+              <div class="linha-campos linha-campos--3">
+                <div class="campo">
+                  <label class="campo__rotulo" for="precoDia">Por dia</label>
+                  <input class="campo__caixa" id="precoDia" name="precoDia" type="text" inputmode="decimal" placeholder="R$ 0,00">
+                </div>
+                <div class="campo">
+                  <label class="campo__rotulo" for="precoSemana">Por semana (opcional)</label>
+                  <input class="campo__caixa" id="precoSemana" name="precoSemana" type="text" inputmode="decimal" placeholder="R$ 0,00">
+                </div>
+                <div class="campo">
+                  <label class="campo__rotulo" for="precoMes">Por mês (opcional)</label>
+                  <input class="campo__caixa" id="precoMes" name="precoMes" type="text" inputmode="decimal" placeholder="R$ 0,00">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-4">
+            <span class="passo__numero">4</span>
+            <div class="passo__corpo">
+              <div><h2 class="painel__titulo" id="passo-4">Localização</h2>
+              <p class="painel__texto">Sugerida a partir do seu perfil. Publicamente aparecem só o bairro e a cidade.</p></div>
+              <div class="campo">
+                <label class="campo__rotulo" for="local">Bairro e cidade</label>
+                <input class="campo__caixa" id="local" name="local" type="text" placeholder="Ex.: Rio Vermelho, Salvador">
+              </div>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-5">
+            <span class="passo__numero">5</span>
+            <div class="passo__corpo">
+              <h2 class="painel__titulo" id="passo-5">Regras de uso</h2>
+              <div class="campo">
+                <label class="campo__rotulo" for="regras">Regras (opcional)</label>
+                <textarea class="campo__caixa" id="regras" name="regras" rows="3" maxlength="500" placeholder="Ex.: Devolver limpa e na maleta. Brocas não inclusas."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-6">
+            <span class="passo__numero">6</span>
+            <div class="passo__corpo">
+              <div><h2 class="painel__titulo" id="passo-6">Datas disponíveis</h2>
+              <p class="painel__texto">As datas de aluguéis aceitos são bloqueadas sozinhas. Pause o anúncio quando o item não puder ser alugado.</p></div>
+              <label class="caixa-selecao caixa-selecao--linha">
+                <input type="checkbox" id="disponivel" name="disponivel" checked>
+                <span>Disponível para aluguel assim que publicar</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="painel passo" aria-labelledby="passo-7">
+            <span class="passo__numero">7</span>
+            <div class="passo__corpo">
+              <div><h2 class="painel__titulo" id="passo-7">Política de cancelamento</h2>
+              <p class="painel__texto">Obrigatória. A multa é paga pelo locatário que cancelar.</p></div>
+              <div class="campo">
+                <div class="opcoes opcoes--3" role="radiogroup" aria-label="Política de cancelamento">
+                  <label class="opcao"><input type="radio" name="politica" value="flexivel"><span><span class="opcao__titulo">Flexível</span><span class="opcao__texto">Sem multa até 24 h antes. Depois disso, 50%.</span></span></label>
+                  <label class="opcao"><input type="radio" name="politica" value="moderada"><span><span class="opcao__titulo">Moderada</span><span class="opcao__texto">Sem multa até 3 dias antes. 50% entre 24 h e 3 dias. 100% com menos de 24 h.</span></span></label>
+                  <label class="opcao"><input type="radio" name="politica" value="rigida"><span><span class="opcao__titulo">Rígida</span><span class="opcao__texto">Sem multa até 7 dias antes. 50% entre 48 h e 7 dias. 100% com menos de 48 h.</span></span></label>
+                </div>
+                <p class="campo__ajuda" hidden></p>
+              </div>
+            </div>
+          </section>
         </div>
 
-        <div class="campo">
-          <label class="campo__rotulo" for="categoria">Categoria</label>
-          <select class="campo__caixa" id="categoria" required>
-            <option value="">Escolha uma categoria</option>
-            <option>Ferramentas</option>
-            <option>Eletrodomésticos</option>
-            <option>Eletrônicos e câmeras</option>
-            <option>Esportes e lazer</option>
-            <option>Festas e eventos</option>
-            <option>Jardinagem</option>
-            <option>Outros</option>
-          </select>
-        </div>
-
-        <div class="campo">
-          <label class="campo__rotulo" for="descricao">Descrição</label>
-          <textarea class="campo__caixa campo__caixa--texto-longo" id="descricao" maxlength="1000"
-                    placeholder="Estado do item, o que acompanha, cuidados de uso" required></textarea>
-          <p class="campo__ajuda">Mínimo de 20 caracteres.</p>
-          <span class="campo__contador" id="descricao-contador" aria-live="polite">0/1000</span>
-        </div>
-
-        <div class="campo">
-          <label class="campo__rotulo" for="preco">Preço por dia</label>
-          <div class="campo__prefixo">
-            <span aria-hidden="true">R$</span>
-            <input class="campo__caixa" id="preco" type="text" inputmode="decimal" placeholder="0,00" required>
+        <aside class="lateral-fixa pilha">
+          <div class="painel">
+            <p class="painel__titulo">Prévia do anúncio</p>
+            <p class="painel__texto">É assim que o card aparece na busca.</p>
+            <div id="anuncio-previa"></div>
           </div>
-        </div>
-
-        <div class="campo">
-          <span class="campo__rotulo" id="foto-rotulo">Foto (opcional)</span>
-          <div class="foto-previa" id="foto-previa" aria-live="polite">A foto aparece aqui</div>
-          <div class="foto-previa__acoes">
-            <input class="foto-previa__arquivo" id="foto-arquivo" type="file" accept="image/jpeg,image/png,image/webp">
-            <label class="botao botao--contorno botao--compacto" for="foto-arquivo">Enviar foto do aparelho</label>
-            <button class="botao botao--texto botao--compacto" id="foto-remover" type="button" hidden>Remover foto</button>
+          <div class="painel">
+            <ul class="checagem" id="anuncio-checagem"></ul>
+            <div class="pilha anunciar__botoes">
+              <button class="botao botao--primario botao--bloco" type="submit" id="anuncio-publicar">Publicar anúncio</button>
+              <button class="botao botao--contorno botao--bloco" type="button" id="anuncio-rascunho">Salvar rascunho</button>
+              <a class="botao botao--texto botao--bloco" href="meus-anuncios.html">Cancelar</a>
+            </div>
           </div>
-        </div>
-
-        <div class="campo">
-          <label class="campo__rotulo" for="foto-url">Ou cole o endereço (URL) da foto</label>
-          <input class="campo__caixa" id="foto-url" type="url" placeholder="https://..." inputmode="url">
-          <p class="campo__ajuda">JPG, PNG ou WebP de até 5 MB.</p>
-        </div>
-
-        <div class="anuncio-form__acoes">
-          <a class="botao botao--contorno" href="meus-anuncios.html">Cancelar</a>
-          <button class="botao botao--primario" id="anuncio-salvar" type="submit">Publicar anúncio</button>
-        </div>
+        </aside>
       </form>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <ul class="barra-inferior__lista">
-      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html" aria-current="page"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
-    </ul>
-  </nav>
-
-  <script src="../../assets/js/main.js" defer></script>
-  <script src="../../assets/js/utils/anuncios.js" defer></script>
   <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
   <script src="../../assets/js/utils/avisos.js" defer></script>
   <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/main.js" defer></script>
   <script src="../../assets/js/pages/anunciar.js" defer></script>
 </body>
 </html>

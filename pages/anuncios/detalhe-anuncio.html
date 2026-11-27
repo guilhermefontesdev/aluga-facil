@@ -4,148 +4,113 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalhe do anúncio · AlugaFácil</title>
+  <meta name="description" content="Veja os detalhes do item e escolha as datas.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T15 · Detalhe do anúncio -->
+<body data-menu="buscar">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../../index.html">Início</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/busca.html" aria-current="page">Buscar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html">Anunciar</a>
-        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
-          <span class="icone icone--sino" aria-hidden="true"></span>
-          <span class="contador" aria-hidden="true">3</span>
-        </a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta">
-            <span class="avatar" aria-hidden="true">MS</span>
-          </summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p>
-            <p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+  <main class="pagina">
+    <!-- T15 Detalhe do anúncio · T15v visitante · T15c visão do dono · T15b indisponível -->
+    <div class="container conteudo" id="detalhe">
+      <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><a href="busca.html">Buscar</a><span class="trilha__sep"></span><a id="detalhe-trilha-categoria" href="busca.html">Categoria</a><span class="trilha__sep"></span><span id="detalhe-trilha-nome">Item</span></nav>
+
+      <div class="duas-colunas duas-colunas--meio detalhe">
+        <div class="pilha">
+          <div class="detalhe__foto" id="detalhe-foto"></div>
+
+          <section class="painel">
+            <span class="card__categoria" id="detalhe-categoria"></span>
+            <h1 class="detalhe__titulo" id="detalhe-nome"></h1>
+            <p class="detalhe__local"><span class="icone icone--local" aria-hidden="true"></span><span id="detalhe-local"></span></p>
+            <ul class="precos" id="detalhe-precos"></ul>
+          </section>
+
+          <section class="painel">
+            <h2 class="painel__titulo">Descrição</h2>
+            <p class="detalhe__texto" id="detalhe-descricao"></p>
+            <div id="detalhe-regras-bloco">
+              <h2 class="painel__titulo detalhe__subtitulo">Regras de uso</h2>
+              <p class="detalhe__texto" id="detalhe-regras"></p>
+            </div>
+            <h2 class="painel__titulo detalhe__subtitulo">Política de cancelamento: <span id="detalhe-politica-nome"></span></h2>
+            <p class="detalhe__texto" id="detalhe-politica"></p>
+          </section>
+
+          <section class="painel">
+            <h2 class="painel__titulo">Anunciante</h2>
+            <a class="pessoa pessoa--grande" id="detalhe-dono" href="../perfil/perfil-publico.html"></a>
+          </section>
+
+          <section class="painel">
+            <h2 class="painel__titulo">Datas já reservadas</h2>
+            <p class="painel__texto">Esses dias ficam bloqueados para novos pedidos.</p>
+            <ul class="reservas" id="detalhe-reservas"></ul>
+          </section>
+        </div>
+
+        <aside class="lateral-fixa">
+          <!-- Locatário e visitante: escolher o período -->
+          <form class="painel painel--sombra reserva" id="reserva-form" novalidate>
+            <p class="reserva__preco"><strong id="reserva-preco"></strong> <span>/dia</span></p>
+            <p class="reserva__titulo">Escolha o período</p>
+            <div class="linha-campos linha-campos--sempre">
+              <div class="campo">
+                <label class="campo__rotulo" for="inicio">Início</label>
+                <input class="campo__caixa" id="inicio" name="inicio" type="date" required>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="fim">Fim</label>
+                <input class="campo__caixa" id="fim" name="fim" type="date" required>
+              </div>
+            </div>
+            <dl class="resumo" id="reserva-resumo" hidden>
+              <div class="resumo__linha"><dt id="reserva-diarias"></dt><dd id="reserva-subtotal"></dd></div>
+              <div class="resumo__linha" id="reserva-desconto-linha" hidden><dt>Desconto semana/mês</dt><dd id="reserva-desconto"></dd></div>
+              <div class="resumo__linha resumo__total"><dt>Total</dt><dd id="reserva-total"></dd></div>
+            </dl>
+            <button class="botao botao--primario botao--bloco" type="submit" id="reserva-botao">Solicitar aluguel</button>
+            <p class="reserva__nota">Você ainda não paga nada. O anunciante tem até 48 horas para aceitar.</p>
+          </form>
+
+          <!-- T15c: o dono vê ações do anúncio -->
+          <div class="painel painel--sombra reserva" id="dono-painel" hidden>
+            <p class="reserva__preco"><strong id="dono-preco"></strong> <span>/dia</span></p>
+            <div class="aviso aviso--info">
+              <span class="icone aviso__icone icone--info" aria-hidden="true"></span>
+              <p class="aviso__texto">Este anúncio é seu. É assim que as outras pessoas o veem.</p>
+            </div>
+            <p class="dono__status">Status: <span class="etiqueta" id="dono-status"></span></p>
+            <a class="botao botao--primario botao--bloco" id="dono-editar" href="anunciar.html">Editar anúncio</a>
+            <button class="botao botao--contorno botao--bloco" type="button" id="dono-pausar">Pausar anúncio</button>
+            <a class="botao botao--texto botao--bloco" href="../alugueis/meus-alugueis.html?papel=anunciante">Ver pedidos recebidos</a>
           </div>
-        </details>
+        </aside>
       </div>
     </div>
-  </header>
 
-  <main class="pagina detalhe">
-    <!-- Conteúdo preenchido pelo JavaScript (assets/js/pages/detalhe-anuncio.js)
-         com o anúncio do endereço: detalhe-anuncio.html?id=... -->
-    <div id="detalhe-conteudo">
-    <!-- Fotos: o JavaScript troca pela foto do anúncio -->
-    <div class="detalhe__fotos">
-      <img class="detalhe__foto" id="detalhe-foto" alt="" hidden>
-      <span id="detalhe-foto-vazia">Fotos do item · 1 de 5</span>
-    </div>
-
-    <div class="container detalhe__corpo">
-      <div class="detalhe__titulo">
-        <span class="card__categoria" id="detalhe-categoria">Ferramentas</span>
-        <h1 id="detalhe-nome">Furadeira de impacto 650W</h1>
-        <p class="texto-secundario texto-corpo-medio">Rio Vermelho, Salvador</p>
-      </div>
-
-      <ul class="precos" aria-label="Preços">
-        <li class="precos__item precos__item--destaque">
-          <span class="precos__valor" id="detalhe-preco-dia">R$ 25</span>
-          <span class="precos__unidade">por dia</span>
-        </li>
-        <li class="precos__item">
-          <span class="precos__valor" id="detalhe-preco-semana">R$ 140</span>
-          <span class="precos__unidade">por semana</span>
-        </li>
-        <li class="precos__item">
-          <span class="precos__valor" id="detalhe-preco-mes">R$ 500</span>
-          <span class="precos__unidade">por mês</span>
-        </li>
-      </ul>
-
-      <section class="detalhe__secao">
-        <h2 class="texto-h3">Descrição</h2>
-        <p class="texto-secundario texto-corpo-medio" id="detalhe-descricao">Furadeira de impacto 650W com maleta, mandril de 13 mm e controle de velocidade. Ideal para instalar prateleiras, cortinas e suportes de TV.</p>
-      </section>
-
-      <section class="detalhe__secao">
-        <h2 class="texto-h3">Regras de uso</h2>
-        <p class="texto-secundario texto-corpo-medio">Devolver limpa e na maleta. Não usar em concreto armado. Brocas não inclusas.</p>
-      </section>
-
-      <section class="detalhe__secao">
-        <h2 class="texto-h3">Política de cancelamento: Moderada</h2>
-        <p class="texto-secundario texto-corpo-medio">Sem multa se cancelar com 3 dias ou mais de antecedência. 50% entre 24 horas e 3 dias. 100% com menos de 24 horas.</p>
-      </section>
-
-      <section class="bloco anunciante" aria-label="Anunciante">
-        <div class="pessoa">
-          <span class="detalhe__avatar" aria-hidden="true">C</span>
-          <div>
-            <p class="pessoa__nome">Carlos</p>
-            <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 23 avaliações como anunciante</p>
-          </div>
-        </div>
-        <p class="texto-secundario texto-legenda">18 aluguéis concluídos · No AlugaFácil desde março de 2025</p>
-        <a class="botao botao--contorno botao--bloco" href="../perfil/perfil-publico.html">Ver perfil</a>
-      </section>
-
-      <form class="detalhe__secao" id="solicitar-form" novalidate>
-        <h2 class="texto-h3">Escolha o período</h2>
-
-        <div class="detalhe__datas">
-          <div class="campo">
-            <label class="campo__rotulo" for="data-inicio">Início</label>
-            <input class="campo__caixa" type="date" id="data-inicio" required>
-          </div>
-          <div class="campo">
-            <label class="campo__rotulo" for="data-fim">Fim</label>
-            <input class="campo__caixa" type="date" id="data-fim" required>
-          </div>
-        </div>
-        <p class="texto-secundario texto-legenda">Datas já reservadas aparecem bloqueadas no calendário.</p>
-
-        <dl class="valores" aria-live="polite">
-          <div class="valores__linha"><dt id="resumo-diarias">3 diárias × R$ 25,00</dt><dd id="resumo-subtotal">R$ 75,00</dd></div>
-          <div class="valores__linha valores__linha--total"><dt>Total</dt><dd id="resumo-total">R$ 75,00</dd></div>
-        </dl>
-
-        <div class="detalhe__acoes">
-          <button class="botao botao--primario botao--bloco" type="submit">Solicitar aluguel</button>
-          <a class="botao botao--texto botao--bloco" href="comparador.html">Compensa alugar ou comprar?</a>
-        </div>
-      </form>
-    </div>
-    </div>
-
-    <!-- Anúncio não encontrado ou removido (T15b) -->
-    <div class="container" id="detalhe-indisponivel" hidden>
-      <div class="detalhe__corpo">
-        <h1>Anúncio indisponível</h1>
-        <p class="texto-secundario texto-corpo-medio">Este anúncio não existe mais ou foi removido pelo dono.</p>
-        <a class="botao botao--primario botao--bloco" href="busca.html">Buscar outros itens</a>
+    <!-- T15b: anúncio removido ou pausado -->
+    <div class="container conteudo" id="detalhe-indisponivel" hidden>
+      <div class="estado-vazio">
+        <span class="estado-vazio__icone"><span class="icone icone--caixa" aria-hidden="true"></span></span>
+        <h1 class="estado-vazio__titulo">Anúncio indisponível</h1>
+        <p>Este anúncio foi removido ou não está mais ativo.</p>
+        <a class="botao botao--primario" href="busca.html">Buscar outros itens</a>
       </div>
     </div>
   </main>
 
-
-
-  <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
   <script src="../../assets/js/utils/anuncios.js" defer></script>
   <script src="../../assets/js/utils/alugueis.js" defer></script>
-  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
   <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/main.js" defer></script>
   <script src="../../assets/js/pages/detalhe-anuncio.js" defer></script>
 </body>
 </html>
