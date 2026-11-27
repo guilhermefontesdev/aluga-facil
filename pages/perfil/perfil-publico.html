@@ -4,38 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil público · AlugaFácil</title>
+  <meta name="description" content="Perfil público de quem anuncia e aluga no AlugaFácil.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 <body>
-  <!-- T10 · Perfil público -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../../index.html">Início</a><a class="cabecalho__link" href="../anuncios/busca.html">Buscar</a><a class="cabecalho__link" href="../anuncios/comparador.html">Comparar</a><a class="cabecalho__link" href="../anuncios/anunciar.html">Anunciar</a><a class="cabecalho__link" href="../alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes"><a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas"><span class="icone icone--sino" aria-hidden="true"></span><span class="contador" aria-hidden="true">3</span></a><details class="menu-conta"><summary class="menu-conta__botao" aria-label="Menu da conta"><span class="avatar" aria-hidden="true">MS</span></summary><div class="menu-conta__painel"><p class="menu-conta__nome">Maria Souza</p><p class="menu-conta__email">maria@email.com</p><a class="menu-conta__item" href="meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a><a class="menu-conta__item" href="../anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a><a class="menu-conta__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a><a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a></div></details></div>
-    </div>
-  </header>
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <main class="pagina perfil">
-    <div class="container">
-      <div class="perfil__topo"><div><h1>Perfil público</h1><p class="perfil__subtitulo">Veja a experiência de quem anuncia no AlugaFácil.</p></div><a class="botao botao--contorno botao--compacto" href="meu-perfil.html">Editar perfil</a></div>
-      <div class="perfil__layout perfil__layout--publico">
-        <aside class="perfil__cartao">
-          <div class="perfil__avatar" aria-hidden="true">MS</div><h2 class="perfil__nome">Maria Souza</h2><p class="perfil__meta">São Paulo, SP · no AlugaFácil desde 2024</p><p class="perfil__nota">★ 4,9 <span class="texto-secundario">(18 avaliações)</span></p>
-          <div class="perfil__estatisticas"><div class="perfil__estatistica"><strong>24</strong><span>anúncios</span></div><div class="perfil__estatistica"><strong>31</strong><span>aluguéis</span></div><div class="perfil__estatistica"><strong>100%</strong><span>respostas</span></div></div>
-        </aside>
-        <div class="perfil__conteudo">
-          <section class="perfil__bloco" aria-labelledby="sobre-titulo"><h2 id="sobre-titulo">Sobre Maria</h2><p>Gosto de manter os meus itens em bom estado e ajudar a vizinhança a encontrar o que precisa por um preço justo.</p></section>
-          <section class="perfil__bloco" aria-labelledby="anuncios-titulo"><h2 id="anuncios-titulo">Anúncios de Maria <span class="texto-secundario">(3)</span></h2><ul class="perfil__lista"><li class="perfil__anuncio"><div class="perfil__anuncio-info"><strong>Furadeira de impacto Bosch</strong><span>Ferramentas · disponível</span></div><strong class="card__preco">R$ 35 <span class="card__preco-unidade">/dia</span></strong></li><li class="perfil__anuncio"><div class="perfil__anuncio-info"><strong>Caixa de som JBL</strong><span>Eletrônicos e câmeras · disponível</span></div><strong class="card__preco">R$ 45 <span class="card__preco-unidade">/dia</span></strong></li><li class="perfil__anuncio"><div class="perfil__anuncio-info"><strong>Escada de alumínio</strong><span>Casa e jardim · disponível</span></div><strong class="card__preco">R$ 25 <span class="card__preco-unidade">/dia</span></strong></li></ul></section>
-          <section class="perfil__bloco" aria-labelledby="avaliacoes-titulo"><h2 id="avaliacoes-titulo">Avaliações</h2><div class="perfil__avaliacao"><div class="perfil__avaliacao-cabecalho"><strong>Ana Oliveira</strong><span class="perfil__estrelas" aria-label="5 de 5 estrelas">★★★★★</span></div><p>Item conforme o anúncio e comunicação muito rápida. Recomendo!</p></div><div class="perfil__avaliacao"><div class="perfil__avaliacao-cabecalho"><strong>Carlos Mendes</strong><span class="perfil__estrelas" aria-label="5 de 5 estrelas">★★★★★</span></div><p>Foi simples combinar a retirada e a devolução.</p></div></section>
+  <main class="pagina">
+    <!-- T10 Perfil público (visitante e logado) -->
+    <div class="container conteudo" id="publico">
+      <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><span>Perfil público</span></nav>
+      <section class="painel publico__topo">
+        <div id="publico-avatar"></div>
+        <div class="publico__dados">
+          <h1 id="publico-nome"></h1>
+          <p class="publico__local" id="publico-local"></p>
+          <p class="publico__apresentacao" id="publico-apresentacao"></p>
         </div>
+        <ul class="publico__numeros" id="publico-numeros"></ul>
+      </section>
+
+      <div class="duas-colunas duas-colunas--lateral-esquerda publico__corpo">
+        <aside class="painel">
+          <div class="abas" role="tablist" id="publico-abas">
+            <button class="aba" role="tab" type="button" data-papel="anunciante" aria-selected="true">Anunciante</button>
+            <button class="aba" role="tab" type="button" data-papel="locatario" aria-selected="false">Locatário</button>
+          </div>
+          <div class="publico__reputacao" id="publico-reputacao"></div>
+          <ul class="avaliacoes" id="publico-avaliacoes"></ul>
+          <p class="campo__ajuda">O histórico completo é visível apenas para o próprio usuário.</p>
+        </aside>
+        <section>
+          <div class="secao__topo">
+            <h2 class="secao__titulo" id="publico-titulo-anuncios">Anúncios</h2>
+          </div>
+          <div class="lista-cards" id="publico-anuncios"></div>
+          <p class="estado-vazio" id="publico-sem-anuncios" hidden>Nenhum anúncio ativo no momento.</p>
+        </section>
+      </div>
+    </div>
+    <div class="container conteudo" id="publico-nao-encontrado" hidden>
+      <div class="estado-vazio">
+        <p class="estado-vazio__titulo">Perfil não encontrado</p>
+        <a class="botao botao--primario" href="../anuncios/busca.html">Buscar itens</a>
       </div>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal"><ul class="barra-inferior__lista"><li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li><li><a class="barra-inferior__item" href="../anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li><li><a class="barra-inferior__item" href="../anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li><li><a class="barra-inferior__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li><li><a class="barra-inferior__item" href="meu-perfil.html" aria-current="page"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li></ul></nav>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/perfil-publico.js" defer></script>
 </body>
 </html>
