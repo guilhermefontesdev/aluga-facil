@@ -1,0 +1,232 @@
+/* T19 · Comparador */
+
+
+
+/* Indicador de etapas: 1 Preço — 2 Uso — 3 Referência */
+.etapas {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-size: var(--texto-rotulo-tamanho);
+  color: var(--cor-texto-secundario);
+}
+
+.etapas__item {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.etapas__item + .etapas__item::before {
+  content: "";
+  width: var(--espaco-6);
+  height: 2px;
+  background: var(--cor-borda-padrao);
+}
+
+.etapas__numero {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-total);
+  font-size: var(--texto-legenda-tamanho);
+}
+
+.etapas__item[aria-current="step"] {
+  color: var(--cor-texto-principal);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.etapas__item[aria-current="step"] .etapas__numero {
+  border-color: var(--cor-marca-primaria);
+  background: var(--cor-marca-primaria);
+  color: var(--cor-texto-inverso);
+}
+
+.etapas__item--feito {
+  color: var(--cor-texto-principal);
+}
+
+.etapas__item--feito::before {
+  background: var(--cor-estado-sucesso) !important;
+}
+
+.etapas__item--feito .etapas__numero {
+  border-color: var(--cor-estado-sucesso);
+  background: var(--cor-estado-sucesso);
+  color: transparent;
+  position: relative;
+}
+
+.etapas__item--feito .etapas__numero::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--cor-texto-inverso);
+}
+
+.comparador__form,
+.comparador__etapa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.comparador__etapa {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.comparador__etapa[hidden] { display: none; }
+
+.comparador__etapa legend {
+  padding: 0;
+  margin-bottom: var(--espaco-1);
+}
+
+/* Opções da diária de referência (cartões com rádio) */
+
+
+
+
+
+
+
+
+.opcao > span {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+
+.opcao__detalhe {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+.opcao__extra {
+  margin-top: calc(var(--espaco-1) * -1);
+}
+
+/* Resultado */
+.comparador__resultado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.comparador__resultado[hidden] { display: none; }
+
+.comparador__veredito {
+  align-items: flex-start;
+}
+
+.comparador__veredito-titulo {
+  font-size: var(--texto-h3-tamanho);
+  line-height: var(--texto-h3-altura);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.comparador__valores {
+  display: flex;
+  flex-direction: column;
+}
+
+.comparador__linha {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+  padding-block: var(--espaco-3);
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+.comparador__linha dt { color: var(--cor-texto-secundario); }
+
+.comparador__linha--total {
+  border-top: 1px solid var(--cor-borda-forte);
+  border-bottom: 0;
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.comparador__linha--total dt { color: var(--cor-texto-principal); }
+
+.comparador__equilibrio {
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  background: var(--cor-fundo-superficie);
+}
+
+/* ---------- Versão desktop: formulário em painel + coluna lateral ---------- */
+.comparador__painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-6);
+}
+
+.comparador__painel .botao--bloco {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .comparador__painel {
+    padding: var(--espaco-8);
+  }
+
+  .comparador__etapa > .botao--bloco,
+  .comparador__resultado > .botao--bloco {
+    width: auto;
+    align-self: flex-start;
+    min-width: 220px;
+  }
+}
+
+.como-calcula {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  margin: var(--espaco-3) 0 var(--espaco-4);
+  padding-left: var(--espaco-6);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.como-calcula strong {
+  color: var(--cor-texto-principal);
+}
+
+.simulacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-3);
+  list-style: none;
+}
+
+.simulacao {
+  display: flex;
+  flex-direction: column;
+  padding: var(--espaco-3);
+  border-radius: var(--raio-md);
+  background: var(--cor-fundo-pagina);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+}
+
+.simulacao strong {
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.simulacoes__vazio {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
