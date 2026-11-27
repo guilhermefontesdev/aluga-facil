@@ -56,7 +56,7 @@
         <div class="bloco item-resumo">
           <span class="item-resumo__foto" aria-hidden="true"></span>
           <div>
-            <p class="item-resumo__titulo">Furadeira de impacto 650W</p>
+            <p class="item-resumo__titulo" id="solicitacao-item">Furadeira de impacto 650W</p>
             <p class="item-resumo__linha">Anunciado por Carlos</p>
             <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 23 avaliações como anunciante</p>
           </div>
@@ -64,14 +64,14 @@
 
         <div class="bloco">
           <p class="bloco__rotulo">Período</p>
-          <p class="bloco__destaque">12/10 a 14/10/2026 · 3 dias</p>
+          <p class="bloco__destaque" id="solicitacao-periodo">12/10 a 14/10/2026 · 3 dias</p>
           <dl class="valores">
-            <div class="valores__linha"><dt>3 diárias × R$ 25,00</dt><dd>R$ 75,00</dd></div>
-            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd>R$ 75,00</dd></div>
+            <div class="valores__linha"><dt id="solicitacao-diarias">3 diárias × R$ 25,00</dt><dd id="solicitacao-subtotal">R$ 75,00</dd></div>
+            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd id="solicitacao-total">R$ 75,00</dd></div>
           </dl>
         </div>
 
-        <form class="formulario" action="#enviada">
+        <form class="formulario" id="solicitacao-form" action="#enviada">
           <div class="bloco">
             <h2 class="bloco__titulo">Política de cancelamento: Moderada</h2>
             <p class="texto-secundario">Sem multa se cancelar com 3 dias ou mais de antecedência. 50% entre 24 horas e 3 dias. 100% com menos de 24 horas.</p>
@@ -95,7 +95,7 @@
 
           <div class="aluguel__acoes">
             <button class="botao botao--primario botao--bloco" type="submit">Enviar solicitação</button>
-            <a class="botao botao--texto" href="../anuncios/detalhe-anuncio.html">Voltar</a>
+            <a class="botao botao--texto" id="solicitacao-voltar" href="../anuncios/detalhe-anuncio.html">Voltar</a>
           </div>
         </form>
       </section>
@@ -104,10 +104,10 @@
       <section class="solicitacao-enviada" id="enviada" aria-labelledby="enviada-titulo">
         <span class="icone-status icone-status--sucesso"><span class="icone icone--check" aria-hidden="true"></span></span>
         <h1 id="enviada-titulo" class="texto-h2">Solicitação enviada!</h1>
-        <span class="selo-numero">Solicitação nº 4821</span>
+        <span class="selo-numero" id="enviada-numero">Solicitação nº 4821</span>
         <p class="texto-secundario">Carlos tem até 48 horas para responder. Avisaremos você por e-mail e WhatsApp.</p>
         <div class="aluguel__acoes">
-          <a class="botao botao--primario botao--bloco" href="detalhe-aluguel.html#pendente">Ver solicitação</a>
+          <a class="botao botao--primario botao--bloco" id="enviada-ver" href="detalhe-aluguel.html#pendente">Ver solicitação</a>
           <a class="botao botao--texto" href="../anuncios/busca.html">Voltar para a busca</a>
         </div>
       </section>
@@ -125,5 +125,11 @@
   </nav>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/pages/confirmar-solicitacao.js" defer></script>
 </body>
 </html>
