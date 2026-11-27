@@ -4,93 +4,95 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Criar conta · AlugaFácil</title>
+  <meta name="description" content="Crie sua conta no AlugaFácil.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body class="layout-simples">
- 
-
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
-      </div>
-    </div>
-  </header>
+<body data-layout="entrada">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa">
+    <div class="container entrada__grade" data-tela="cadastro">
+      <aside class="entrada__marca" aria-hidden="true">
+        <p class="entrada__selo">Aluguel entre vizinhos</p>
+        <p class="entrada__frase">Alugue o que precisa, perto de você.</p>
+        <ul class="entrada__beneficios">
+          <li><span class="icone icone--escudo"></span><span><strong>Gente da sua região</strong>Perfis com nota de quem já alugou.</span></li>
+          <li><span class="icone icone--calendario"></span><span><strong>Pague só os dias que usar</strong>Diária, semana ou mês, sem compra.</span></li>
+          <li><span class="icone icone--dinheiro"></span><span><strong>Renda com o que está parado</strong>Anuncie em poucos minutos.</span></li>
+        </ul>
+        <div class="entrada__ilustracao">
+          <img src="../../assets/img/anuncios/furadeira.svg" alt="">
+          <img src="../../assets/img/anuncios/barraca.svg" alt="">
+          <img src="../../assets/img/anuncios/projetor.svg" alt="">
+        </div>
+      </aside>
+      <section class="entrada__caixa">
         <div class="entrada__topo">
           <h1>Criar conta</h1>
           <p class="entrada__subtitulo">Com uma única conta você anuncia seus itens e aluga os de outras pessoas.</p>
         </div>
 
-        <form class="formulario" action="confirmar-email.html">
-        
+        <form class="formulario" id="cadastro-form" novalidate>
           <div class="campo">
             <label class="campo__rotulo" for="nome">Nome completo</label>
-            <input class="campo__caixa" id="nome" type="text" autocomplete="name" placeholder="Como está no seu documento"
-                   required pattern=".*\S+\s+\S+.*" title="Escreva nome e sobrenome, como está no seu documento.">
+            <input class="campo__caixa" id="nome" name="nome" type="text" autocomplete="name" placeholder="Como está no seu documento" required>
           </div>
-
           <div class="campo">
             <label class="campo__rotulo" for="email">E-mail</label>
-            <input class="campo__caixa" id="email" type="email" autocomplete="email" placeholder="nome@email.com" required>
+            <input class="campo__caixa" id="email" name="email" type="email" autocomplete="email" placeholder="nome@email.com" required>
           </div>
-
-        
-          <div class="campo">
-            <label class="campo__rotulo" for="cpf">CPF</label>
-            <input class="campo__caixa" id="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"
-                   required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Use o formato 000.000.000-00.">
+          <div class="linha-campos">
+            <div class="campo">
+              <label class="campo__rotulo" for="cpf">CPF</label>
+              <input class="campo__caixa" id="cpf" name="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required>
+            </div>
+            <div class="campo">
+              <label class="campo__rotulo" for="nascimento">Data de nascimento</label>
+              <input class="campo__caixa" id="nascimento" name="nascimento" type="date" autocomplete="bday" required>
+              <p class="campo__ajuda">Você precisa ter 18 anos ou mais.</p>
+            </div>
           </div>
-
-          <div class="campo">
-            <label class="campo__rotulo" for="nascimento">Data de nascimento</label>
-            
-            <input class="campo__caixa" id="nascimento" type="date" autocomplete="bday" max="2008-11-19"
-                   aria-describedby="nascimento-ajuda" required>
-            <p class="campo__ajuda" id="nascimento-ajuda">Você precisa ter 18 anos ou mais.</p>
-          </div>
-
           <div class="campo">
             <label class="campo__rotulo" for="telefone">Telefone celular</label>
-            <input class="campo__caixa" id="telefone" type="tel" autocomplete="tel-national" placeholder="(71) 99999-9999" maxlength="15"
-                   required pattern="\(\d{2}\) \d{5}-\d{4}" title="Use DDD + 9 dígitos, como (71) 99999-9999.">
+            <input class="campo__caixa" id="telefone" name="telefone" type="tel" autocomplete="tel-national" placeholder="(71) 99999-9999" maxlength="15" required>
           </div>
-
+          <div class="linha-campos">
+            <div class="campo">
+              <label class="campo__rotulo" for="senha">Senha</label>
+              <input class="campo__caixa" id="senha" name="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha" required>
+              <p class="campo__ajuda">Mínimo de 8 caracteres, com letra e número.</p>
+            </div>
+            <div class="campo">
+              <label class="campo__rotulo" for="confirmar-senha">Confirmar senha</label>
+              <input class="campo__caixa" id="confirmar-senha" name="confirmar" type="password" autocomplete="new-password" placeholder="Repita a senha" required>
+            </div>
+          </div>
           <div class="campo">
-            <label class="campo__rotulo" for="senha">Senha</label>
-            <input class="campo__caixa" id="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha"
-                   aria-describedby="senha-ajuda" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
-                   title="Mínimo de 8 caracteres, com pelo menos uma letra e um número.">
-            <p class="campo__ajuda" id="senha-ajuda">Mínimo de 8 caracteres, com pelo menos uma letra e um número.</p>
+            <label class="caixa-selecao">
+              <input id="termos" name="termos" type="checkbox" required>
+              <span>Li e aceito os <a class="link" href="#">Termos de Uso</a> e a <a class="link" href="#">Política de Privacidade</a></span>
+            </label>
+            <p class="campo__ajuda" hidden></p>
           </div>
-
-          <div class="campo">
-            <label class="campo__rotulo" for="confirmar-senha">Confirmar senha</label>
-            <input class="campo__caixa" id="confirmar-senha" type="password" autocomplete="new-password" placeholder="Repita a senha"
-                   required minlength="8">
-          </div>
-
-          <div class="caixa-selecao">
-            <input id="termos" type="checkbox" required>
-            <label for="termos">Li e aceito os <a class="link" href="#">Termos de Uso</a> e a <a class="link" href="#">Política de Privacidade</a></label>
-          </div>
-
           <button class="botao botao--primario botao--bloco" type="submit">Criar conta</button>
         </form>
 
-        <p class="entrada__rodape">
-          Já tem conta?
-          <a class="botao botao--texto" href="login.html">Entrar</a>
-        </p>
-      </div>
+        <p class="entrada__rodape">Já tem conta? <a class="link" href="login.html">Entrar</a></p>
+      </section>
     </div>
   </main>
 
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/entrada.js" defer></script>
 </body>
 </html>
