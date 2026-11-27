@@ -31,13 +31,6 @@
       '<span class="categoria__total">' + total + (total === 1 ? " item" : " itens") + "</span></a></li>";
   }).join("");
 
-  // vitrine do topo (3 itens com foto)
-  var vitrine = document.getElementById("inicio-vitrine");
-  vitrine.innerHTML = ativos.filter(function (a) { return a.foto; }).slice(0, 3).map(function (a) {
-    return '<div class="vitrine__item"><img src="' + e(AF.app.foto(a.foto)) + '" alt=""><span><strong>' + e(a.nome) + "</strong>" +
-      AF.formatar.preco(a.precoDia) + "/dia · " + e(a.local.split(",")[0]) + "</span></div>";
-  }).join("");
-
   // itens perto: sem os da própria pessoa; mesma cidade primeiro
   var cidade = usuario ? usuario.cidade : "";
   var perto = ativos
