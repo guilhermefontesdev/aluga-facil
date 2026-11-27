@@ -23,23 +23,15 @@
   white-space: nowrap;
 }
 
-/* Marca: quadrado azul com a casinha */
-.logo__marca {
-  position: relative;
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--raio-md);
-  background: linear-gradient(135deg, var(--azul-500), var(--verde-agua-500));
+/* Logo oficial (PNG com fundo transparente) */
+.logo__imagem {
+  display: block;
+  width: auto;
+  height: 44px;
 }
 
-.logo__marca::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  background: var(--cor-texto-inverso);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10.5 12 3l9 7.5'/%3E%3Cpath d='M5 9v12h14V9'/%3E%3Cpath d='M10 21v-6h4v6'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10.5 12 3l9 7.5'/%3E%3Cpath d='M5 9v12h14V9'/%3E%3Cpath d='M10 21v-6h4v6'/%3E%3C/svg%3E") center / contain no-repeat;
+.rodape .logo__imagem {
+  height: 52px;
 }
 
 .cabecalho__acoes {

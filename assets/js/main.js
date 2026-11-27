@@ -95,7 +95,7 @@ window.AlugaFacil = window.AlugaFacil || {};
       : '<span class="avatar" aria-hidden="true">' + AF.perfil.iniciais(u.nome) + "</span>";
 
     return '<div class="container cabecalho__conteudo">' +
-      '<a class="cabecalho__logo" href="' + url("index.html") + '"><span class="logo__marca" aria-hidden="true"></span>AlugaFácil</a>' +
+      '<a class="cabecalho__logo" href="' + url("index.html") + '"><img class="logo__imagem" src="' + url("assets/img/logo/alugafacil.png") + '" alt="AlugaFácil" width="120" height="45"></a>' +
       '<nav class="cabecalho__menu" aria-label="Menu principal">' + MENU.map(function (i) { return linkMenu(i, "cabecalho__link", atual); }).join("") + "</nav>" +
       '<div class="cabecalho__acoes">' +
         '<div class="suspenso" data-suspenso>' +
@@ -137,7 +137,7 @@ window.AlugaFacil = window.AlugaFacil || {};
     var menu = entrada ? "" : '<nav class="cabecalho__menu" aria-label="Menu principal">' +
       MENU.filter(function (i) { return !i.logado; }).map(function (i) { return linkMenu(i, "cabecalho__link", atual); }).join("") + "</nav>";
     return '<div class="container cabecalho__conteudo">' +
-      '<a class="cabecalho__logo" href="' + url("index.html") + '"><span class="logo__marca" aria-hidden="true"></span>AlugaFácil</a>' + menu +
+      '<a class="cabecalho__logo" href="' + url("index.html") + '"><img class="logo__imagem" src="' + url("assets/img/logo/alugafacil.png") + '" alt="AlugaFácil" width="120" height="45"></a>' + menu +
       '<div class="cabecalho__acoes">' +
         '<a class="botao botao--texto botao--compacto" href="' + url("pages/auth/login.html") + '">Entrar</a>' +
         '<a class="botao botao--primario botao--compacto" href="' + url("pages/auth/cadastro.html") + '">Cadastrar</a>' +
@@ -156,7 +156,7 @@ window.AlugaFacil = window.AlugaFacil || {};
       ? '<li><a href="' + url("pages/perfil/meu-perfil.html") + '">Meu perfil</a></li><li><a href="' + url("pages/anuncios/meus-anuncios.html") + '">Meus anúncios</a></li><li><a href="' + url("pages/alugueis/meus-alugueis.html") + '">Meus aluguéis</a></li><li><a href="' + url("pages/notificacoes.html") + '">Notificações</a></li>'
       : '<li><a href="' + url("pages/auth/login.html") + '">Entrar</a></li><li><a href="' + url("pages/auth/cadastro.html") + '">Criar conta</a></li><li><a href="' + url("pages/auth/esqueci-senha.html") + '">Esqueci a senha</a></li>';
     return '<div class="container rodape__conteudo">' +
-      '<div class="rodape__marca"><a class="cabecalho__logo" href="' + url("index.html") + '"><span class="logo__marca" aria-hidden="true"></span>AlugaFácil</a>' +
+      '<div class="rodape__marca"><a class="cabecalho__logo" href="' + url("index.html") + '"><img class="logo__imagem" src="' + url("assets/img/logo/alugafacil-claro.png") + '" alt="AlugaFácil" width="146" height="55"></a>' +
         "<p>Alugue o que precisa, perto de você. Anuncie o que está parado e ganhe uma renda extra.</p></div>" +
       '<nav class="rodape__coluna" aria-label="Explorar"><p class="rodape__titulo">Explorar</p><ul>' +
         '<li><a href="' + url("pages/anuncios/busca.html") + '">Buscar itens</a></li>' +
