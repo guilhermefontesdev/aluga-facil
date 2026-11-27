@@ -128,3 +128,26 @@ button.aviso__fechar:focus-visible {
 .avisos-flutuantes--exemplo .aviso--flutuante {
   animation: none;
 }
+/* Vitrine de pages/avisos.html (referência do design system) */
+.avisos-vitrine {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.avisos-vitrine h1 { margin-bottom: 0; }
+
+.avisos-vitrine h2 {
+  margin-top: var(--espaco-6);
+  padding-top: var(--espaco-6);
+  border-top: 1px solid var(--cor-borda-padrao);
+  font-size: var(--texto-h3-tamanho);
+}
+
+.avisos-vitrine .avisos-flutuantes--exemplo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+}

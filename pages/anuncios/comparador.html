@@ -3,26 +3,174 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comparador · AlugaFácil</title>
+  <title>Alugar ou comprar? · AlugaFácil</title>
+  <meta name="description" content="Descubra se compensa alugar ou comprar um item.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T19 · Comparador -->
-
-  <header class="cabecalho">
-    <!-- Cabeçalho: logo + menu (.cabecalho__menu aparece só no computador) -->
-  </header>
+<body data-menu="comparar">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina">
-    <div class="container">
-      <!-- Conteúdo da tela -->
+    <!-- T19 Comparador: 3 etapas + resultado (visitante e logado) -->
+    <section class="faixa">
+      <div class="container">
+        <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><span>Comparar</span></nav>
+        <h1>Compensa alugar ou comprar?</h1>
+        <p class="faixa__texto">Compare o preço de compra com quanto você vai usar e descubra o que sai mais barato.</p>
+      </div>
+    </section>
+
+    <div class="container conteudo comparador">
+      <div class="duas-colunas">
+        <div class="painel comparador__painel">
+          <ol class="etapas" id="etapas" aria-label="Etapas do comparador">
+            <li class="etapas__item" data-etapa="1" aria-current="step"><span class="etapas__numero">1</span>Preço</li>
+            <li class="etapas__item" data-etapa="2"><span class="etapas__numero">2</span>Uso</li>
+            <li class="etapas__item" data-etapa="3"><span class="etapas__numero">3</span>Referência</li>
+          </ol>
+
+          <form class="comparador__form" id="comparador-form" novalidate>
+            <!-- Etapa 1 · RF22 -->
+            <fieldset class="comparador__etapa" data-etapa="1">
+              <legend><h2 class="painel__titulo">Compensa alugar ou comprar?</h2></legend>
+              <p class="texto-secundario">Informe o produto e quanto ele custa novo. Nós calculamos o que sai mais barato.</p>
+              <div class="campo">
+                <label class="campo__rotulo" for="produto">Nome do produto</label>
+                <input class="campo__caixa" id="produto" type="text" maxlength="80" placeholder="Ex.: Furadeira de impacto">
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="categoria">Categoria</label>
+                <select class="campo__caixa" id="categoria">
+                  <option value="">Escolha uma categoria</option>
+                  <option>Ferramentas</option>
+                  <option>Eletrodomésticos</option>
+                  <option>Eletrônicos e câmeras</option>
+                  <option>Esportes e lazer</option>
+                  <option>Festas e eventos</option>
+                  <option>Jardinagem</option>
+                  <option>Outros</option>
+                </select>
+                <p class="campo__ajuda">Escolha na lista de categorias.</p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="preco-compra">Preço de compra</label>
+                <div class="campo__prefixo"><span aria-hidden="true">R$</span><input class="campo__caixa" id="preco-compra" type="text" inputmode="decimal" placeholder="0,00"></div>
+                <p class="campo__ajuda">Valor de um produto novo, em reais.</p>
+              </div>
+              <button class="botao botao--primario botao--bloco" type="button" data-avancar="2">Continuar</button>
+            </fieldset>
+
+            <!-- Etapa 2 · RF23 -->
+            <fieldset class="comparador__etapa" data-etapa="2" hidden>
+              <legend><h2 class="painel__titulo">Com que frequência você usaria?</h2></legend>
+              <p class="texto-secundario">Pense em quantos dias você usa o item de cada vez e quantas vezes por ano.</p>
+              <div class="campo">
+                <label class="campo__rotulo" for="dias-por-uso">Dias de uso por vez</label>
+                <input class="campo__caixa" id="dias-por-uso" type="number" min="1" max="90" step="1" inputmode="numeric" placeholder="Ex.: 2">
+                <p class="campo__ajuda">De 1 a 90 dias.</p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="usos-por-ano">Usos por ano</label>
+                <input class="campo__caixa" id="usos-por-ano" type="number" min="1" step="1" inputmode="numeric" placeholder="Ex.: 2">
+                <p class="campo__ajuda">Dias por vez × usos por ano não pode passar de 365.</p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="anos">Por quantos anos (opcional)</label>
+                <input class="campo__caixa" id="anos" type="number" min="1" max="10" step="1" inputmode="numeric" placeholder="3">
+                <p class="campo__ajuda">Se não informar, usamos 3 anos.</p>
+              </div>
+              <button class="botao botao--primario botao--bloco" type="button" data-avancar="3">Continuar</button>
+              <button class="botao botao--texto botao--bloco" type="button" data-voltar="1">Voltar</button>
+            </fieldset>
+
+            <!-- Etapa 3 · RF24 -->
+            <fieldset class="comparador__etapa" data-etapa="3" hidden>
+              <legend><h2 class="painel__titulo">Qual diária usar de referência?</h2></legend>
+              <p class="texto-secundario">Usamos esse valor para calcular quanto você gastaria alugando.</p>
+              <div class="opcoes">
+                <label class="opcao">
+                  <input type="radio" name="referencia" value="media" checked>
+                  <span><strong>Média da categoria</strong><span class="opcao__detalhe" id="ref-media">Escolha a categoria na etapa 1</span></span>
+                </label>
+                <label class="opcao">
+                  <input type="radio" name="referencia" value="anuncio">
+                  <span><strong>Escolher um anúncio</strong><span class="opcao__detalhe">Use a diária de um anúncio da plataforma</span></span>
+                </label>
+                <div class="campo opcao__extra" id="ref-anuncio-campo" hidden>
+                  <label class="campo__rotulo" for="ref-anuncio">Anúncio</label>
+                  <select class="campo__caixa" id="ref-anuncio"><option value="">Escolha um anúncio</option></select>
+                </div>
+                <label class="opcao">
+                  <input type="radio" name="referencia" value="valor">
+                  <span><strong>Informar uma diária</strong><span class="opcao__detalhe">Digite o valor que você encontrou</span></span>
+                </label>
+                <div class="campo opcao__extra" id="ref-valor-campo" hidden>
+                  <label class="campo__rotulo" for="ref-valor">Diária</label>
+                  <div class="campo__prefixo"><span aria-hidden="true">R$</span><input class="campo__caixa" id="ref-valor" type="text" inputmode="decimal" placeholder="0,00"></div>
+                </div>
+              </div>
+              <button class="botao botao--primario botao--bloco" type="submit">Calcular</button>
+              <button class="botao botao--texto botao--bloco" type="button" data-voltar="2">Voltar</button>
+            </fieldset>
+          </form>
+
+          <!-- Resultado · RF25 e RF26 -->
+          <section class="comparador__resultado" id="resultado" aria-labelledby="resultado-titulo" hidden>
+            <h2 class="painel__titulo" id="resultado-titulo">Resultado</h2>
+            <div class="aviso aviso--sucesso comparador__veredito" id="resultado-veredito">
+              <span class="icone icone--check aviso__icone" aria-hidden="true"></span>
+              <div>
+                <p class="comparador__veredito-titulo" id="resultado-titulo-veredito">Compensa alugar</p>
+                <p class="aviso__texto" id="resultado-frase"></p>
+              </div>
+            </div>
+            <dl class="comparador__valores">
+              <div class="comparador__linha"><dt>Preço de compra</dt><dd id="resultado-compra"></dd></div>
+              <div class="comparador__linha"><dt id="resultado-aluguel-rotulo">Custo de alugar</dt><dd id="resultado-aluguel"></dd></div>
+              <div class="comparador__linha comparador__linha--total"><dt>Diferença</dt><dd id="resultado-diferenca"></dd></div>
+            </dl>
+            <div class="comparador__equilibrio">
+              <p><strong id="resultado-equilibrio-titulo">Ponto de equilíbrio</strong></p>
+              <p class="texto-secundario" id="resultado-equilibrio"></p>
+            </div>
+            <p class="texto-legenda texto-secundario" id="resultado-base"></p>
+            <a class="botao botao--primario botao--bloco" id="resultado-ver" href="busca.html">Ver anúncios</a>
+            <button class="botao botao--contorno botao--bloco" type="button" id="resultado-salvar">Salvar simulação</button>
+            <button class="botao botao--texto botao--bloco" type="button" id="resultado-refazer">Nova simulação</button>
+          </section>
+        </div>
+
+        <aside class="lateral-fixa pilha">
+          <section class="painel">
+            <h2 class="painel__titulo">Como calculamos</h2>
+            <ol class="como-calcula">
+              <li><strong>Custo de alugar</strong> = diária × dias por uso × usos por ano × anos.</li>
+              <li><strong>Diária de referência</strong>: média dos anúncios da categoria, um anúncio escolhido ou um valor seu.</li>
+              <li><strong>Ponto de equilíbrio</strong>: a partir de quantos usos comprar passa a valer mais a pena.</li>
+            </ol>
+            <p class="painel__texto">Não consideramos revenda, manutenção ou espaço para guardar o item.</p>
+          </section>
+          <section class="painel">
+            <h2 class="painel__titulo">Simulações salvas</h2>
+            <ul class="simulacoes" id="simulacoes"></ul>
+          </section>
+        </aside>
+      </div>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <!-- Menu inferior: aparece só no celular e no tablet -->
-  </nav>
-
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/comparador.js" defer></script>
+  <script src="../../assets/js/pages/comparador.js" defer></script>
 </body>
 </html>

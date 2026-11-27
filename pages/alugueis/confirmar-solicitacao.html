@@ -4,132 +4,95 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmar solicitação · AlugaFácil</title>
+  <meta name="description" content="Confira os dados antes de enviar o pedido.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T16 · Confirmar solicitação -->
+<body data-menu="alugueis" data-acesso="privado" data-motivo="solicitacao">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../../index.html">Início</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/busca.html" aria-current="page">Buscar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="../../pages/anuncios/anunciar.html">Anunciar</a>
-        <a class="cabecalho__link" href="../../pages/alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
-          <span class="icone icone--sino" aria-hidden="true"></span>
-          <span class="contador" aria-hidden="true">3</span>
-        </a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta">
-            <span class="avatar" aria-hidden="true">MS</span>
-          </summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p>
-            <p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="../../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
-          </div>
-        </details>
+  <main class="pagina">
+    <section class="faixa" id="solicitacao-faixa">
+      <div class="container">
+        <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><a id="solicitacao-trilha-item" href="../anuncios/busca.html">Anúncio</a><span class="trilha__sep"></span><span>Confirmar</span></nav>
+        <h1>Confirmar solicitação</h1>
+        <p class="faixa__texto">Confira os dados. O pedido só vira aluguel quando o anunciante aceitar.</p>
       </div>
-    </div>
-  </header>
+    </section>
 
-  <main class="pagina alugueis">
-    <div class="container">
-      <!-- Dois estados na mesma página (sem JavaScript):
-             confirmar-solicitacao.html          formulário (Figura 13, à esquerda)
-             confirmar-solicitacao.html#enviada  solicitação enviada (Figura 13, no meio)
-           O formulário envia para #enviada; o CSS (:target) troca o que aparece. -->
-
-      <!-- ===== Formulário de confirmação ===== -->
-      <section class="solicitacao-form" aria-labelledby="solicitacao-titulo">
-        <h1 id="solicitacao-titulo">Confirmar solicitação</h1>
-
-        <div class="bloco item-resumo">
-          <span class="item-resumo__foto" aria-hidden="true"></span>
-          <div>
-            <p class="item-resumo__titulo" id="solicitacao-item">Furadeira de impacto 650W</p>
-            <p class="item-resumo__linha">Anunciado por Carlos</p>
-            <p class="pessoa__nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>4,8</strong> 23 avaliações como anunciante</p>
-          </div>
-        </div>
-
-        <div class="bloco">
-          <p class="bloco__rotulo">Período</p>
-          <p class="bloco__destaque" id="solicitacao-periodo">12/10 a 14/10/2026 · 3 dias</p>
-          <dl class="valores">
-            <div class="valores__linha"><dt id="solicitacao-diarias">3 diárias × R$ 25,00</dt><dd id="solicitacao-subtotal">R$ 75,00</dd></div>
-            <div class="valores__linha valores__linha--total"><dt>Total</dt><dd id="solicitacao-total">R$ 75,00</dd></div>
-          </dl>
-        </div>
-
-        <form class="formulario" id="solicitacao-form" action="#enviada">
-          <div class="bloco">
-            <h2 class="bloco__titulo">Política de cancelamento: Moderada</h2>
-            <p class="texto-secundario">Sem multa se cancelar com 3 dias ou mais de antecedência. 50% entre 24 horas e 3 dias. 100% com menos de 24 horas.</p>
-            <!-- O botão de enviar só funciona com esta caixa marcada (required) -->
-            <div class="caixa-selecao">
-              <input type="checkbox" id="aceite-politica" required>
-              <label for="aceite-politica">Li e concordo com a política de cancelamento</label>
+    <div class="container conteudo" id="solicitacao">
+      <form class="duas-colunas" id="solicitacao-form" novalidate>
+        <div class="pilha">
+          <section class="painel">
+            <div class="item-resumo">
+              <span id="solicitacao-foto"></span>
+              <div>
+                <p class="item-resumo__nome" id="solicitacao-item"></p>
+                <p class="item-resumo__detalhe" id="solicitacao-dono"></p>
+              </div>
             </div>
-          </div>
-
-          <div class="campo">
-            <label class="campo__rotulo" for="mensagem-anunciante">Mensagem para o anunciante (opcional)</label>
-            <textarea class="campo__caixa campo__caixa--area" id="mensagem-anunciante" rows="3" maxlength="300" placeholder="Ex.: Oi, Carlos! Posso retirar às 9h?"></textarea>
-            <p class="campo__ajuda">Até 300 caracteres.</p>
-          </div>
-
-          <div class="aviso aviso--info" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">O anunciante tem até 48 horas para responder. Depois disso, a solicitação expira.</p>
-          </div>
-
-          <div class="aluguel__acoes">
-            <button class="botao botao--primario botao--bloco" type="submit">Enviar solicitação</button>
-            <a class="botao botao--texto" id="solicitacao-voltar" href="../anuncios/detalhe-anuncio.html">Voltar</a>
-          </div>
-        </form>
-      </section>
-
-      <!-- ===== Solicitação enviada ===== -->
-      <section class="solicitacao-enviada" id="enviada" aria-labelledby="enviada-titulo">
-        <span class="icone-status icone-status--sucesso"><span class="icone icone--check" aria-hidden="true"></span></span>
-        <h1 id="enviada-titulo" class="texto-h2">Solicitação enviada!</h1>
-        <span class="selo-numero" id="enviada-numero">Solicitação nº 4821</span>
-        <p class="texto-secundario">Carlos tem até 48 horas para responder. Avisaremos você por e-mail e WhatsApp.</p>
-        <div class="aluguel__acoes">
-          <a class="botao botao--primario botao--bloco" id="enviada-ver" href="detalhe-aluguel.html#pendente">Ver solicitação</a>
-          <a class="botao botao--texto" href="../anuncios/busca.html">Voltar para a busca</a>
+          </section>
+          <section class="painel">
+            <h2 class="painel__titulo">Período</h2>
+            <p id="solicitacao-periodo"></p>
+            <a class="link" id="solicitacao-voltar" href="#">Alterar datas</a>
+          </section>
+          <section class="painel">
+            <h2 class="painel__titulo">Política de cancelamento: <span id="solicitacao-politica-nome"></span></h2>
+            <p class="painel__texto" id="solicitacao-politica"></p>
+          </section>
+          <section class="painel">
+            <div class="campo">
+              <label class="campo__rotulo" for="mensagem">Mensagem para o anunciante (opcional)</label>
+              <textarea class="campo__caixa" id="mensagem" name="mensagem" rows="4" maxlength="500" placeholder="Ex.: Preciso para instalar prateleiras. Posso retirar de manhã?"></textarea>
+              <p class="campo__ajuda">Conte para que vai usar e quando prefere retirar.</p>
+            </div>
+          </section>
         </div>
-      </section>
+        <aside class="lateral-fixa">
+          <section class="painel painel--sombra pilha">
+            <h2 class="painel__titulo">Resumo</h2>
+            <dl class="resumo">
+              <div class="resumo__linha"><dt id="solicitacao-diarias"></dt><dd id="solicitacao-subtotal"></dd></div>
+              <div class="resumo__linha" id="solicitacao-desconto-linha" hidden><dt>Desconto semana/mês</dt><dd id="solicitacao-desconto"></dd></div>
+              <div class="resumo__linha resumo__total"><dt>Total</dt><dd id="solicitacao-total"></dd></div>
+            </dl>
+            <label class="caixa-selecao caixa-selecao--linha">
+              <input type="checkbox" id="solicitacao-aceite" required>
+              <span>Li a política de cancelamento e as regras de uso.</span>
+            </label>
+            <button class="botao botao--primario botao--bloco" type="submit">Enviar solicitação</button>
+            <p class="reserva__nota">Você só combina o pagamento depois que o anunciante aceitar.</p>
+          </section>
+        </aside>
+      </form>
+    </div>
+
+    <!-- T16b: solicitação enviada -->
+    <div class="container conteudo" id="enviada" hidden>
+      <div class="estado-vazio estado-vazio--sucesso">
+        <span class="estado-vazio__icone"><span class="icone icone--check" aria-hidden="true"></span></span>
+        <h1 class="estado-vazio__titulo">Solicitação enviada!</h1>
+        <p id="enviada-numero"></p>
+        <p id="enviada-texto">O anunciante tem até 48 horas para responder. Avisaremos você por e-mail e WhatsApp.</p>
+        <div class="acoes">
+          <a class="botao botao--primario" id="enviada-ver" href="meus-alugueis.html">Ver solicitação</a>
+          <a class="botao botao--contorno" href="../anuncios/busca.html">Continuar buscando</a>
+        </div>
+      </div>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <ul class="barra-inferior__lista">
-      <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/anuncios/busca.html" aria-current="page"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
-      <li><a class="barra-inferior__item" href="../../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
-    </ul>
-  </nav>
-
-  <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
   <script src="../../assets/js/utils/anuncios.js" defer></script>
   <script src="../../assets/js/utils/alugueis.js" defer></script>
-  <script src="../../assets/js/utils/formatacao.js" defer></script>
-  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
   <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/main.js" defer></script>
   <script src="../../assets/js/pages/confirmar-solicitacao.js" defer></script>
 </body>
 </html>

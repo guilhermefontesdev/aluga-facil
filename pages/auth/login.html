@@ -4,57 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entrar · AlugaFácil</title>
+  <meta name="description" content="Entre na sua conta do AlugaFácil.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body class="layout-simples">
-  
-
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
-      </div>
-    </div>
-  </header>
+<body data-layout="entrada">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa">
+    <div class="container entrada__grade" data-tela="login">
+      <aside class="entrada__marca" aria-hidden="true">
+        <p class="entrada__selo">Aluguel entre vizinhos</p>
+        <p class="entrada__frase">Alugue o que precisa, perto de você.</p>
+        <ul class="entrada__beneficios">
+          <li><span class="icone icone--escudo"></span><span><strong>Gente da sua região</strong>Perfis com nota de quem já alugou.</span></li>
+          <li><span class="icone icone--calendario"></span><span><strong>Pague só os dias que usar</strong>Diária, semana ou mês, sem compra.</span></li>
+          <li><span class="icone icone--dinheiro"></span><span><strong>Renda com o que está parado</strong>Anuncie em poucos minutos.</span></li>
+        </ul>
+        <div class="entrada__ilustracao">
+          <img src="../../assets/img/anuncios/furadeira.svg" alt="">
+          <img src="../../assets/img/anuncios/barraca.svg" alt="">
+          <img src="../../assets/img/anuncios/projetor.svg" alt="">
+        </div>
+      </aside>
+      <section class="entrada__caixa">
         <div class="entrada__topo">
           <h1>Entrar</h1>
           <p class="entrada__subtitulo">Que bom te ver de novo.</p>
         </div>
 
-      
+        <!-- T04v / T04a: aparece quando a pessoa veio de uma ação que pede login -->
+        <div class="aviso aviso--info" id="login-motivo" hidden>
+          <span class="icone aviso__icone icone--info" aria-hidden="true"></span>
+          <p class="aviso__texto" id="login-motivo-texto"></p>
+        </div>
 
-        <form class="formulario" action="../../index.html">
-          
+        <!-- Troca de conta: aparece quando já existe alguém logado -->
+        <div class="aviso aviso--info" id="login-atual" hidden>
+          <span class="icone aviso__icone icone--perfil" aria-hidden="true"></span>
+          <p class="aviso__texto" id="login-atual-texto"></p>
+        </div>
+
+        <!-- T04b: e-mail ou senha errados -->
+        <div class="aviso aviso--erro" id="login-erro" role="alert" hidden>
+          <span class="icone aviso__icone icone--info" aria-hidden="true"></span>
+          <p class="aviso__texto">E-mail ou senha incorretos. Confira e tente de novo.</p>
+        </div>
+
+        <form class="formulario" id="login-form" novalidate>
           <div class="campo">
             <label class="campo__rotulo" for="email">E-mail</label>
-            <input class="campo__caixa" id="email" type="email" autocomplete="username" placeholder="nome@email.com" required>
+            <input class="campo__caixa" id="email" name="email" type="email" autocomplete="email" placeholder="nome@email.com" required>
           </div>
-
           <div class="campo">
             <label class="campo__rotulo" for="senha">Senha</label>
-            <input class="campo__caixa" id="senha" type="password" autocomplete="current-password" placeholder="Sua senha" required>
+            <input class="campo__caixa" id="senha" name="senha" type="password" autocomplete="current-password" placeholder="Sua senha" required>
           </div>
-
-          <div class="formulario__linha-direita">
-            <a class="botao botao--texto" href="esqueci-senha.html">Esqueci a senha</a>
+          <div class="entrada__linha">
+            <label class="caixa-selecao"><input type="checkbox" checked> <span>Manter conectado</span></label>
+            <a class="link" href="esqueci-senha.html">Esqueci a senha</a>
           </div>
-
           <button class="botao botao--primario botao--bloco" type="submit">Entrar</button>
         </form>
 
-        <p class="separador">ou</p>
+        <p class="divisor-ou">ou</p>
+        <a class="botao botao--contorno botao--bloco" href="cadastro.html" id="login-criar">Criar conta</a>
 
-        <a class="botao botao--contorno botao--bloco" href="cadastro.html">Criar conta</a>
-      </div>
+        <!-- Contas de exemplo para testar a troca de usuário -->
+        <div class="contas-teste">
+          <p class="contas-teste__titulo">Contas de teste <span>(senha 123456)</span></p>
+          <ul class="contas-teste__lista" id="contas-teste"></ul>
+        </div>
+      </section>
     </div>
   </main>
 
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/entrada.js" defer></script>
 </body>
 </html>

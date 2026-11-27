@@ -3,60 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlugaFácil</title>
+  <title>Início · AlugaFácil</title>
+  <meta name="description" content="Alugue o que precisa, perto de você. Anuncie o que está parado.">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body>
- 
-  
-    <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="index.html">Início</a>
-        <a class="cabecalho__link" href="pages/anuncios/busca.html">Buscar</a>
-        <a class="cabecalho__link" href="pages/anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="pages/anuncios/anunciar.html">Anunciar</a>
-        <a class="cabecalho__link" href="pages/alugueis/meus-alugueis.html" aria-current="page">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="pages/notificacoes.html" aria-label="Notificações, 3 não lidas">
-          <span class="icone icone--sino" aria-hidden="true"></span>
-          <span class="contador" aria-hidden="true">3</span>
-        </a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta">
-            <span class="avatar" aria-hidden="true">MS</span>
-          </summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p>
-            <p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
-          </div>
-        </details>
-      </div>
-    </div>
-  </header>
+<body data-menu="inicio">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina">
+    <!-- T11 Início (logado) e T11v Início (visitante): o texto do topo muda pelo inicio.js -->
+    <section class="destaque">
+      <div class="container destaque__grade">
+        <div class="destaque__texto">
+          <h1 class="destaque__titulo" id="inicio-titulo">Alugue o que precisa, perto de você</h1>
+          <p class="destaque__subtitulo" id="inicio-subtitulo">Busque à vontade. Você só precisa entrar na hora de alugar ou anunciar.</p>
+          <form class="busca-rapida" action="pages/anuncios/busca.html" role="search">
+            <label class="visualmente-oculto" for="inicio-busca">O que você procura?</label>
+            <span class="icone icone--buscar busca-rapida__icone" aria-hidden="true"></span>
+            <input class="busca-rapida__campo" id="inicio-busca" name="q" type="search" placeholder="Buscar furadeira, barraca, projetor…">
+            <label class="visualmente-oculto" for="inicio-categoria">Categoria</label>
+            <select class="busca-rapida__categoria so-computador" id="inicio-categoria" name="categoria">
+              <option value="">Todas as categorias</option>
+            </select>
+            <button class="botao botao--primario" type="submit">Buscar</button>
+          </form>
+          <p class="destaque__populares">Mais buscados:
+            <a href="pages/anuncios/busca.html?q=furadeira">furadeira</a>
+            <a href="pages/anuncios/busca.html?q=projetor">projetor</a>
+            <a href="pages/anuncios/busca.html?q=barraca">barraca</a>
+            <a href="pages/anuncios/busca.html?q=bicicleta">bicicleta</a>
+          </p>
+        </div>
+        <div class="destaque__vitrine so-computador" id="inicio-vitrine" aria-hidden="true"></div>
+      </div>
+    </section>
+
     <div class="container">
-      <!-- Conteúdo da tela -->
+      <!-- Pendências do usuário logado (pedidos para responder, devoluções, avaliações) -->
+      <div class="pendencias" id="inicio-pendencias" hidden></div>
+
+      <section class="atalhos" aria-label="O que você quer fazer">
+        <a class="atalho atalho--alugar" href="pages/anuncios/busca.html">
+          <span class="atalho__icone"><span class="icone icone--buscar" aria-hidden="true"></span></span>
+          <span class="atalho__titulo">Alugar item</span>
+          <span class="atalho__texto">Encontre o que você precisa perto de você</span>
+        </a>
+        <a class="atalho atalho--anunciar" href="pages/anuncios/anunciar.html">
+          <span class="atalho__icone"><span class="icone icone--anunciar" aria-hidden="true"></span></span>
+          <span class="atalho__titulo">Anunciar item</span>
+          <span class="atalho__texto">Ganhe dinheiro com o que está parado</span>
+        </a>
+        <a class="atalho atalho--comparar" href="pages/anuncios/comparador.html">
+          <span class="atalho__icone"><span class="icone icone--comparar" aria-hidden="true"></span></span>
+          <span class="atalho__titulo">Compensa alugar ou comprar?</span>
+          <span class="atalho__texto">Compare o preço de compra com quanto você vai usar</span>
+        </a>
+      </section>
+
+      <section class="secao" aria-labelledby="titulo-categorias">
+        <div class="secao__topo">
+          <h2 class="secao__titulo" id="titulo-categorias">Categorias</h2>
+        </div>
+        <ul class="categorias" id="inicio-categorias"></ul>
+      </section>
+
+      <section class="secao" aria-labelledby="titulo-perto">
+        <div class="secao__topo">
+          <h2 class="secao__titulo" id="titulo-perto">Perto de você</h2>
+          <a class="secao__link" href="pages/anuncios/busca.html">Ver todos</a>
+        </div>
+        <div class="lista-cards lista-cards--4" id="inicio-anuncios"></div>
+        <div class="estado-vazio" id="inicio-vazio" hidden>
+          <span class="estado-vazio__icone"><span class="icone icone--caixa" aria-hidden="true"></span></span>
+          <p class="estado-vazio__titulo">Ainda não há itens anunciados perto de você</p>
+          <a class="botao botao--contorno" href="pages/anuncios/anunciar.html">Anunciar o primeiro item</a>
+        </div>
+      </section>
+
+      <section class="secao como-funciona" aria-labelledby="titulo-como">
+        <div class="secao__topo">
+          <h2 class="secao__titulo" id="titulo-como">Como funciona</h2>
+        </div>
+        <ol class="passos-inicio">
+          <li><span class="passos-inicio__numero">1</span><strong>Busque o item</strong><span>Filtre por categoria, bairro, preço e datas livres.</span></li>
+          <li><span class="passos-inicio__numero">2</span><strong>Peça as datas</strong><span>O anunciante tem até 48 horas para aceitar o pedido.</span></li>
+          <li><span class="passos-inicio__numero">3</span><strong>Retire e devolva</strong><span>Combine a retirada, use e devolva no prazo.</span></li>
+          <li><span class="passos-inicio__numero">4</span><strong>Avalie</strong><span>A nota ajuda a vizinhança a alugar com confiança.</span></li>
+        </ol>
+      </section>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <ul class="barra-inferior__lista">
-    <li><a class="barra-inferior__item" href="index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
-    <li><a class="barra-inferior__item" href="pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
-    <li><a class="barra-inferior__item" href="pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
-    <li><a class="barra-inferior__item" href="pages/alugueis/meus-alugueis.html" aria-current="page"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
-    <li><a class="barra-inferior__item" href="pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
-    </ul>
-  </nav>
-
-  
+  <script src="assets/js/utils/formatacao.js" defer></script>
+  <script src="assets/js/utils/dados.js" defer></script>
+  <script src="assets/js/utils/usuarios.js" defer></script>
+  <script src="assets/js/utils/anuncios.js" defer></script>
+  <script src="assets/js/utils/alugueis.js" defer></script>
+  <script src="assets/js/utils/notificacoes.js" defer></script>
+  <script src="assets/js/utils/avisos.js" defer></script>
+  <script src="assets/js/utils/validacao.js" defer></script>
+  <script src="assets/js/components/card-anuncio.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/pages/inicio.js" defer></script>
 </body>
 </html>

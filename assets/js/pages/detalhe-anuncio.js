@@ -1,121 +1,132 @@
 /* ==========================================================================
-   T15 · Detalhe do anúncio · escolher as datas e pedir o aluguel   RF14, RF15
-   Abre com detalhe-anuncio.html?id=... (o link que a Busca e o card montam).
-   - mostra o anúncio salvo no T13 (localStorage)
-   - calcula o total: dias × preço por dia
-   - valida as datas e segue para o T16 Confirmar solicitação
+   T15 · Detalhe do anúncio e escolha do período                 RF13–RF17
+   Abre com detalhe-anuncio.html?id=<anúncio>
+   Visitante (T15v): o botão leva ao login e volta para cá com as datas.
+   Dono (T15c): vê ações de editar e pausar no lugar da reserva.
    ========================================================================== */
 
 (function (AF) {
-  var form = document.getElementById("solicitar-form");
-  if (!form) return;
+  var $ = function (id) { return document.getElementById(id); };
+  if (!$("detalhe")) return;
 
-  var conteudo = document.getElementById("detalhe-conteudo");
-  var indisponivel = document.getElementById("detalhe-indisponivel");
+  var e = AF.app.esc;
+  var params = new URLSearchParams(location.search);
+  var anuncio = AF.anuncios.buscar(params.get("id") || "");
+  var usuario = AF.sessao.usuario();
+  var souDono = anuncio && usuario && anuncio.donoId === usuario.id;
 
-  var id = new URLSearchParams(location.search).get("id");
-  var anuncio = id ? AF.anuncios.buscar(id) : null;
-
-  // Sem ?id ou com um anúncio que não existe mais: mostra o T15b
-  if (!anuncio) {
-    conteudo.remove();
-    indisponivel.hidden = false;
+  if (!anuncio || (anuncio.status !== "ativo" && !souDono)) {
+    $("detalhe").hidden = true;
+    $("detalhe-indisponivel").hidden = false;
     return;
   }
 
-  var inicio = document.getElementById("data-inicio");
-  var fim = document.getElementById("data-fim");
-  var diarias = document.getElementById("resumo-diarias");
-  var subtotal = document.getElementById("resumo-subtotal");
-  var totalGeral = document.getElementById("resumo-total");
-  var jaTentou = false;
+  document.title = anuncio.nome + " · AlugaFácil";
+  var dono = AF.usuarios.buscar(anuncio.donoId);
+  var politica = AF.anuncios.POLITICAS[anuncio.politica] || AF.anuncios.POLITICAS.moderada;
 
-  /* ----- dados do anúncio ----- */
+  $("detalhe-trilha-categoria").textContent = anuncio.categoria;
+  $("detalhe-trilha-categoria").href = "busca.html?categoria=" + encodeURIComponent(anuncio.categoria);
+  $("detalhe-trilha-nome").textContent = anuncio.nome;
+  $("detalhe-foto").innerHTML = AF.cardAnuncio.fotoHtml(anuncio, "detalhe__imagem");
+  AF.cardAnuncio.consertarFotos($("detalhe-foto"));
+  $("detalhe-categoria").textContent = anuncio.categoria;
+  $("detalhe-nome").textContent = anuncio.nome;
+  $("detalhe-local").textContent = anuncio.local;
+  $("detalhe-descricao").textContent = anuncio.descricao;
+  if (anuncio.regras) $("detalhe-regras").textContent = anuncio.regras;
+  else $("detalhe-regras-bloco").hidden = true;
+  $("detalhe-politica-nome").textContent = politica.nome;
+  $("detalhe-politica").textContent = politica.texto;
 
-  function mostrarFoto() {
-    var foto = document.getElementById("detalhe-foto");
-    var vazia = document.getElementById("detalhe-foto-vazia");
-    vazia.textContent = "Sem foto";
-    if (!anuncio.foto) return;
+  var precos = [[anuncio.precoDia, "por dia"], [anuncio.precoSemana, "por semana"], [anuncio.precoMes, "por mês"]];
+  $("detalhe-precos").innerHTML = precos.filter(function (p) { return p[0]; }).map(function (p) {
+    return '<li class="precos__item"><strong>' + AF.formatar.preco(p[0]) + "</strong><span>" + p[1] + "</span></li>";
+  }).join("");
 
-    foto.src = anuncio.foto;
-    foto.alt = "Foto de " + anuncio.nome;
-    foto.hidden = false;
-    vazia.hidden = true;
-    // endereço quebrado: volta para o "Sem foto"
-    foto.addEventListener("error", function () {
-      foto.hidden = true;
-      vazia.hidden = false;
-    }, { once: true });
+  if (dono) {
+    var rep = AF.perfil.reputacao(dono.id, "anunciante");
+    var concluidos = AF.alugueis.listar().filter(function (r) { return r.anuncianteId === dono.id && r.status === "concluido"; }).length;
+    $("detalhe-dono").href = "../perfil/perfil-publico.html?id=" + encodeURIComponent(dono.id);
+    $("detalhe-dono").innerHTML = '<span class="avatar avatar--medio">' + AF.perfil.iniciais(dono.nome) + "</span><span>" +
+      '<span class="pessoa__nome">' + e(dono.nome) + "</span><br>" +
+      '<span class="nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>' + (rep.total ? AF.perfil.nota(rep.media) : "Novo") + "</strong>" +
+      (rep.total ? " · " + rep.total + " avaliações" : "") + "</span><br>" +
+      '<span class="pessoa__rotulo">' + concluidos + " aluguéis concluídos · No AlugaFácil desde " + e(dono.desde) + "</span></span>";
   }
 
-  document.title = anuncio.nome + " · AlugaFácil";
-  document.getElementById("detalhe-nome").textContent = anuncio.nome;
-  document.getElementById("detalhe-categoria").textContent = anuncio.categoria;
-  document.getElementById("detalhe-descricao").textContent = anuncio.descricao;
-  document.getElementById("detalhe-preco-dia").textContent = AF.formatar.preco(anuncio.precoDia);
-  document.getElementById("detalhe-preco-semana").textContent = AF.formatar.preco(anuncio.precoDia * 7);
-  document.getElementById("detalhe-preco-mes").textContent = AF.formatar.preco(anuncio.precoDia * 30);
-  mostrarFoto();
+  var reservas = AF.alugueis.reservas(anuncio.id);
+  $("detalhe-reservas").innerHTML = reservas.length
+    ? reservas.map(function (r) { return '<li><span class="icone icone--calendario" aria-hidden="true"></span>' + AF.alugueis.descreverPeriodo(r.inicio, r.fim) + "</li>"; }).join("")
+    : '<li class="reservas__livre"><span class="icone icone--check" aria-hidden="true"></span>Nenhuma data reservada. Todas livres.</li>';
 
-  /* ----- datas e total ----- */
+  /* ----- dono ----- */
+  if (souDono) {
+    $("reserva-form").hidden = true;
+    $("dono-painel").hidden = false;
+    $("dono-preco").textContent = AF.formatar.preco(anuncio.precoDia);
+    $("dono-editar").href = "anunciar.html?id=" + encodeURIComponent(anuncio.id);
+    var status = $("dono-status");
+    function pintarStatus() {
+      status.className = "etiqueta etiqueta--" + anuncio.status;
+      status.textContent = AF.anuncios.STATUS[anuncio.status];
+      $("dono-pausar").textContent = anuncio.status === "ativo" ? "Pausar anúncio" : "Ativar anúncio";
+    }
+    pintarStatus();
+    $("dono-pausar").addEventListener("click", function () {
+      if (anuncio.status === "rascunho" && AF.anuncios.pendencias(anuncio).length) {
+        location.href = "anunciar.html?id=" + encodeURIComponent(anuncio.id);
+        return;
+      }
+      anuncio = AF.anuncios.mudarStatus(anuncio.id, anuncio.status === "ativo" ? "pausado" : "ativo");
+      pintarStatus();
+      AF.avisos.mostrar(anuncio.status === "ativo" ? "Anúncio ativo na busca." : "Anúncio pausado.", "info");
+    });
+    return;
+  }
 
-  // não deixa escolher dia que já passou
-  var hojeISO = AF.alugueis.paraISO(AF.alugueis.hoje());
-  inicio.min = hojeISO;
-  fim.min = hojeISO;
+  /* ----- reserva (locatário e visitante) ----- */
+  var form = $("reserva-form");
+  var hoje = AF.alugueis.paraISO(AF.alugueis.hoje());
+  form.elements.inicio.min = hoje;
+  form.elements.fim.min = hoje;
+  $("reserva-preco").textContent = AF.formatar.preco(anuncio.precoDia);
+  if (params.get("inicio")) form.elements.inicio.value = params.get("inicio");
+  if (params.get("fim")) form.elements.fim.value = params.get("fim");
+  if (!usuario) $("reserva-botao").textContent = "Entrar para alugar";
 
-  function atualizarResumo() {
-    var quantidade = AF.alugueis.dias(inicio.value, fim.value);
+  function atualizar() {
+    var inicio = form.elements.inicio.value;
+    var fim = form.elements.fim.value;
+    if (inicio && (!fim || fim < inicio)) {
+      form.elements.fim.min = inicio;
+    }
+    var dias = AF.alugueis.dias(inicio, fim);
+    $("reserva-resumo").hidden = dias === 0;
+    if (!dias) return;
+    var cheio = dias * anuncio.precoDia;
+    var total = AF.alugueis.total(anuncio.precoDia, dias, anuncio.precoSemana, anuncio.precoMes);
+    $("reserva-diarias").textContent = dias + (dias === 1 ? " diária" : " diárias") + " × " + AF.formatar.preco(anuncio.precoDia);
+    $("reserva-subtotal").textContent = AF.formatar.preco(cheio);
+    $("reserva-desconto-linha").hidden = total >= cheio;
+    $("reserva-desconto").textContent = "− " + AF.formatar.preco(cheio - total);
+    $("reserva-total").textContent = AF.formatar.preco(total);
+  }
 
-    if (quantidade === 0) {
-      diarias.textContent = "Escolha as datas";
-      subtotal.textContent = "—";
-      totalGeral.textContent = AF.formatar.preco(0);
+  form.addEventListener("input", atualizar);
+  AF.validacao.limparAoDigitar(form);
+  atualizar();
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var v = { inicio: form.elements.inicio.value, fim: form.elements.fim.value, anuncioId: anuncio.id };
+    if (!AF.validacao.aplicar(form, AF.validacao.validarPeriodo(v))) return;
+    var destino = "pages/alugueis/confirmar-solicitacao.html?anuncio=" + encodeURIComponent(anuncio.id) + "&inicio=" + v.inicio + "&fim=" + v.fim;
+    if (!usuario) {
+      // T04v: entra e volta para a confirmação com as mesmas datas
+      location.href = AF.app.url("pages/auth/login.html") + "?motivo=solicitacao&voltar=" + encodeURIComponent(destino);
       return;
     }
-
-    var total = AF.alugueis.total(anuncio.precoDia, quantidade);
-    diarias.textContent = quantidade + (quantidade === 1 ? " diária" : " diárias") + " × " + AF.formatar.preco(anuncio.precoDia);
-    subtotal.textContent = AF.formatar.preco(total);
-    totalGeral.textContent = AF.formatar.preco(total);
-  }
-
-  /* ----- validação ----- */
-
-  function validar() {
-    var erros = AF.validacao.validarPeriodo({
-      inicio: inicio.value,
-      fim: fim.value,
-      anuncioId: anuncio.id
-    });
-
-    [["inicio", inicio], ["fim", fim]].forEach(function (par) {
-      if (erros[par[0]]) AF.validacao.mostrarErro(par[1], erros[par[0]]);
-      else AF.validacao.limparErro(par[1]);
-    });
-
-    return Object.keys(erros).length === 0;
-  }
-
-  function aoMudar() {
-    // o fim não pode ser antes do início: o calendário já bloqueia esses dias
-    fim.min = inicio.value && inicio.value > hojeISO ? inicio.value : hojeISO;
-    atualizarResumo();
-    if (jaTentou) validar();
-  }
-
-  inicio.addEventListener("change", aoMudar);
-  fim.addEventListener("change", aoMudar);
-
-  form.addEventListener("submit", function (evento) {
-    evento.preventDefault();
-    jaTentou = true;
-    if (!validar()) return;
-
-    var dados = new URLSearchParams({ anuncio: anuncio.id, inicio: inicio.value, fim: fim.value });
-    location.href = "../alugueis/confirmar-solicitacao.html?" + dados.toString();
+    location.href = AF.app.url(destino);
   });
-
-  atualizarResumo();
 })(window.AlugaFacil);

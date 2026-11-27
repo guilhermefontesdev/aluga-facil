@@ -1,50 +1,86 @@
 /* ==========================================================================
-   T08 · Meus aluguéis · mostra os pedidos feitos no T16 (localStorage)
-   Sem pedidos: mostra a tela de lista vazia (T08b).
-   O papel (solicitante ou dono do item) é o escolhido no T09 e vale aqui também.
+   T08 · Meus aluguéis · pedidos em que a pessoa logada participa
+   Abas: todos, como locatário (pedi) e como anunciante (recebi).
+   Filtro de status. Sem pedidos: T08b (lista vazia).
    ========================================================================== */
 
 (function (AF) {
   var lista = document.getElementById("alugueis-lista");
   if (!lista) return;
 
-  var template = document.getElementById("modelo-aluguel-item");
-  var vazio = document.getElementById("alugueis-vazio");
-  var pedidos = AF.alugueis.listar();
+  var usuario = AF.sessao.usuario();
+  var e = AF.app.esc;
+  var params = new URLSearchParams(location.search);
+  var papelFiltro = params.get("papel") || "todos";
+  var statusFiltro = document.getElementById("alugueis-status");
+  var pedidos = AF.alugueis.doUsuario(usuario.id);
 
-  // Sem pedidos: fica só a tela de lista vazia
   if (pedidos.length === 0) {
-    ["alugueis-abas", "alugueis-filtro", "alugueis-lista", "alugueis-paginacao"].forEach(function (id) {
-      document.getElementById(id).remove();
-    });
+    document.getElementById("alugueis-barra").hidden = true;
+    document.getElementById("alugueis-vazio").hidden = false;
+    lista.hidden = true;
     return;
   }
 
-  // Com pedidos: tira a tela vazia e a paginação de exemplo
-  vazio.remove();
-  document.getElementById("alugueis-paginacao").remove();
+  // números do topo
+  var comoLocatario = pedidos.filter(function (r) { return r.locatarioId === usuario.id; });
+  var comoAnunciante = pedidos.filter(function (r) { return r.anuncianteId === usuario.id; });
+  var aResponder = comoAnunciante.filter(function (r) { return AF.alugueis.situacao(r) === "pendente"; }).length;
+  var ganhos = comoAnunciante.filter(function (r) { return r.status === "concluido" || r.status === "aceito"; })
+    .reduce(function (t, r) { return t + r.total; }, 0);
+  document.getElementById("alugueis-numeros").innerHTML =
+    '<li><strong>' + comoLocatario.length + "</strong>pedidos feitos</li>" +
+    '<li><strong>' + aResponder + "</strong>para responder</li>" +
+    '<li><strong>' + AF.formatar.preco(ganhos) + "</strong>em aluguéis recebidos</li>";
 
-  var papel = AF.alugueis.papel();
-  var pessoa = AF.alugueis.PESSOAS[papel === "locatario" ? "anunciante" : "locatario"];
+  function acaoDe(r, papel, s) {
+    if (s === "pendente" && papel === "anunciante") return "Responder";
+    if (s === "devolucao" && papel === "anunciante") return "Confirmar devolução";
+    if (s === "concluido" && !(r.avaliacoes || {})[papel === "anunciante" ? "locatario" : "anunciante"]) return "Avaliar";
+    return "Ver detalhes";
+  }
 
-  pedidos.forEach(function (pedido) {
-    var item = template.content.firstElementChild.cloneNode(true);
-    item.dataset.papel = papel;
-    item.dataset.status = pedido.status;
+  function desenhar() {
+    document.querySelectorAll("#alugueis-abas .aba").forEach(function (aba) {
+      aba.setAttribute("aria-selected", String(aba.dataset.papel === papelFiltro));
+    });
+    var visiveis = pedidos.filter(function (r) {
+      var papel = AF.alugueis.papelDe(r, usuario.id);
+      if (papelFiltro !== "todos" && papel !== papelFiltro) return false;
+      if (statusFiltro.value && AF.alugueis.situacao(r) !== statusFiltro.value) return false;
+      return true;
+    });
+    if (visiveis.length === 0) {
+      lista.innerHTML = '<li class="linhas__vazio">Nenhum aluguel com esses filtros.</li>';
+      return;
+    }
+    lista.innerHTML = visiveis.map(function (r) {
+      var papel = AF.alugueis.papelDe(r, usuario.id);
+      var outroId = papel === "locatario" ? r.anuncianteId : r.locatarioId;
+      var outro = AF.usuarios.buscar(outroId);
+      var s = AF.alugueis.situacao(r);
+      var acao = acaoDe(r, papel, s);
+      var link = "detalhe-aluguel.html?id=" + encodeURIComponent(r.id);
+      return '<li class="linha linha--aluguel">' +
+        AF.cardAnuncio.fotoHtml({ foto: r.foto, categoria: "" }, "linha__foto") +
+        '<div class="linha__principal">' +
+          '<span class="etiqueta etiqueta--' + AF.alugueis.ETIQUETAS[s] + '">' + AF.alugueis.SITUACOES[s] + "</span>" +
+          '<a class="linha__titulo" href="' + link + '">' + e(r.nomeItem) + "</a>" +
+          '<p class="linha__detalhe">Com ' + e(outro ? AF.perfil.primeiroNome(outro.nome) : "—") + " · " + AF.alugueis.periodoCurto(r.inicio, r.fim) + " · nº " + r.numero + "</p>" +
+        "</div>" +
+        '<div class="linha__valor"><strong>' + AF.formatar.preco(r.total) + "</strong>" + (papel === "locatario" ? "Você aluga" : "Você anuncia") + "</div>" +
+        '<div class="linha__acoes"><a class="botao ' + (acao === "Ver detalhes" ? "botao--contorno" : "botao--primario") + ' botao--compacto" href="' + link + '">' + acao + "</a></div>" +
+      "</li>";
+    }).join("");
+    AF.cardAnuncio.consertarFotos(lista);
+  }
 
-    var etiqueta = item.querySelector('[data-campo="etiqueta"]');
-    etiqueta.classList.add("etiqueta--" + pedido.status);
-    etiqueta.textContent = AF.alugueis.STATUS[pedido.status];
-
-    var nome = item.querySelector('[data-campo="nome"]');
-    nome.textContent = pedido.nomeItem;
-    nome.href = "detalhe-aluguel.html?id=" + encodeURIComponent(pedido.id) + "&como=" + papel;
-
-    item.querySelector('[data-campo="com-quem"]').textContent =
-      "Com " + pessoa.primeiroNome + " · " + AF.alugueis.periodoCurto(pedido.inicio, pedido.fim);
-    item.querySelector('[data-campo="valor"]').textContent =
-      AF.formatar.preco(pedido.total) + " · " + (papel === "locatario" ? "Você aluga" : "Você anuncia");
-
-    lista.appendChild(item);
+  document.getElementById("alugueis-abas").addEventListener("click", function (ev) {
+    var aba = ev.target.closest(".aba");
+    if (!aba) return;
+    papelFiltro = aba.dataset.papel;
+    desenhar();
   });
+  statusFiltro.addEventListener("change", desenhar);
+  desenhar();
 })(window.AlugaFacil);

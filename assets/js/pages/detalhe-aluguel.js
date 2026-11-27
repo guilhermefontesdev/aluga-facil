@@ -1,175 +1,202 @@
 /* ==========================================================================
-   T09 · Detalhe do aluguel · aceitar ou recusar e acompanhar o status  RF14–RF16
-   Abre com detalhe-aluguel.html?id=...&como=locatario  (quem pediu)
-         ou detalhe-aluguel.html?id=...&como=anunciante (dono do item).
-   Sem ?id, a página mostra os exemplos de cada status, como sempre.
-   O dono aceita ou recusa um pedido pendente; quem pediu vê o status.
+   T09 · Detalhe do aluguel · um estado para cada situação       RF14–RF21
+   detalhe-aluguel.html?id=<pedido>
+   O ponto de vista (locatário ou anunciante) vem de quem está logado.
+     T09  pendente (anunciante): aceitar ou recusar (T09e)
+     T09f pendente (locatário): aguardar ou desistir
+     T09b aceito: contato liberado, cancelar (T17)
+     T09c aguardando devolução (anunciante): confirmar devolução
+     T09d concluído: avaliar a outra pessoa
+     T09g expirado · recusado · cancelado
    ========================================================================== */
 
 (function (AF) {
-  var modelo = document.getElementById("modelo-aluguel");
-  var params = new URLSearchParams(location.search);
-  var id = params.get("id");
-  if (!modelo || !id) return;
+  var $ = function (id) { return document.getElementById(id); };
+  if (!$("aluguel")) return;
 
-  var container = modelo.parentElement;
-  container.querySelectorAll(".aluguel-estado").forEach(function (exemplo) { exemplo.remove(); });
+  var usuario = AF.sessao.usuario();
+  var e = AF.app.esc;
+  var id = new URLSearchParams(location.search).get("id") || "";
 
-  // o papel escolhido fica salvo, para o T08 mostrar a lista do mesmo ponto de vista
-  if (params.get("como")) AF.alugueis.definirPapel(params.get("como"));
-
-  var atual = null;
-
-  function aluguel() {
-    return AF.alugueis.buscar(id);
+  function naoEncontrado() {
+    $("aluguel").hidden = true;
+    $("aluguel-nao-encontrado").hidden = false;
   }
 
-  function campo(raiz, nome, valor) {
-    var el = raiz.querySelector('[data-campo="' + nome + '"]');
-    if (el) el.textContent = valor;
+  function nome(u) { return u ? AF.perfil.primeiroNome(u.nome) : "Alguém"; }
+
+  /* [tipo do aviso, ícone, texto] para cada situação e papel */
+  function aviso(r, s, papel, outro) {
+    var n = nome(outro);
+    var textos = {
+      pendente: papel === "locatario"
+        ? ["info", "relogio", "Aguardando a resposta de " + n + " até " + AF.alugueis.prazoResposta(r) + ". Você será avisado por e-mail e WhatsApp."]
+        : ["aviso", "relogio", "Responda até " + AF.alugueis.prazoResposta(r) + ". Depois disso, a solicitação expira."],
+      aceito: papel === "locatario"
+        ? ["sucesso", "check", n + " aceitou seu pedido! Combine a retirada pelo telefone."]
+        : ["sucesso", "check", "Você aceitou este pedido. As datas ficaram bloqueadas e o contato de " + n + " foi liberado."],
+      "em-andamento": ["info", "alugueis", papel === "locatario" ? "O item está com você até " + AF.alugueis.formatarData(r.fim, true) + "." : "O item está com " + n + " até " + AF.alugueis.formatarData(r.fim, true) + "."],
+      devolucao: papel === "anunciante"
+        ? ["aviso", "info", "O período terminou. Confirme quando o item voltar para você."]
+        : ["aviso", "info", "O período terminou. Devolva o item para " + n + " confirmar a devolução."],
+      concluido: ["sucesso", "check", "Aluguel concluído. Obrigado por usar o AlugaFácil!"],
+      recusado: papel === "locatario"
+        ? ["erro", "fechar", n + " recusou o pedido. Nenhum valor foi cobrado." + (r.motivo ? " Motivo: " + r.motivo : "")]
+        : ["info", "fechar", "Você recusou este pedido." + (r.motivo ? " Motivo: " + r.motivo : "")],
+      cancelado: ["info", "fechar", "Aluguel cancelado" + (r.motivo ? ": " + r.motivo : "") + "." + (r.multa ? " Multa registrada: " + AF.formatar.preco(r.multa) + "." : "")],
+      expirado: ["info", "relogio", papel === "locatario" ? "A solicitação expirou sem resposta do anunciante. Nenhum valor foi cobrado." : "A solicitação expirou porque não foi respondida em 48 horas."]
+    };
+    return textos[s];
   }
 
-  function tirar(raiz, parte) {
-    var el = raiz.querySelector('[data-parte="' + parte + '"]');
-    if (el) el.remove();
-  }
-
-  /* Texto e cor do aviso de cada status, para cada ponto de vista */
-  function aviso(pedido, papel) {
-    var anunciante = AF.alugueis.PESSOAS.anunciante.primeiroNome;
-    var solicitante = AF.alugueis.PESSOAS.locatario.primeiroNome;
-
-    if (pedido.status === "pendente") {
-      return papel === "locatario"
-        ? ["info", "info", "Aguardando a resposta de " + anunciante + " até " + AF.alugueis.prazoResposta(pedido) + ". Você será avisado por e-mail e WhatsApp."]
-        : ["aviso", "info", "Responda até " + AF.alugueis.prazoResposta(pedido) + ". Depois disso, a solicitação expira."];
-    }
-    if (pedido.status === "aceito") {
-      return papel === "locatario"
-        ? ["sucesso", "check", anunciante + " aceitou seu pedido! Combine a retirada pelo telefone."]
-        : ["sucesso", "check", "Você aceitou este pedido. As datas ficaram bloqueadas na agenda e o contato de " + solicitante + " foi liberado."];
-    }
-    var motivo = pedido.motivo ? " Motivo: " + pedido.motivo : "";
-    return papel === "locatario"
-      ? ["aviso", "info", anunciante + " recusou o pedido. Nenhum valor foi cobrado." + motivo]
-      : ["info", "info", "Você recusou este pedido." + motivo];
+  /* Etapas: pedido → aceito → com o locatário → concluído */
+  function linhaTempo(s) {
+    var etapas = ["Pedido enviado", "Aceito", "Em andamento", "Concluído"];
+    var ate = { pendente: 0, aceito: 1, "em-andamento": 2, devolucao: 2, concluido: 3 }[s];
+    var interrompido = ate === undefined;
+    return etapas.map(function (nomeEtapa, i) {
+      var classe = interrompido ? (i === 0 ? "feito" : "") : i < ate ? "feito" : i === ate ? "atual" : "";
+      return '<li class="linha-tempo__etapa' + (classe ? " linha-tempo__etapa--" + classe : "") + '"><span class="linha-tempo__ponto"></span>' + nomeEtapa + "</li>";
+    }).join("") + (interrompido ? '<li class="linha-tempo__etapa linha-tempo__etapa--parou"><span class="linha-tempo__ponto"></span>' + AF.alugueis.SITUACOES[s] + "</li>" : "");
   }
 
   function desenhar() {
-    var pedido = aluguel();
-    if (!pedido) {
-      if (atual) atual.remove();
-      document.getElementById("aluguel-nao-encontrado").hidden = false;
-      return;
-    }
+    var r = AF.alugueis.buscar(id);
+    if (!r) return naoEncontrado();
+    var papel = AF.alugueis.papelDe(r, usuario.id);
+    if (!papel) return naoEncontrado();
 
-    var papel = AF.alugueis.papel();
-    var outra = AF.alugueis.PESSOAS[papel === "locatario" ? "anunciante" : "locatario"];
-    var secao = modelo.content.firstElementChild.cloneNode(true);
+    var s = AF.alugueis.situacao(r);
+    var outro = AF.usuarios.buscar(papel === "locatario" ? r.anuncianteId : r.locatarioId);
+    document.title = r.nomeItem + " · Aluguel nº " + r.numero + " · AlugaFácil";
 
-    // alternar o ponto de vista
-    secao.querySelectorAll("[data-papel-link]").forEach(function (link) {
-      var esteAtual = link.dataset.papelLink === papel;
-      link.href = "detalhe-aluguel.html?id=" + encodeURIComponent(pedido.id) + "&como=" + link.dataset.papelLink;
-      if (esteAtual) {
-        link.setAttribute("aria-current", "true");
-        link.style.fontWeight = "var(--fonte-peso-semibold)";
-      }
-    });
+    $("aluguel-trilha").textContent = (r.status === "pendente" ? "Solicitação" : "Aluguel") + " nº " + r.numero;
+    $("aluguel-numero").textContent = (r.status === "pendente" ? "Solicitação" : "Aluguel") + " nº " + r.numero + " · você é " + (papel === "locatario" ? "o locatário" : "o anunciante");
+    $("aluguel-nome").textContent = r.nomeItem;
+    var etiqueta = $("aluguel-etiqueta");
+    etiqueta.className = "etiqueta etiqueta--" + AF.alugueis.ETIQUETAS[s];
+    etiqueta.textContent = AF.alugueis.SITUACOES[s];
+    $("aluguel-linha-tempo").innerHTML = linhaTempo(s);
 
-    var etiqueta = secao.querySelector('[data-campo="etiqueta"]');
-    etiqueta.classList.add("etiqueta--" + pedido.status);
-    etiqueta.textContent = AF.alugueis.STATUS[pedido.status];
+    var a = aviso(r, s, papel, outro);
+    $("aluguel-aviso").className = "aviso aviso--" + a[0];
+    $("aluguel-aviso-icone").className = "icone aviso__icone icone--" + a[1];
+    $("aluguel-aviso-texto").textContent = a[2];
 
-    campo(secao, "numero", "Solicitação nº " + pedido.numero);
-    campo(secao, "nome", pedido.nomeItem);
-    campo(secao, "periodo", AF.alugueis.descreverPeriodo(pedido.inicio, pedido.fim));
-    campo(secao, "diarias", pedido.dias + (pedido.dias === 1 ? " diária" : " diárias") + " × " + AF.formatar.preco(pedido.precoDia));
-    campo(secao, "subtotal", AF.formatar.preco(pedido.total));
-    campo(secao, "total", AF.formatar.preco(pedido.total));
+    $("aluguel-foto").innerHTML = AF.cardAnuncio.fotoHtml({ foto: r.foto, categoria: "" }, "item-resumo__foto");
+    $("aluguel-item-link").textContent = r.nomeItem;
+    $("aluguel-item-link").href = "../anuncios/detalhe-anuncio.html?id=" + encodeURIComponent(r.anuncioId);
+    $("aluguel-periodo").textContent = AF.alugueis.descreverPeriodo(r.inicio, r.fim);
+    $("aluguel-diarias").textContent = r.dias + (r.dias === 1 ? " diária" : " diárias") + " × " + AF.formatar.preco(r.precoDia);
+    $("aluguel-subtotal").textContent = AF.formatar.preco(r.dias * r.precoDia);
+    $("aluguel-total").textContent = AF.formatar.preco(r.total);
+    $("aluguel-multa-linha").hidden = !r.multa;
+    $("aluguel-multa").textContent = AF.formatar.preco(r.multa || 0);
+    var politica = AF.anuncios.POLITICAS[r.politica] || AF.anuncios.POLITICAS.moderada;
+    $("aluguel-politica").textContent = "Política de cancelamento " + politica.nome.toLowerCase() + ": " + politica.texto;
 
-    campo(secao, "pessoa-rotulo", papel === "locatario" ? "Anunciante" : "Solicitante");
-    campo(secao, "pessoa-inicial", outra.inicial);
-    campo(secao, "pessoa-nome", outra.nome);
-
-    if (pedido.mensagem) {
-      campo(secao, "mensagem-rotulo", papel === "locatario" ? "Sua mensagem" : "Mensagem de " + outra.primeiroNome);
-      campo(secao, "mensagem", "“" + pedido.mensagem + "”");
+    if (r.mensagem) {
+      $("aluguel-mensagem-bloco").hidden = false;
+      $("aluguel-mensagem-titulo").textContent = papel === "locatario" ? "Sua mensagem" : "Mensagem de " + nome(outro);
+      $("aluguel-mensagem").textContent = "“" + r.mensagem + "”";
     } else {
-      tirar(secao, "mensagem");
+      $("aluguel-mensagem-bloco").hidden = true;
     }
 
-    var textoAviso = aviso(pedido, papel);
-    var caixa = secao.querySelector('[data-campo="aviso"]');
-    caixa.classList.add("aviso--" + textoAviso[0]);
-    secao.querySelector('[data-campo="aviso-icone"]').classList.add("icone--" + textoAviso[1]);
-    campo(secao, "aviso-texto", textoAviso[2]);
-
-    // só aparece o que cabe em cada situação
-    var pendente = pedido.status === "pendente";
-    if (!(pendente && papel === "anunciante")) {
-      tirar(secao, "decisao");
-      tirar(secao, "modal-recusar");
+    // a outra pessoa
+    $("aluguel-pessoa-rotulo").textContent = papel === "locatario" ? "Anunciante" : "Locatário";
+    if (outro) {
+      var rep = AF.perfil.reputacao(outro.id, papel === "locatario" ? "anunciante" : "locatario");
+      $("aluguel-pessoa").href = "../perfil/perfil-publico.html?id=" + encodeURIComponent(outro.id);
+      $("aluguel-pessoa").innerHTML = '<span class="avatar avatar--medio">' + AF.perfil.iniciais(outro.nome) + "</span><span>" +
+        '<span class="pessoa__nome">' + e(outro.nome) + "</span><br>" +
+        '<span class="nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>' + (rep.total ? AF.perfil.nota(rep.media) : "Novo") + "</strong>" +
+        (rep.total ? " · " + rep.total + " avaliações como " + (papel === "locatario" ? "anunciante" : "locatário") : "") + "</span></span>";
     }
-    if (!(pendente && papel === "locatario")) {
-      tirar(secao, "desistir");
-      tirar(secao, "modal-desistir");
+    var contatoLiberado = ["aceito", "em-andamento", "devolucao"].indexOf(s) !== -1;
+    $("aluguel-contato").hidden = !contatoLiberado || !outro;
+    if (contatoLiberado && outro) {
+      $("aluguel-telefone").textContent = outro.telefone;
+      $("aluguel-telefone").href = "tel:" + outro.telefone.replace(/\D/g, "");
+      $("aluguel-endereco").textContent = papel === "locatario"
+        ? [outro.rua, outro.bairro, outro.cidade].filter(Boolean).join(" · ")
+        : [outro.bairro, outro.cidade].filter(Boolean).join(", ");
     }
-    if (!(pedido.status === "aceito" && papel === "locatario")) tirar(secao, "contato");
-    if (pendente && papel === "locatario") tirar(secao, "voltar");
 
-    campo(secao, "recusar-texto", outra.primeiroNome + " será avisado por e-mail e WhatsApp. Essa resposta não pode ser alterada depois.");
-    campo(secao, "desistir-texto", AF.alugueis.PESSOAS.anunciante.primeiroNome + " ainda não respondeu, então não há multa. O pedido sai da lista dele.");
+    // ações
+    var acoes = [];
+    if (s === "pendente" && papel === "anunciante") {
+      acoes.push('<button class="botao botao--primario botao--bloco" type="button" data-acao="aceitar">Aceitar pedido</button>');
+      acoes.push('<button class="botao botao--contorno botao--bloco" type="button" data-acao="recusar">Recusar</button>');
+    }
+    if (s === "pendente" && papel === "locatario") {
+      acoes.push('<button class="botao botao--contorno botao--bloco" type="button" data-acao="desistir">Cancelar solicitação</button>');
+    }
+    if (s === "aceito" && papel === "locatario") {
+      acoes.push('<a class="botao botao--primario botao--bloco" href="tel:' + (outro ? outro.telefone.replace(/\D/g, "") : "") + '">Ligar para ' + e(nome(outro)) + "</a>");
+      acoes.push('<a class="botao botao--texto botao--bloco botao--perigo-texto" href="cancelar-aluguel.html?id=' + encodeURIComponent(r.id) + '">Cancelar aluguel</a>');
+    }
+    if ((s === "devolucao" || s === "em-andamento") && papel === "anunciante") {
+      acoes.push('<button class="botao botao--primario botao--bloco" type="button" data-acao="devolucao">Confirmar devolução</button>');
+    }
+    acoes.push('<a class="botao botao--texto botao--bloco" href="meus-alugueis.html">Voltar para meus aluguéis</a>');
+    $("aluguel-acoes").innerHTML = acoes.join("");
 
-    if (atual) atual.replaceWith(secao);
-    else container.appendChild(secao);
-    atual = secao;
-    ligar(secao);
+    // avaliação (T09d)
+    var avaliado = papel === "locatario" ? "anunciante" : "locatario";
+    var avaliacoes = r.avaliacoes || {};
+    var podeAvaliar = s === "concluido" && !avaliacoes[avaliado];
+    $("aluguel-avaliar").hidden = !podeAvaliar;
+    if (podeAvaliar) {
+      $("avaliar-titulo").textContent = "Como foi alugar com " + nome(outro) + "?";
+      $("avaliar-texto").textContent = "Sua nota vai para a reputação de " + nome(outro) + " como " + (avaliado === "anunciante" ? "anunciante" : "locatário") + ".";
+      var estrelas = "";
+      for (var i = 5; i >= 1; i--) {
+        estrelas += '<input type="radio" name="nota" id="nota-' + i + '" value="' + i + '"><label for="nota-' + i + '" title="' + i + (i === 1 ? " estrela" : " estrelas") + '"><span class="icone icone--estrela" aria-hidden="true"></span><span class="visualmente-oculto">' + i + "</span></label>";
+      }
+      $("avaliar-estrelas").innerHTML = '<legend class="visualmente-oculto">Nota de 1 a 5</legend>' + estrelas;
+    }
+    var feitas = Object.keys(avaliacoes);
+    $("aluguel-avaliacoes").hidden = feitas.length === 0;
+    $("aluguel-avaliacoes-lista").innerHTML = feitas.map(function (k) {
+      var quem = k === "anunciante" ? AF.usuarios.buscar(r.locatarioId) : AF.usuarios.buscar(r.anuncianteId);
+      return '<li class="avaliacao"><p class="nota"><span class="icone icone--estrela" aria-hidden="true"></span><strong>' + avaliacoes[k].nota + "</strong> · " +
+        e(quem ? quem.nome : "") + " avaliou o " + k + "</p>" + (avaliacoes[k].texto ? "<p>“" + e(avaliacoes[k].texto) + "”</p>" : "") + "</li>";
+    }).join("");
   }
 
-  function responder(status, extras, mensagem) {
-    var atualizado;
-    try {
-      atualizado = AF.alugueis.mudarStatus(id, status, extras);
-    } catch (erro) {
-      AF.avisos.mostrar("Não foi possível salvar. O navegador está sem espaço.", "erro");
-      return;
-    }
-    if (!atualizado) {
-      AF.avisos.mostrar("Este pedido já foi respondido.", "aviso");
-      desenhar();
-      return;
-    }
+  function depoisDe(resultado, sucesso) {
+    if (!resultado) AF.avisos.mostrar("Esse pedido já mudou de situação. Atualizamos a tela.", "aviso");
+    else AF.avisos.mostrar(sucesso, "sucesso");
     desenhar();
-    AF.avisos.mostrar(mensagem, "sucesso");
+    AF.app.atualizarCabecalho();
   }
 
-  function ligar(secao) {
-    var aceitar = secao.querySelector('[data-acao="aceitar"]');
-    if (aceitar) {
-      aceitar.addEventListener("click", function () {
-        responder("aceito", {}, "Pedido aceito. As datas foram bloqueadas.");
-      });
-    }
+  $("aluguel-acoes").addEventListener("click", function (ev) {
+    var botao = ev.target.closest("[data-acao]");
+    if (!botao) return;
+    var acao = botao.dataset.acao;
+    if (acao === "aceitar") depoisDe(AF.alugueis.aceitar(id), "Pedido aceito. As datas foram bloqueadas.");
+    if (acao === "recusar") $("modal-recusar").showModal();
+    if (acao === "desistir") $("modal-desistir").showModal();
+    if (acao === "devolucao") depoisDe(AF.alugueis.confirmarDevolucao(id), "Devolução confirmada. Agora vocês podem se avaliar.");
+  });
 
-    var recusar = secao.querySelector('[data-form="recusar"]');
-    if (recusar) {
-      recusar.addEventListener("submit", function (evento) {
-        evento.preventDefault();
-        responder("recusado", { motivo: recusar.elements.motivo.value }, "Pedido recusado.");
-      });
-    }
+  $("modal-recusar").addEventListener("close", function () {
+    if (this.returnValue === "recusar") depoisDe(AF.alugueis.recusar(id, $("motivo").value), "Pedido recusado.");
+  });
+  $("modal-desistir").addEventListener("close", function () {
+    if (this.returnValue === "desistir") depoisDe(AF.alugueis.desistir(id), "Solicitação cancelada, sem multa.");
+  });
 
-    var desistir = secao.querySelector('[data-form="desistir"]');
-    if (desistir) {
-      desistir.addEventListener("submit", function (evento) {
-        evento.preventDefault();
-        AF.alugueis.excluir(id);
-        AF.avisos.depois("Solicitação cancelada.", "info");
-        location.href = "meus-alugueis.html";
-      });
-    }
-  }
+  $("avaliar-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var nota = this.querySelector('input[name="nota"]:checked');
+    if (!nota) { AF.avisos.mostrar("Escolha uma nota de 1 a 5 estrelas.", "aviso"); return; }
+    var r = AF.alugueis.buscar(id);
+    var papel = AF.alugueis.papelDe(r, usuario.id);
+    depoisDe(AF.alugueis.avaliar(id, papel === "locatario" ? "anunciante" : "locatario", Number(nota.value), $("avaliar-comentario").value), "Avaliação enviada. Obrigado!");
+  });
 
   desenhar();
 })(window.AlugaFacil);

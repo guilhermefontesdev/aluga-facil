@@ -4,35 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro concluído · AlugaFácil</title>
+  <meta name="description" content="Sua conta está ativa.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body class="layout-simples">
-  
-
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
-      </div>
-    </div>
-  </header>
+<body data-layout="entrada">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa entrada__caixa--status">
-        <div class="entrada__topo">
-          <span class="icone-status icone-status--sucesso"><span class="icone icone--check" aria-hidden="true"></span></span>
-          <h1>Cadastro concluído!</h1>
-          <p class="entrada__subtitulo texto-corpo-grande">Sua conta está ativa. Agora você já pode alugar itens e anunciar os seus.</p>
+    <div class="container entrada__grade" data-tela="concluido">
+      <aside class="entrada__marca" aria-hidden="true">
+        <p class="entrada__selo">Aluguel entre vizinhos</p>
+        <p class="entrada__frase">Alugue o que precisa, perto de você.</p>
+        <ul class="entrada__beneficios">
+          <li><span class="icone icone--escudo"></span><span><strong>Gente da sua região</strong>Perfis com nota de quem já alugou.</span></li>
+          <li><span class="icone icone--calendario"></span><span><strong>Pague só os dias que usar</strong>Diária, semana ou mês, sem compra.</span></li>
+          <li><span class="icone icone--dinheiro"></span><span><strong>Renda com o que está parado</strong>Anuncie em poucos minutos.</span></li>
+        </ul>
+        <div class="entrada__ilustracao">
+          <img src="../../assets/img/anuncios/furadeira.svg" alt="">
+          <img src="../../assets/img/anuncios/barraca.svg" alt="">
+          <img src="../../assets/img/anuncios/projetor.svg" alt="">
         </div>
-
-        <a class="botao botao--primario botao--bloco" href="login.html">Entrar</a>
-      </div>
+      </aside>
+      <section class="entrada__caixa">
+        <div class="entrada__icone entrada__icone--sucesso"><span class="icone icone--check" aria-hidden="true"></span></div>
+        <div class="entrada__topo entrada__topo--centro">
+          <h1>Cadastro concluído!</h1>
+          <p class="entrada__subtitulo"><span id="concluido-nome">Sua conta</span> está ativa. Agora você já pode alugar itens e anunciar os seus.</p>
+        </div>
+        <a class="botao botao--primario botao--bloco" href="../anuncios/busca.html">Buscar itens</a>
+        <a class="botao botao--contorno botao--bloco" href="../anuncios/anunciar.html">Anunciar um item</a>
+        <p class="entrada__rodape"><a class="link" href="../perfil/meu-perfil.html">Completar meu perfil</a></p>
+      </section>
     </div>
   </main>
 
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/entrada.js" defer></script>
 </body>
 </html>

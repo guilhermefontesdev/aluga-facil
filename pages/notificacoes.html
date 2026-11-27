@@ -3,126 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central de notificações · AlugaFácil</title>
+  <title>Notificações · AlugaFácil</title>
+  <meta name="description" content="Suas notificações do AlugaFácil.">
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
-<body>
-  <!-- T18 · Central de notificações -->
+<body data-menu="notificacoes" data-acesso="privado">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <!-- Navegação de quem está logado (sino e avatar). Versão de visitante: ver index.html -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../index.html">Início</a>
-        <a class="cabecalho__link" href="../pages/anuncios/busca.html">Buscar</a>
-        <a class="cabecalho__link" href="../pages/anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="../pages/anuncios/anunciar.html">Anunciar</a>
-        <a class="cabecalho__link" href="../pages/alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="../pages/notificacoes.html" aria-label="Notificações, 3 não lidas" aria-current="page">
-          <span class="icone icone--sino" aria-hidden="true"></span>
-          <span class="contador" aria-hidden="true">3</span>
-        </a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta">
-            <span class="avatar" aria-hidden="true">MS</span>
-          </summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p>
-            <p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="../pages/anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
+  <main class="pagina">
+    <section class="faixa">
+      <div class="container faixa__conteudo">
+        <div>
+          <nav class="trilha" aria-label="Você está em"><a href="../index.html">Início</a><span class="trilha__sep"></span><span>Notificações</span></nav>
+          <h1>Notificações</h1>
+          <p class="faixa__texto" id="notificacoes-resumo"></p>
+        </div>
+        <div class="faixa__acoes">
+          <button class="botao botao--contorno" type="button" id="notificacoes-lidas"><span class="icone icone--check" aria-hidden="true"></span> Marcar todas como lidas</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="container conteudo">
+      <div class="duas-colunas duas-colunas--lateral-esquerda">
+        <aside class="painel notificacoes__filtros">
+          <p class="filtros__titulo">Mostrar</p>
+          <div class="filtro__opcoes" role="radiogroup" id="notificacoes-filtro">
+            <label class="filtro__opcao"><input type="radio" name="filtro" value="todas" checked> Todas</label>
+            <label class="filtro__opcao"><input type="radio" name="filtro" value="nao-lidas"> Não lidas</label>
+            <label class="filtro__opcao"><input type="radio" name="filtro" value="alugueis"> Aluguéis</label>
+            <label class="filtro__opcao"><input type="radio" name="filtro" value="avaliacoes"> Avaliações</label>
           </div>
-        </details>
+        </aside>
+        <section>
+          <div class="notificacoes" id="notificacoes-lista"></div>
+          <div class="estado-vazio" id="notificacoes-vazio" hidden>
+            <span class="estado-vazio__icone"><span class="icone icone--sino" aria-hidden="true"></span></span>
+            <p class="estado-vazio__titulo">Nada por aqui</p>
+            <p>Quando alguém pedir um item seu ou responder um pedido, o aviso aparece aqui.</p>
+          </div>
+        </section>
       </div>
-    </div>
-  </header>
-
-  <main class="pagina alugueis">
-    <div class="container">
-      <!-- "Marcar como lidas" sem JavaScript: o link leva para #lidas e o CSS
-           (:target) tira o destaque das não lidas e o número do sino. -->
-      <span id="lidas" hidden></span>
-
-      <div class="notificacoes__topo">
-        <h1>Notificações</h1>
-        <a class="botao botao--texto botao--compacto" href="#lidas">Marcar como lidas</a>
-      </div>
-
-      <!-- Avisos de cada etapa do aluguel (RF21). As não lidas levam
-           .notificacao--nova (fundo azul claro e ponto à esquerda). -->
-      <ul class="notificacoes" aria-label="Suas notificações">
-        <li>
-          <a class="notificacao notificacao--nova" href="../pages/alugueis/detalhe-aluguel.html#recebida">
-            <span class="visualmente-oculto">Não lida: </span>
-            <span class="notificacao__titulo">Nova solicitação de aluguel</span>
-            <span class="notificacao__texto">Ana quer alugar sua Escada de alumínio de 20 a 22/10. Responda em até 48 horas.</span>
-            <span class="notificacao__tempo">Há 5 min</span>
-          </a>
-        </li>
-        <li>
-          <a class="notificacao notificacao--nova" href="../pages/alugueis/detalhe-aluguel.html#aceito">
-            <span class="visualmente-oculto">Não lida: </span>
-            <span class="notificacao__titulo">Solicitação aceita</span>
-            <span class="notificacao__texto">Carlos aceitou seu pedido da Furadeira de impacto. O contato dele já está liberado.</span>
-            <span class="notificacao__tempo">Há 2 h</span>
-          </a>
-        </li>
-        <li>
-          <a class="notificacao notificacao--nova" href="../pages/anuncios/busca.html">
-            <span class="visualmente-oculto">Não lida: </span>
-            <span class="notificacao__titulo">Anúncio removido</span>
-            <span class="notificacao__texto">O anúncio da Caixa de som JBL foi removido pelo anunciante e sua solicitação foi cancelada.</span>
-            <span class="notificacao__tempo">Há 6 h</span>
-          </a>
-        </li>
-        <li>
-          <a class="notificacao" href="../pages/alugueis/detalhe-aluguel.html#aceito">
-            <span class="notificacao__titulo">Lembrete de retirada</span>
-            <span class="notificacao__texto">A retirada da Furadeira de impacto é em 12/10. Combine o horário com Carlos.</span>
-            <span class="notificacao__tempo">Ontem</span>
-          </a>
-        </li>
-        <li>
-          <a class="notificacao" href="../pages/alugueis/detalhe-aluguel.html#concluido">
-            <span class="notificacao__titulo">Avaliação disponível</span>
-            <span class="notificacao__texto">Como foi alugar sua Escada para Ana? O prazo para avaliar termina hoje, 29/09.</span>
-            <span class="notificacao__tempo">Há 3 dias</span>
-          </a>
-        </li>
-        <li>
-          <a class="notificacao" href="../pages/alugueis/detalhe-aluguel.html#expirado">
-            <span class="notificacao__titulo">Solicitação expirada</span>
-            <span class="notificacao__texto">O pedido da Bicicleta aro 29 expirou sem resposta do anunciante.</span>
-            <span class="notificacao__tempo">Há 5 dias</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- ESTADO · sem notificações. Troque a lista acima por este bloco:
-      <div class="alugueis-vazio">
-        <span class="icone-status icone-status--info"><span class="icone icone--sino" aria-hidden="true"></span></span>
-        <h2>Nenhuma notificação</h2>
-        <p class="texto-secundario">Avisos sobre suas solicitações e aluguéis aparecem aqui.</p>
-      </div>
-      -->
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal">
-    <ul class="barra-inferior__lista">
-      <li><a class="barra-inferior__item" href="../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
-      <li><a class="barra-inferior__item" href="../pages/anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
-      <li><a class="barra-inferior__item" href="../pages/anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
-      <li><a class="barra-inferior__item" href="../pages/alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
-      <li><a class="barra-inferior__item" href="../pages/perfil/meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
-    </ul>
-  </nav>
-
+  <script src="../assets/js/utils/formatacao.js" defer></script>
+  <script src="../assets/js/utils/dados.js" defer></script>
+  <script src="../assets/js/utils/usuarios.js" defer></script>
+  <script src="../assets/js/utils/anuncios.js" defer></script>
+  <script src="../assets/js/utils/alugueis.js" defer></script>
+  <script src="../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../assets/js/utils/avisos.js" defer></script>
+  <script src="../assets/js/utils/validacao.js" defer></script>
+  <script src="../assets/js/components/card-anuncio.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/pages/notificacoes.js" defer></script>
 </body>
 </html>

@@ -3,54 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar nova senha · AlugaFácil</title>
+  <title>Nova senha · AlugaFácil</title>
+  <meta name="description" content="Crie uma nova senha.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body class="layout-simples">
-  
-
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
-      </div>
-    </div>
-  </header>
+<body data-layout="entrada">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa">
+    <div class="container entrada__grade" data-tela="nova-senha">
+      <aside class="entrada__marca" aria-hidden="true">
+        <p class="entrada__selo">Aluguel entre vizinhos</p>
+        <p class="entrada__frase">Alugue o que precisa, perto de você.</p>
+        <ul class="entrada__beneficios">
+          <li><span class="icone icone--escudo"></span><span><strong>Gente da sua região</strong>Perfis com nota de quem já alugou.</span></li>
+          <li><span class="icone icone--calendario"></span><span><strong>Pague só os dias que usar</strong>Diária, semana ou mês, sem compra.</span></li>
+          <li><span class="icone icone--dinheiro"></span><span><strong>Renda com o que está parado</strong>Anuncie em poucos minutos.</span></li>
+        </ul>
+        <div class="entrada__ilustracao">
+          <img src="../../assets/img/anuncios/furadeira.svg" alt="">
+          <img src="../../assets/img/anuncios/barraca.svg" alt="">
+          <img src="../../assets/img/anuncios/projetor.svg" alt="">
+        </div>
+      </aside>
+      <section class="entrada__caixa">
         <div class="entrada__topo">
           <h1>Criar nova senha</h1>
-          <p class="entrada__subtitulo">Ao salvar, você sairá das outras sessões abertas.</p>
+          <p class="entrada__subtitulo">Conta: <strong id="nova-email">—</strong>. Ao salvar, você sairá das outras sessões abertas.</p>
         </div>
-
-        
-        <form class="formulario" action="login.html">
-          
+        <form class="formulario" id="nova-form" novalidate>
           <div class="campo">
             <label class="campo__rotulo" for="senha">Nova senha</label>
-            <input class="campo__caixa" id="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha"
-                   aria-describedby="senha-ajuda" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
-                   title="Mínimo de 8 caracteres, com pelo menos uma letra e um número.">
-            <p class="campo__ajuda" id="senha-ajuda">Mínimo de 8 caracteres, com pelo menos uma letra e um número.</p>
+            <input class="campo__caixa" id="senha" name="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha" required>
+            <p class="campo__ajuda">Mínimo de 8 caracteres, com letra e número.</p>
           </div>
-
-          
           <div class="campo">
             <label class="campo__rotulo" for="confirmar-senha">Confirmar nova senha</label>
-            <input class="campo__caixa" id="confirmar-senha" type="password" autocomplete="new-password" placeholder="Repita a senha"
-                   required minlength="8">
+            <input class="campo__caixa" id="confirmar-senha" name="confirmar" type="password" autocomplete="new-password" placeholder="Repita a senha" required>
           </div>
-
           <button class="botao botao--primario botao--bloco" type="submit">Salvar nova senha</button>
         </form>
-      </div>
+        <p class="entrada__rodape"><a class="link" href="login.html">Voltar para entrar</a></p>
+      </section>
     </div>
   </main>
 
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/entrada.js" defer></script>
 </body>
 </html>

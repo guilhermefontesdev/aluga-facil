@@ -1,117 +1,153 @@
-/* T15 · Detalhe do anúncio */
-.detalhe__fotos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 260px;
-  background: var(--cor-fundo-sutil);
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-legenda-tamanho);
-  overflow: hidden;
+/* ==========================================================================
+   T15 · Detalhe do anúncio
+   Computador: foto e informações à esquerda, reserva fixa à direita.
+   ========================================================================== */
+
+.detalhe {
+  margin-top: var(--espaco-2);
 }
 
 .detalhe__foto {
+  overflow: hidden;
+  border-radius: var(--raio-lg);
+  border: 1px solid var(--cor-borda-padrao);
+}
+
+.detalhe__imagem {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 480px;
   object-fit: cover;
 }
 
-.detalhe__corpo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-6);
-  padding-block: var(--espaco-6);
+.detalhe__imagem.foto-vazia .icone {
+  width: 80px;
+  height: 80px;
 }
 
 .detalhe__titulo {
+  margin-top: var(--espaco-2);
+}
+
+.detalhe__local {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-secundario);
 }
 
-.detalhe__titulo h1,
-.detalhe__secao h2,
-.detalhe__secao p {
-  margin: 0;
+.detalhe__local .icone {
+  width: 18px;
+  height: 18px;
 }
 
-.detalhe__secao {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
-}
-
-/* Preço por dia, semana e mês */
 .precos {
-  display: flex;
-  gap: var(--espaco-2);
-  margin: 0;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-4);
   list-style: none;
 }
 
 .precos__item {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
   padding: var(--espaco-3);
-  background: var(--cor-fundo-superficie);
-  border: 1px solid var(--cor-borda-padrao);
   border-radius: var(--raio-md);
+  background: var(--cor-fundo-pagina);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
 }
 
-.precos__item--destaque {
+.precos__item:first-child {
   background: var(--cor-marca-primaria-sutil);
-  border-color: var(--cor-marca-primaria);
 }
 
-.precos__valor {
-  font-size: var(--texto-corpo-destaque-tamanho);
-  line-height: var(--texto-corpo-destaque-altura);
+.precos__item strong {
+  color: var(--cor-marca-primaria);
+  font-size: var(--texto-h3-tamanho);
+  line-height: var(--texto-h3-altura);
+}
+
+.detalhe__texto {
+  color: var(--cor-texto-secundario);
+  white-space: pre-line;
+}
+
+.detalhe__subtitulo {
+  margin-top: var(--espaco-6);
+}
+
+.pessoa--grande {
+  align-items: flex-start;
+  margin-top: var(--espaco-3);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.reservas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  list-style: none;
+}
+
+.reservas li {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  padding: var(--espaco-2) var(--espaco-3);
+  border-radius: var(--raio-md);
+  background: var(--cor-estado-aviso-sutil);
+  color: var(--cor-estado-aviso-texto);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.reservas .reservas__livre {
+  background: var(--cor-estado-sucesso-sutil);
+  color: var(--cor-estado-sucesso-texto);
+}
+
+.reservas .icone {
+  width: 18px;
+  height: 18px;
+}
+
+/* Cartão de reserva */
+.reserva {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.reserva__preco {
+  color: var(--cor-texto-secundario);
+}
+
+.reserva__preco strong {
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-h1-tamanho);
+  line-height: var(--texto-h1-altura);
+}
+
+.reserva__titulo {
   font-weight: var(--fonte-peso-semibold);
 }
 
-.precos__item--destaque .precos__valor {
-  color: var(--cor-marca-primaria);
-}
-
-.precos__unidade {
+.reserva__nota {
   color: var(--cor-texto-secundario);
   font-size: var(--texto-legenda-tamanho);
   line-height: var(--texto-legenda-altura);
+  text-align: center;
 }
 
-/* Cartão do anunciante */
-.anunciante {
-  gap: var(--espaco-3);
-  border-radius: var(--raio-xl);
-}
-
-.detalhe__avatar {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--raio-total);
-  background: var(--cor-marca-primaria-sutil);
-  color: var(--cor-marca-primaria);
-  font-weight: var(--fonte-peso-semibold);
-}
-
-/* Período e botões */
-.detalhe__datas {
+.dono__status {
   display: flex;
+  align-items: center;
   gap: var(--espaco-2);
+  color: var(--cor-texto-secundario);
 }
 
-.detalhe__datas .campo {
-  flex: 1;
-  min-width: 0;
-}
-
-.detalhe__acoes {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
+@media (max-width: 479px) {
+  .precos__item strong { font-size: var(--texto-corpo-tamanho, 16px); }
 }

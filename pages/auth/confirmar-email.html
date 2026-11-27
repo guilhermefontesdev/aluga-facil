@@ -4,52 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirme seu e-mail · AlugaFácil</title>
+  <meta name="description" content="Confirme o e-mail da sua conta.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body class="layout-simples">
-  <!-- T02 · Confirme seu e-mail (link vale 24 horas) -->
-
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../../pages/auth/cadastro.html">Cadastrar</a>
-      </div>
-    </div>
-  </header>
+<body data-layout="entrada">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
   <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa entrada__caixa--status">
-        <div class="entrada__topo">
-          <span class="icone-status icone-status--info"><span class="icone icone--info" aria-hidden="true"></span></span>
+    <div class="container entrada__grade" data-tela="confirmar-email">
+      <aside class="entrada__marca" aria-hidden="true">
+        <p class="entrada__selo">Aluguel entre vizinhos</p>
+        <p class="entrada__frase">Alugue o que precisa, perto de você.</p>
+        <ul class="entrada__beneficios">
+          <li><span class="icone icone--escudo"></span><span><strong>Gente da sua região</strong>Perfis com nota de quem já alugou.</span></li>
+          <li><span class="icone icone--calendario"></span><span><strong>Pague só os dias que usar</strong>Diária, semana ou mês, sem compra.</span></li>
+          <li><span class="icone icone--dinheiro"></span><span><strong>Renda com o que está parado</strong>Anuncie em poucos minutos.</span></li>
+        </ul>
+        <div class="entrada__ilustracao">
+          <img src="../../assets/img/anuncios/furadeira.svg" alt="">
+          <img src="../../assets/img/anuncios/barraca.svg" alt="">
+          <img src="../../assets/img/anuncios/projetor.svg" alt="">
+        </div>
+      </aside>
+      <section class="entrada__caixa">
+        <div class="entrada__icone"><span class="icone icone--email" aria-hidden="true"></span></div>
+        <div class="entrada__topo entrada__topo--centro">
           <h1>Confirme seu e-mail</h1>
-          <p class="entrada__subtitulo texto-corpo-grande">
-            Enviamos um link de confirmação para <strong>maria@email.com</strong>. Ele vale por 24 horas.
-          </p>
+          <p class="entrada__subtitulo">Enviamos um link de confirmação para <strong id="confirmar-email">seu e-mail</strong>. Ele vale por 24 horas.</p>
         </div>
-
-        <div class="aviso aviso--info" role="note">
-          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-          <p class="aviso__texto">Não chegou? Confira a caixa de spam ou peça um novo link.</p>
+        <div class="aviso aviso--info">
+          <span class="icone aviso__icone icone--info" aria-hidden="true"></span>
+          <p class="aviso__texto">Protótipo: não enviamos e-mail de verdade. Use o botão abaixo para simular o clique no link.</p>
         </div>
-
-        <div class="entrada__acoes">
-          <!-- Depois de reenviar, mostrar a mensagem de retorno:
-               "Enviamos um novo link para maria@email.com." (exemplo em pages/avisos.html) -->
-          <a class="botao botao--contorno botao--bloco" href="confirmar-email.html">Reenviar link</a>
-          <a class="botao botao--texto" href="../../index.html">Voltar ao início</a>
-        </div>
-
-        <p class="prototipo">
-          Protótipo sem servidor:
-          <a class="link" href="cadastro-concluido.html">abrir o link do e-mail</a>
-        </p>
-      </div>
+        <button class="botao botao--primario botao--bloco" type="button" id="confirmar-ok">Já confirmei meu e-mail</button>
+        <button class="botao botao--contorno botao--bloco" type="button" id="confirmar-reenviar">Reenviar e-mail</button>
+        <p class="entrada__rodape">E-mail errado? <a class="link" href="cadastro.html">Voltar ao cadastro</a></p>
+      </section>
     </div>
   </main>
 
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/entrada.js" defer></script>
 </body>
 </html>

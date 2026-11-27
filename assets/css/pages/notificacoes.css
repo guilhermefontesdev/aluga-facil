@@ -1,0 +1,68 @@
+/* ==========================================================================
+   T18 · Central de notificações (os cards ficam em components/navegacao.css)
+   ========================================================================== */
+
+.notificacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.notificacao--grande {
+  align-items: center;
+  padding: var(--espaco-4) var(--espaco-6) var(--espaco-4) var(--espaco-4);
+}
+
+.notificacao--grande .notificacao__icone {
+  width: 44px;
+  height: 44px;
+}
+
+.notificacao--grande .notificacao__icone .icone {
+  width: 22px;
+  height: 22px;
+}
+
+.notificacao--grande .notificacao__texto {
+  -webkit-line-clamp: 3;
+  font-size: var(--texto-corpo-medio-tamanho);
+  line-height: var(--texto-corpo-medio-altura);
+}
+
+.notificacao--grande .notificacao__titulo {
+  font-size: var(--texto-corpo-grande-tamanho);
+}
+
+.notificacao--grande .notificacao__ponto {
+  top: var(--espaco-3);
+  right: var(--espaco-3);
+}
+
+.notificacao__abrir {
+  display: none;
+  align-items: center;
+  gap: var(--espaco-1);
+  color: var(--cor-texto-link);
+  font-size: var(--texto-rotulo-tamanho);
+  font-weight: var(--fonte-peso-semibold);
+  white-space: nowrap;
+}
+
+.notificacao__abrir .icone {
+  width: 16px;
+  height: 16px;
+}
+
+@media (min-width: 768px) {
+  .notificacao__abrir { display: inline-flex; }
+}
+
+.notificacoes__filtros {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.notificacoes__filtros input {
+  accent-color: var(--cor-marca-primaria);
+}

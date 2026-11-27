@@ -4,71 +4,160 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu perfil · AlugaFácil</title>
+  <meta name="description" content="Mantenha seus dados atualizados.">
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
-<body>
-  <!-- T07 · Meu perfil -->
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../../index.html">AlugaFácil</a>
-      <nav class="cabecalho__menu" aria-label="Menu principal">
-        <a class="cabecalho__link" href="../../index.html">Início</a>
-        <a class="cabecalho__link" href="../anuncios/busca.html">Buscar</a>
-        <a class="cabecalho__link" href="../anuncios/comparador.html">Comparar</a>
-        <a class="cabecalho__link" href="../anuncios/anunciar.html">Anunciar</a>
-        <a class="cabecalho__link" href="../alugueis/meus-alugueis.html">Aluguéis</a>
-      </nav>
-      <div class="cabecalho__acoes">
-        <a class="cabecalho__sino" href="../../pages/notificacoes.html" aria-label="Notificações, 3 não lidas"><span class="icone icone--sino" aria-hidden="true"></span><span class="contador" aria-hidden="true">3</span></a>
-        <details class="menu-conta">
-          <summary class="menu-conta__botao" aria-label="Menu da conta"><span class="avatar" aria-hidden="true">MS</span></summary>
-          <div class="menu-conta__painel">
-            <p class="menu-conta__nome">Maria Souza</p><p class="menu-conta__email">maria@email.com</p>
-            <a class="menu-conta__item" href="meu-perfil.html"><span class="icone icone--perfil" aria-hidden="true"></span>Meu perfil</a>
-            <a class="menu-conta__item" href="../anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
-            <a class="menu-conta__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
-            <a class="menu-conta__item menu-conta__sair" href="../../index.html"><span class="icone icone--sair" aria-hidden="true"></span>Sair</a>
-          </div>
-        </details>
-      </div>
-    </div>
-  </header>
+<body data-menu="perfil" data-acesso="privado">
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <main class="pagina perfil">
-    <div class="container">
-      <div class="perfil__topo">
-        <div><h1>Meu perfil</h1><p class="perfil__subtitulo">Mantenha os seus dados atualizados para facilitar os aluguéis.</p></div>
+  <main class="pagina">
+    <section class="faixa">
+      <div class="container">
+        <nav class="trilha" aria-label="Você está em"><a href="../../index.html">Início</a><span class="trilha__sep"></span><span>Meu perfil</span></nav>
+        <h1>Meu perfil</h1>
+        <p class="faixa__texto">Mantenha os seus dados atualizados para facilitar os aluguéis.</p>
       </div>
-      <div class="perfil__layout">
-        <aside class="perfil__cartao">
-          <div class="perfil__avatar" aria-hidden="true">MS</div>
-          <h2 class="perfil__nome">Maria Souza</h2>
-          <p class="perfil__meta">Membro desde 2024</p>
-          <a class="botao botao--contorno botao--compacto" href="perfil-publico.html">Ver perfil público</a>
+    </section>
+
+    <div class="container conteudo">
+      <div class="duas-colunas duas-colunas--lateral-esquerda">
+        <aside class="lateral-fixa pilha">
+          <section class="painel perfil-cartao">
+            <div class="perfil-cartao__foto" id="perfil-avatar"></div>
+            <label class="link-botao" for="perfil-foto-arquivo">Trocar foto</label>
+            <input class="visualmente-oculto" id="perfil-foto-arquivo" type="file" accept="image/png, image/jpeg">
+            <p class="campo__ajuda">JPG ou PNG, até 5 MB.</p>
+            <p class="perfil-cartao__nome" id="perfil-nome"></p>
+            <p class="perfil-cartao__desde" id="perfil-desde"></p>
+            <ul class="perfil-notas" id="perfil-notas"></ul>
+            <a class="botao botao--contorno botao--bloco botao--compacto" id="perfil-publico" href="perfil-publico.html">Ver perfil público</a>
+          </section>
+          <nav class="painel menu-lateral" aria-label="Minha conta">
+            <p class="filtros__titulo">Minha conta</p>
+            <a href="../anuncios/meus-anuncios.html"><span class="icone icone--anunciar" aria-hidden="true"></span>Meus anúncios</a>
+            <a href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span>Meus aluguéis</a>
+            <a href="../notificacoes.html"><span class="icone icone--sino" aria-hidden="true"></span>Notificações</a>
+            <a href="../anuncios/comparador.html"><span class="icone icone--comparar" aria-hidden="true"></span>Comparador: alugar ou comprar</a>
+            <button class="menu-lateral__sair" type="button" id="perfil-sair"><span class="icone icone--sair" aria-hidden="true"></span>Sair</button>
+          </nav>
         </aside>
-        <section class="perfil__bloco" aria-labelledby="dados-titulo">
-          <h2 id="dados-titulo">Dados pessoais</h2>
-          <div class="aviso aviso--sucesso" id="perfil-aviso" role="status" hidden><span class="icone icone--info aviso__icone" aria-hidden="true"></span><p class="aviso__texto"></p></div>
-          <form class="perfil__formulario" id="perfil-form">
-            <div class="campo"><label class="campo__rotulo" for="perfil-nome">Nome completo</label><input class="campo__caixa" id="perfil-nome" type="text" value="Maria Souza" required></div>
-            <div class="campo"><label class="campo__rotulo" for="perfil-email">E-mail</label><input class="campo__caixa" id="perfil-email" type="email" value="maria@email.com" required></div>
-            <div class="campo"><label class="campo__rotulo" for="perfil-telefone">Telefone</label><input class="campo__caixa" id="perfil-telefone" type="tel" placeholder="(11) 99999-9999"></div>
-            <div class="campo"><label class="campo__rotulo" for="perfil-localizacao">Localização</label><input class="campo__caixa" id="perfil-localizacao" type="text" placeholder="Ex.: Pinheiros, São Paulo"></div>
-            <div class="campo campo--amplo"><label class="campo__rotulo" for="perfil-apresentacao">Sobre você</label><textarea class="campo__caixa campo__caixa--texto-longo" id="perfil-apresentacao" maxlength="300" placeholder="Conte um pouco sobre você e os itens que costuma alugar."></textarea></div>
-            <div class="perfil__acoes"><a class="botao botao--contorno" href="../../index.html">Cancelar</a><button class="botao botao--primario" type="submit">Guardar alterações</button></div>
-          </form>
-        </section>
+
+        <form class="pilha" id="perfil-form" novalidate>
+          <section class="painel pilha">
+            <h2 class="painel__titulo">Dados pessoais</h2>
+            <div class="campo">
+              <label class="campo__rotulo" for="nome">Nome completo</label>
+              <input class="campo__caixa" id="nome" name="nome" type="text" autocomplete="name">
+            </div>
+            <div class="linha-campos">
+              <div class="campo">
+                <label class="campo__rotulo" for="email">E-mail</label>
+                <input class="campo__caixa" id="email" name="email" type="email" autocomplete="email">
+                <p class="campo__ajuda">É com ele que você entra na conta.</p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="telefone">Telefone celular</label>
+                <input class="campo__caixa" id="telefone" name="telefone" type="tel" maxlength="15">
+              </div>
+            </div>
+            <div class="linha-campos">
+              <div class="campo campo--desabilitado">
+                <label class="campo__rotulo" for="cpf">CPF</label>
+                <input class="campo__caixa" id="cpf" type="text" disabled>
+              </div>
+              <div class="campo campo--desabilitado">
+                <label class="campo__rotulo" for="nascimento">Nascimento</label>
+                <input class="campo__caixa" id="nascimento" type="text" disabled>
+              </div>
+            </div>
+            <p class="campo__ajuda">CPF e data de nascimento não podem ser alterados depois do cadastro.</p>
+          </section>
+
+          <section class="painel pilha">
+            <div><h2 class="painel__titulo">Endereço</h2>
+            <p class="painel__texto">Aparecem publicamente apenas o bairro e a cidade. A rua só é mostrada a quem tiver um aluguel aceito com você.</p></div>
+            <div class="linha-campos linha-campos--3">
+              <div class="campo">
+                <label class="campo__rotulo" for="cep">CEP</label>
+                <input class="campo__caixa" id="cep" name="cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000">
+                <p class="campo__ajuda">Preenchemos o resto pelo CEP.</p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="estado">Estado</label>
+                <select class="campo__caixa" id="estado" name="estado"><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="cidade">Cidade</label>
+                <input class="campo__caixa" id="cidade" name="cidade" type="text">
+              </div>
+            </div>
+            <div class="linha-campos">
+              <div class="campo">
+                <label class="campo__rotulo" for="bairro">Bairro</label>
+                <input class="campo__caixa" id="bairro" name="bairro" type="text">
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="rua">Rua e número</label>
+                <input class="campo__caixa" id="rua" name="rua" type="text">
+              </div>
+            </div>
+          </section>
+
+          <section class="painel pilha">
+            <h2 class="painel__titulo">Sobre você</h2>
+            <div class="campo">
+              <label class="campo__rotulo" for="apresentacao">Apresentação</label>
+              <textarea class="campo__caixa" id="apresentacao" name="apresentacao" rows="4" maxlength="400"></textarea>
+              <p class="campo__ajuda">Aparece no seu perfil público.</p>
+            </div>
+          </section>
+
+          <section class="painel pilha">
+            <h2 class="painel__titulo">Notificações</h2>
+            <label class="caixa-selecao caixa-selecao--linha"><input type="checkbox" id="whatsapp" name="whatsapp"> <span>Receber avisos pelo WhatsApp</span></label>
+            <p class="campo__ajuda">Os avisos por e-mail são sempre enviados.</p>
+          </section>
+
+          <section class="painel pilha">
+            <div><h2 class="painel__titulo">Senha</h2>
+            <p class="painel__texto">Deixe em branco para manter a senha atual.</p></div>
+            <div class="linha-campos linha-campos--3">
+              <div class="campo">
+                <label class="campo__rotulo" for="senhaAtual">Senha atual</label>
+                <input class="campo__caixa" id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password">
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="senhaNova">Nova senha</label>
+                <input class="campo__caixa" id="senhaNova" name="senhaNova" type="password" autocomplete="new-password">
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="senhaConfirmar">Confirmar</label>
+                <input class="campo__caixa" id="senhaConfirmar" name="senhaConfirmar" type="password" autocomplete="new-password">
+              </div>
+            </div>
+          </section>
+
+          <div class="barra-salvar">
+            <p class="barra-salvar__texto" id="perfil-estado">Nenhuma alteração.</p>
+            <button class="botao botao--contorno" type="button" id="perfil-descartar">Descartar</button>
+            <button class="botao botao--primario" type="submit">Salvar alterações</button>
+          </div>
+        </form>
       </div>
     </div>
   </main>
 
-  <nav class="barra-inferior" aria-label="Menu principal"><ul class="barra-inferior__lista">
-    <li><a class="barra-inferior__item" href="../../index.html"><span class="icone icone--inicio" aria-hidden="true"></span><span>Início</span></a></li>
-    <li><a class="barra-inferior__item" href="../anuncios/busca.html"><span class="icone icone--buscar" aria-hidden="true"></span><span>Buscar</span></a></li>
-    <li><a class="barra-inferior__item" href="../anuncios/anunciar.html"><span class="icone icone--anunciar" aria-hidden="true"></span><span>Anunciar</span></a></li>
-    <li><a class="barra-inferior__item" href="../alugueis/meus-alugueis.html"><span class="icone icone--alugueis" aria-hidden="true"></span><span>Aluguéis</span></a></li>
-    <li><a class="barra-inferior__item" href="meu-perfil.html" aria-current="page"><span class="icone icone--perfil" aria-hidden="true"></span><span>Perfil</span></a></li>
-  </ul></nav>
-  <script src="../../assets/js/main.js" defer></script><script src="../../assets/js/pages/perfil.js" defer></script>
+  <script src="../../assets/js/utils/formatacao.js" defer></script>
+  <script src="../../assets/js/utils/dados.js" defer></script>
+  <script src="../../assets/js/utils/usuarios.js" defer></script>
+  <script src="../../assets/js/utils/anuncios.js" defer></script>
+  <script src="../../assets/js/utils/alugueis.js" defer></script>
+  <script src="../../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../../assets/js/utils/avisos.js" defer></script>
+  <script src="../../assets/js/utils/validacao.js" defer></script>
+  <script src="../../assets/js/components/card-anuncio.js" defer></script>
+  <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/pages/perfil.js" defer></script>
 </body>
 </html>

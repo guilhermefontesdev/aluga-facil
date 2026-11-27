@@ -1,3 +1,20 @@
+/* ==========================================================================
+   Layout geral · container, grid, cabeçalho fixo, área principal e rodapé
+   Celular primeiro. No computador (1024 px +) o conteúdo usa o grid de
+   12 colunas do Figma (1128 px) e as telas ganham colunas laterais.
+   ========================================================================== */
+
+/* A página ocupa a altura toda: o rodapé fica sempre no fim da tela */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > main {
+  flex: 1 0 auto;
+}
+
 /* Centraliza o conteúdo e aplica as margens laterais do grid */
 .container {
   width: 100%;
@@ -13,22 +30,19 @@
   gap: var(--grid-gutter);
 }
 
-/* Ocupar a linha inteira do grid, em qualquer tela */
 .grid > .coluna-inteira {
   grid-column: 1 / -1;
 }
 
-/* Área principal da página: desconta cabeçalho e menu inferior */
+/* Área principal: espaço para o menu inferior do celular */
 .pagina {
-  min-height: 100vh;
-  padding-top: var(--cabecalho-altura);
-  padding-bottom: var(--barra-inferior-altura);
+  padding-bottom: calc(var(--barra-inferior-altura) + var(--espaco-8));
 }
 
-/* Cabeçalho fixo no topo */
+/* Cabeçalho fixo no topo (sticky: não precisa compensar a altura) */
 .cabecalho {
-  position: fixed;
-  inset: 0 0 auto 0;
+  position: sticky;
+  top: 0;
   z-index: var(--camada-cabecalho);
   height: var(--cabecalho-altura);
   background: var(--cor-fundo-superficie);
@@ -59,10 +73,112 @@
     display: flex;
     gap: var(--espaco-6);
   }
+
+  .pagina {
+    padding-bottom: var(--espaco-16);
+  }
 }
 
 .layout-simples {
   --barra-inferior-altura: 0px;
+}
+
+/* ---------- Faixa de título no topo das telas ----------
+   <section class="faixa"><div class="container">
+     <nav class="trilha">Início › Buscar</nav>
+     <h1>Título</h1><p class="faixa__texto">Subtítulo</p>
+   </div></section> */
+.faixa {
+  padding-block: var(--espaco-6);
+  background: var(--cor-fundo-superficie);
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+.faixa__conteudo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+}
+
+.faixa__texto {
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-secundario);
+}
+
+.faixa__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+.trilha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-2);
+  margin-bottom: var(--espaco-2);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+}
+
+.trilha a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.trilha a:hover {
+  color: var(--cor-texto-link);
+  text-decoration: underline;
+}
+
+.trilha__sep::before {
+  content: "›";
+}
+
+/* Conteúdo abaixo da faixa */
+.conteudo {
+  padding-top: var(--espaco-6);
+}
+
+@media (min-width: 1024px) {
+  .faixa {
+    padding-block: var(--espaco-8);
+  }
+
+  .conteudo {
+    padding-top: var(--espaco-8);
+  }
+}
+
+/* Duas colunas no computador: principal + lateral (ex.: 8 + 4 colunas) */
+.duas-colunas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--espaco-6);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .duas-colunas {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--grid-gutter);
+  }
+
+  .duas-colunas--lateral-esquerda {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  }
+
+  .duas-colunas--meio {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+
+  .lateral-fixa {
+    position: sticky;
+    top: calc(var(--cabecalho-altura) + var(--espaco-6));
+  }
 }
 
 /* Utilitários de visibilidade */

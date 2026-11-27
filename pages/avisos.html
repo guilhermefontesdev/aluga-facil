@@ -4,140 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avisos e estados · AlugaFácil</title>
+  <meta name="description" content="Referência visual dos avisos e estados de erro.">
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
-<body class="layout-simples">
-  <!-- Avisos e estados · referência visual do design system (Figura 5 e estados de T01–T06).
-       Copie daqui o HTML de cada aviso para a tela que precisar. -->
+<body>
+  <!-- Cabeçalho, menu do celular e rodapé são montados pelo assets/js/main.js -->
+  <header class="cabecalho"></header>
 
-  <header class="cabecalho">
-    <div class="container cabecalho__conteudo">
-      <a class="cabecalho__logo" href="../index.html">AlugaFácil</a>
-      <div class="cabecalho__acoes">
-        <a class="botao botao--texto botao--compacto" href="../pages/auth/login.html">Entrar</a>
-        <a class="botao botao--primario botao--compacto" href="../pages/auth/cadastro.html">Cadastrar</a>
+  <main class="pagina">
+    <!-- Avisos e estados · referência visual do design system (Figura 5 e estados de T01–T06).
+         Copie daqui o HTML de cada aviso para a tela que precisar. -->
+    <div class="container conteudo">
+    <div class="painel avisos-vitrine">
+    <div class="entrada__topo">
+      <h1>Avisos e estados</h1>
+      <p class="entrada__subtitulo">Mensagens de retorno, avisos fixos e campos com erro. Tudo em HTML e CSS.</p>
+    </div>
+
+    <h2>Mensagens de retorno</h2>
+    <p class="texto-corpo-medio texto-secundario">
+      Aparecem no topo da tela depois de uma ação. Na tela de verdade, use a div
+      "avisos-flutuantes" sem o "--exemplo": ela fica fixa no topo e some sozinha em 5 s.
+      O X fecha o aviso (checkbox escondido + label, sem JavaScript).
+    </p>
+    <div class="avisos-flutuantes avisos-flutuantes--exemplo">
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-1">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Alterações salvas com sucesso.</p>
+        <label class="aviso__fechar" for="fechar-aviso-1" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-2">
+      <div class="aviso aviso--info aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Escolha uma foto JPG ou PNG de até 5 MB.</p>
+        <label class="aviso__fechar" for="fechar-aviso-2" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-3">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Simulação salva na sua conta.</p>
+        <label class="aviso__fechar" for="fechar-aviso-3" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-4">
+      <div class="aviso aviso--info aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Novo período adicionado. Preencha as datas.</p>
+        <label class="aviso__fechar" for="fechar-aviso-4" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-5">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Todas as notificações foram marcadas como lidas.</p>
+        <label class="aviso__fechar" for="fechar-aviso-5" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-6">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Enviamos um novo link para maria@email.com.</p>
+        <label class="aviso__fechar" for="fechar-aviso-6" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-7">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Senha alterada. Entre com a nova senha.</p>
+        <label class="aviso__fechar" for="fechar-aviso-7" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-8">
+      <div class="aviso aviso--sucesso aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Olá, Maria! Você entrou na sua conta.</p>
+        <label class="aviso__fechar" for="fechar-aviso-8" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
+      </div>
+      <input class="aviso__controle" type="checkbox" id="fechar-aviso-9">
+      <div class="aviso aviso--info aviso--flutuante" role="status">
+        <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+        <p class="aviso__texto">Você saiu da sua conta.</p>
+        <label class="aviso__fechar" for="fechar-aviso-9" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
       </div>
     </div>
-  </header>
 
-  <main class="pagina entrada">
-    <div class="container">
-      <div class="entrada__caixa">
-        <div class="entrada__topo">
-          <h1>Avisos e estados</h1>
-          <p class="entrada__subtitulo">Mensagens de retorno, avisos fixos e campos com erro. Tudo em HTML e CSS.</p>
-        </div>
+    <h2>Avisos fixos</h2>
+    <p class="texto-corpo-medio texto-secundario">Ficam dentro da tela, acima do formulário.</p>
+    <div class="aviso aviso--info" role="status">
+      <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+      <p class="aviso__texto">Entre para continuar sua solicitação da Furadeira de impacto 650W.</p>
+    </div>
+    <div class="aviso aviso--sucesso" role="status">
+      <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+      <p class="aviso__texto">Se houver uma conta com maria@email.com, você vai receber o link em alguns minutos.</p>
+    </div>
+    <div class="aviso aviso--aviso" role="status">
+      <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+      <p class="aviso__texto">Falta confirmar seu e-mail. Abra o link que enviamos para maria@email.com.</p>
+    </div>
+    <div class="aviso aviso--erro" role="alert">
+      <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
+      <p class="aviso__texto">E-mail ou senha incorretos. Confira e tente novamente.</p>
+    </div>
 
-        <h2>Mensagens de retorno</h2>
-        <p class="texto-corpo-medio texto-secundario">
-          Aparecem no topo da tela depois de uma ação. Na tela de verdade, use a div
-          "avisos-flutuantes" sem o "--exemplo": ela fica fixa no topo e some sozinha em 5 s.
-          O X fecha o aviso (checkbox escondido + label, sem JavaScript).
-        </p>
-        <div class="avisos-flutuantes avisos-flutuantes--exemplo">
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-1">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Alterações salvas com sucesso.</p>
-            <label class="aviso__fechar" for="fechar-aviso-1" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-2">
-          <div class="aviso aviso--info aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Escolha uma foto JPG ou PNG de até 5 MB.</p>
-            <label class="aviso__fechar" for="fechar-aviso-2" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-3">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Simulação salva na sua conta.</p>
-            <label class="aviso__fechar" for="fechar-aviso-3" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-4">
-          <div class="aviso aviso--info aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Novo período adicionado. Preencha as datas.</p>
-            <label class="aviso__fechar" for="fechar-aviso-4" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-5">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Todas as notificações foram marcadas como lidas.</p>
-            <label class="aviso__fechar" for="fechar-aviso-5" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-6">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Enviamos um novo link para maria@email.com.</p>
-            <label class="aviso__fechar" for="fechar-aviso-6" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-7">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Senha alterada. Entre com a nova senha.</p>
-            <label class="aviso__fechar" for="fechar-aviso-7" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-8">
-          <div class="aviso aviso--sucesso aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Olá, Maria! Você entrou na sua conta.</p>
-            <label class="aviso__fechar" for="fechar-aviso-8" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-          <input class="aviso__controle" type="checkbox" id="fechar-aviso-9">
-          <div class="aviso aviso--info aviso--flutuante" role="status">
-            <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-            <p class="aviso__texto">Você saiu da sua conta.</p>
-            <label class="aviso__fechar" for="fechar-aviso-9" aria-label="Fechar aviso"><span class="icone icone--fechar" aria-hidden="true"></span></label>
-          </div>
-        </div>
-
-        <h2>Avisos fixos</h2>
-        <p class="texto-corpo-medio texto-secundario">Ficam dentro da tela, acima do formulário.</p>
-        <div class="aviso aviso--info" role="status">
-          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-          <p class="aviso__texto">Entre para continuar sua solicitação da Furadeira de impacto 650W.</p>
-        </div>
-        <div class="aviso aviso--sucesso" role="status">
-          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-          <p class="aviso__texto">Se houver uma conta com maria@email.com, você vai receber o link em alguns minutos.</p>
-        </div>
-        <div class="aviso aviso--aviso" role="status">
-          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-          <p class="aviso__texto">Falta confirmar seu e-mail. Abra o link que enviamos para maria@email.com.</p>
-        </div>
-        <div class="aviso aviso--erro" role="alert">
-          <span class="icone icone--info aviso__icone" aria-hidden="true"></span>
-          <p class="aviso__texto">E-mail ou senha incorretos. Confira e tente novamente.</p>
-        </div>
-
-        <h2>Campos com erro</h2>
-        <p class="texto-corpo-medio texto-secundario">Classe "campo--erro" na div do campo. O erro fica sempre embaixo, dizendo como corrigir.</p>
-        <div class="formulario">
-          <div class="campo campo--erro">
-            <label class="campo__rotulo" for="ex-cpf">CPF</label>
-            <input class="campo__caixa" id="ex-cpf" type="text" value="123.456.789-00" aria-invalid="true" aria-describedby="ex-cpf-ajuda">
-            <p class="campo__ajuda" id="ex-cpf-ajuda">CPF inválido. Confira os números.</p>
-          </div>
-          <div class="campo campo--erro">
-            <label class="campo__rotulo" for="ex-nascimento">Data de nascimento</label>
-            <input class="campo__caixa" id="ex-nascimento" type="text" value="10/05/2010" aria-invalid="true" aria-describedby="ex-nascimento-ajuda">
-            <p class="campo__ajuda" id="ex-nascimento-ajuda">É preciso ter 18 anos ou mais para criar uma conta.</p>
-          </div>
-          <div class="campo campo--erro">
-            <label class="campo__rotulo" for="ex-senha">Confirmar senha</label>
-            <input class="campo__caixa" id="ex-senha" type="password" value="abc1234" aria-invalid="true" aria-describedby="ex-senha-ajuda">
-            <p class="campo__ajuda" id="ex-senha-ajuda">As senhas não são iguais.</p>
-          </div>
-          <div class="caixa-selecao campo--erro">
-            <input id="ex-termos" type="checkbox" aria-invalid="true" aria-describedby="ex-termos-ajuda">
-            <label for="ex-termos">Li e aceito os <a class="link" href="#">Termos de Uso</a> e a <a class="link" href="#">Política de Privacidade</a></label>
-            <p class="campo__ajuda" id="ex-termos-ajuda">Para criar a conta, aceite os Termos de Uso e a Política de Privacidade.</p>
-          </div>
-        </div>
+    <h2>Campos com erro</h2>
+    <p class="texto-corpo-medio texto-secundario">Classe "campo--erro" na div do campo. O erro fica sempre embaixo, dizendo como corrigir.</p>
+    <div class="formulario">
+      <div class="campo campo--erro">
+        <label class="campo__rotulo" for="ex-cpf">CPF</label>
+        <input class="campo__caixa" id="ex-cpf" type="text" value="123.456.789-00" aria-invalid="true" aria-describedby="ex-cpf-ajuda">
+        <p class="campo__ajuda" id="ex-cpf-ajuda">CPF inválido. Confira os números.</p>
       </div>
+      <div class="campo campo--erro">
+        <label class="campo__rotulo" for="ex-nascimento">Data de nascimento</label>
+        <input class="campo__caixa" id="ex-nascimento" type="text" value="10/05/2010" aria-invalid="true" aria-describedby="ex-nascimento-ajuda">
+        <p class="campo__ajuda" id="ex-nascimento-ajuda">É preciso ter 18 anos ou mais para criar uma conta.</p>
+      </div>
+      <div class="campo campo--erro">
+        <label class="campo__rotulo" for="ex-senha">Confirmar senha</label>
+        <input class="campo__caixa" id="ex-senha" type="password" value="abc1234" aria-invalid="true" aria-describedby="ex-senha-ajuda">
+        <p class="campo__ajuda" id="ex-senha-ajuda">As senhas não são iguais.</p>
+      </div>
+      <div class="caixa-selecao campo--erro">
+        <input id="ex-termos" type="checkbox" aria-invalid="true" aria-describedby="ex-termos-ajuda">
+        <label for="ex-termos">Li e aceito os <a class="link" href="#">Termos de Uso</a> e a <a class="link" href="#">Política de Privacidade</a></label>
+        <p class="campo__ajuda" id="ex-termos-ajuda">Para criar a conta, aceite os Termos de Uso e a Política de Privacidade.</p>
+      </div>
+    </div>
+    </div>
     </div>
   </main>
 
+  <script src="../assets/js/utils/formatacao.js" defer></script>
+  <script src="../assets/js/utils/dados.js" defer></script>
+  <script src="../assets/js/utils/usuarios.js" defer></script>
+  <script src="../assets/js/utils/anuncios.js" defer></script>
+  <script src="../assets/js/utils/alugueis.js" defer></script>
+  <script src="../assets/js/utils/notificacoes.js" defer></script>
+  <script src="../assets/js/utils/avisos.js" defer></script>
+  <script src="../assets/js/utils/validacao.js" defer></script>
+  <script src="../assets/js/components/card-anuncio.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
 </body>
 </html>
