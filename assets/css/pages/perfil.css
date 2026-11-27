@@ -1,0 +1,213 @@
+/* Perfil · T07 Meu perfil e T10 Perfil público */
+
+.perfil > .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-6);
+  padding-block: var(--espaco-6) var(--espaco-12);
+}
+
+.perfil__topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+}
+
+.perfil__subtitulo {
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-secundario);
+}
+
+.perfil__layout {
+  display: grid;
+  gap: var(--grid-gutter);
+}
+
+.perfil__cartao,
+.perfil__bloco {
+  background: var(--cor-fundo-superficie);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  box-shadow: var(--sombra-baixa);
+}
+
+.perfil__cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-3);
+  padding: var(--espaco-6);
+  text-align: center;
+}
+
+.perfil__avatar {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: var(--raio-total);
+  background: linear-gradient(135deg, var(--azul-100), var(--verde-agua-100));
+  color: var(--cor-marca-primaria);
+  font-size: 28px;
+  font-weight: var(--fonte-peso-bold);
+}
+
+.perfil__nome {
+  font-size: var(--texto-h2-tamanho);
+  line-height: var(--texto-h2-altura);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.perfil__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--espaco-2) var(--espaco-4);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.perfil__nota {
+  color: var(--cor-estado-aviso-texto);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.perfil__bloco {
+  margin-bottom: var(--espaco-4);
+  padding: var(--espaco-6);
+}
+
+.perfil__bloco h2 {
+  margin-bottom: var(--espaco-4);
+  font-size: var(--texto-h2-tamanho);
+  line-height: var(--texto-h2-altura);
+}
+
+.perfil__formulario {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+.perfil__formulario .campo--amplo {
+  grid-column: 1 / -1;
+}
+
+.perfil__acoes {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--espaco-3);
+  padding-top: var(--espaco-2);
+}
+
+.perfil__estatisticas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espaco-2);
+  width: 100%;
+  padding-top: var(--espaco-3);
+  border-top: 1px solid var(--cor-borda-padrao);
+}
+
+.perfil__estatistica {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+
+.perfil__estatistica strong {
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-h3-tamanho);
+}
+
+.perfil__estatistica span,
+.perfil__anuncio-info span {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+}
+
+.perfil__lista {
+  display: grid;
+  gap: var(--espaco-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.perfil__anuncio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+  padding: var(--espaco-3);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+}
+
+.perfil__anuncio-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  min-width: 0;
+}
+
+.perfil__anuncio-info strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.perfil__avaliacao {
+  display: grid;
+  gap: var(--espaco-1);
+  padding: var(--espaco-3) 0;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+.perfil__avaliacao:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.perfil__avaliacao-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+}
+
+.perfil__estrelas {
+  color: var(--cor-estado-aviso-texto);
+  letter-spacing: 1px;
+}
+
+.perfil__avaliacao p {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+@media (min-width: 768px) {
+  .perfil__formulario {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .perfil__acoes {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .perfil__layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .perfil__layout--publico {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  .perfil__cartao {
+    position: sticky;
+    top: calc(var(--cabecalho-altura) + var(--espaco-6));
+  }
+}
