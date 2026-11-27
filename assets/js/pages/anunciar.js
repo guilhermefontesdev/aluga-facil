@@ -14,7 +14,6 @@
   var $ = function (id) { return document.getElementById(id); };
   var params = new URLSearchParams(location.search);
   var editando = params.get("id") ? AF.anuncios.buscar(params.get("id")) : null;
-  var ILUSTRACOES = ["furadeira", "escada", "serra", "lavadora", "batedeira", "caixa-som", "camera", "projetor", "bicicleta", "barraca", "festa", "cortador"];
 
   if (params.get("id") && (!editando || editando.donoId !== usuario.id)) {
     AF.avisos.depois("Esse anúncio não existe ou não é seu.", "aviso");
@@ -30,12 +29,6 @@
     form.elements.categoria.appendChild(op);
   });
 
-  // ilustrações prontas
-  $("ilustracoes").innerHTML = ILUSTRACOES.map(function (n) {
-    var src = "assets/img/anuncios/" + n + ".svg";
-    return '<button class="ilustracao" type="button" data-foto="' + src + '" aria-label="Usar ilustração ' + n.replace("-", " ") + '"><img src="' + AF.app.url(src) + '" alt=""></button>';
-  }).join("");
-
   var foto = "";
 
   function mostrarFoto() {
@@ -49,17 +42,8 @@
       previa.innerHTML = '<span class="icone icone--foto" aria-hidden="true"></span><span>Nenhuma foto escolhida</span>';
     }
     $("foto-remover").hidden = !foto;
-    document.querySelectorAll(".ilustracao").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.foto === foto)); });
     atualizarPrevia();
   }
-
-  $("ilustracoes").addEventListener("click", function (e) {
-    var b = e.target.closest("[data-foto]");
-    if (!b) return;
-    foto = b.dataset.foto;
-    form.elements.foto.value = "";
-    mostrarFoto();
-  });
 
   form.elements.foto.addEventListener("input", function () {
     foto = form.elements.foto.value.trim();
@@ -164,8 +148,8 @@
     previa.innerHTML = AF.cardAnuncio.html(exemplo);
     AF.cardAnuncio.consertarFotos(previa);
 
-    var falta = AF.anuncios.pendencias({ nome: d.nome.trim(), categoria: d.categoria, descricao: d.descricao.trim(), precoDia: d.precoDia, local: d.local.trim(), politica: d.politica });
-    var itens = [["o nome", "Nome"], ["a categoria", "Categoria"], ["a descrição", "Descrição com 20+ letras"], ["a diária", "Preço por dia"], ["a localização", "Bairro e cidade"], ["a política de cancelamento", "Política de cancelamento"]];
+    var falta = AF.anuncios.pendencias({ foto: foto, nome: d.nome.trim(), categoria: d.categoria, descricao: d.descricao.trim(), precoDia: d.precoDia, local: d.local.trim(), politica: d.politica });
+    var itens = [["a foto", "Foto real do item"], ["o nome", "Nome"], ["a categoria", "Categoria"], ["a descrição", "Descrição com 20+ letras"], ["a diária", "Preço por dia"], ["a localização", "Bairro e cidade"], ["a política de cancelamento", "Política de cancelamento"]];
     $("anuncio-checagem").innerHTML = itens.map(function (i) {
       var ok = falta.indexOf(i[0]) === -1;
       return '<li class="checagem__item' + (ok ? " checagem__item--ok" : "") + '"><span class="icone icone--' + (ok ? "check" : "info") + '" aria-hidden="true"></span>' + i[1] + "</li>";
@@ -202,7 +186,7 @@
     try {
       salvo = editando ? AF.anuncios.atualizar(editando.id, d) : AF.anuncios.criar(d, usuario.id);
     } catch (erro) {
-      AF.avisos.mostrar("Não foi possível salvar: o navegador está sem espaço. Use uma foto menor ou uma ilustração.", "erro");
+      AF.avisos.mostrar("Não foi possível salvar: o navegador está sem espaço. Use uma foto menor.", "erro");
       return;
     }
     AF.avisos.depois(mensagem, "sucesso");
@@ -213,6 +197,11 @@
     e.preventDefault();
     if (!V.aplicar(form, erros(true))) {
       AF.avisos.mostrar("Confira os campos destacados antes de publicar.", "aviso");
+      return;
+    }
+    if (!foto) {
+      AF.avisos.mostrar("Adicione uma foto real do item para publicar.", "aviso");
+      $("passo-1").scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
     var status = form.elements.disponivel.checked ? "ativo" : "pausado";
