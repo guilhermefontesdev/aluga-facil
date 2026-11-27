@@ -58,4 +58,97 @@
 
 @media (min-width: 1024px) {
   .lista-cards { grid-template-columns: repeat(3, 1fr); }
+  .lista-cards--4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---------- Card de anúncio clicável (busca, início, perfil público) ---------- */
+.card--anuncio {
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+}
+
+.card--anuncio:hover {
+  border-color: var(--azul-100);
+  box-shadow: var(--sombra-media);
+  transform: translateY(-2px);
+}
+
+.card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card__link:focus-visible {
+  outline: 2px solid var(--cor-borda-foco);
+  outline-offset: -2px;
+  border-radius: var(--card-raio);
+}
+
+.card--anuncio .card__foto {
+  aspect-ratio: 4 / 3;
+}
+
+.card--anuncio .card__conteudo {
+  flex: 1;
+  gap: var(--espaco-1);
+}
+
+.card__linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+}
+
+.card__categoria {
+  padding: 2px var(--espaco-2);
+  border-radius: var(--raio-total);
+  background: var(--cor-marca-primaria-sutil);
+  color: var(--cor-marca-primaria);
+  font-size: var(--texto-legenda-tamanho);
+  line-height: var(--texto-legenda-altura);
+  font-weight: var(--fonte-peso-medio);
+}
+
+.card__nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--texto-legenda-tamanho);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.card__nota .icone {
+  width: 14px;
+  height: 14px;
+  color: var(--amarelo-500);
+}
+
+.card__nota--novo {
+  color: var(--cor-marca-secundaria-texto);
+}
+
+.card__titulo {
+  margin-top: var(--espaco-1);
+  font-size: var(--texto-corpo-destaque-tamanho);
+  line-height: var(--texto-corpo-destaque-altura);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.card--anuncio .card__local {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-1);
+}
+
+.card--anuncio .card__local .icone {
+  width: 14px;
+  height: 14px;
+}
+
+.card--anuncio .card__preco {
+  margin-top: auto;
+  padding-top: var(--espaco-2);
 }
