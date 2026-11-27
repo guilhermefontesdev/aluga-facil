@@ -468,7 +468,7 @@
 
 @media (min-width: 768px) {
   .rodape__conteudo {
-    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    grid-template-columns: 2fr 1fr 1fr;
   }
 }
 

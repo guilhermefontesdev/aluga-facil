@@ -152,3 +152,9 @@
   margin-top: auto;
   padding-top: var(--espaco-2);
 }
+
+/* Fotos reais enviadas pelo usuário: mostra o item inteiro, sem cortar */
+img.card__foto {
+  object-fit: contain;
+  background: #fff;
+}

@@ -138,6 +138,7 @@ window.AlugaFacil = window.AlugaFacil || {};
   /* O que falta para um rascunho poder ser publicado (T12 "Falta escolher...") */
   function pendencias(anuncio) {
     var falta = [];
+    if (!anuncio.foto) falta.push("a foto");
     if (!anuncio.nome) falta.push("o nome");
     if (!anuncio.categoria) falta.push("a categoria");
     if (!anuncio.descricao || anuncio.descricao.length < 20) falta.push("a descrição");

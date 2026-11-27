@@ -163,12 +163,8 @@ window.AlugaFacil = window.AlugaFacil || {};
         '<li><a href="' + url("pages/anuncios/comparador.html") + '">Alugar ou comprar?</a></li>' +
         '<li><a href="' + url("pages/anuncios/anunciar.html") + '">Anunciar um item</a></li></ul></nav>' +
       '<nav class="rodape__coluna" aria-label="Sua conta"><p class="rodape__titulo">Sua conta</p><ul>' + conta + "</ul></nav>" +
-      '<div class="rodape__coluna"><p class="rodape__titulo">Protótipo</p><ul>' +
-        '<li><a href="' + url("pages/avisos.html") + '">Avisos do sistema</a></li>' +
-        '<li><button class="link-botao link-botao--claro" type="button" data-restaurar>Restaurar dados de exemplo</button></li></ul>' +
-        '<p class="rodape__nota">Contas de teste: maria@email.com, carlos@email.com, ana@email.com e pedro@email.com · senha 123456</p></div>' +
     "</div>" +
-    '<div class="container rodape__base"><p>© ' + new Date().getFullYear() + " AlugaFácil · Projeto acadêmico. Os dados ficam salvos só neste navegador.</p></div>";
+    '<div class="container rodape__base"><p>© ' + new Date().getFullYear() + " AlugaFácil · Projeto acadêmico · Processos de Software</p></div>";
   }
 
   function garantir(seletor, tag, classe, antesDe) {
@@ -248,7 +244,7 @@ window.AlugaFacil = window.AlugaFacil || {};
     var rod = garantir(".rodape", "footer", "rodape", null);
     rod.innerHTML = rodape(u);
     var restaurar = rod.querySelector("[data-restaurar]");
-    restaurar.addEventListener("click", function () {
+    if (restaurar) restaurar.addEventListener("click", function () {
       AF.dados.restaurar();
       if (AF.avisos) AF.avisos.depois("Dados de exemplo restaurados. Entre com uma das contas de teste.", "sucesso");
       location.href = url("index.html");
