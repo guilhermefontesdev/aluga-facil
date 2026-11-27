@@ -27,7 +27,12 @@
 .logo__imagem {
   display: block;
   width: auto;
-  height: 44px;
+  height: 34px;
+}
+
+.cabecalho__logo {
+  align-self: center;
+  line-height: 0;
 }
 
 .rodape .logo__imagem {
