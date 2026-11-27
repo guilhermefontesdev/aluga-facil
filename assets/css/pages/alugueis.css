@@ -1,635 +1,303 @@
 /* ==========================================================================
-   Aluguéis e notificações · T08 Meus aluguéis, T09 Detalhe do aluguel,
-   T16 Confirmar solicitação, T17 Cancelar aluguel, T18 Notificações
-   Reaproveita .etiqueta, .aviso, .modal, .campo, .caixa-selecao, .avatar,
-   .formulario e .icone-status (entrada.css). Tudo sem JavaScript.
+   T08 Meus aluguéis · T09 Detalhe · T16 Confirmar · T17 Cancelar
    ========================================================================== */
 
-/* Coluna única centralizada (celular: largura toda; computador: 640 px) */
-.alugueis > .container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-4);
-  max-width: calc(var(--aluguel-largura-max) + 2 * var(--grid-margem));
-  padding-block: var(--espaco-6) var(--espaco-12);
-}
-
-/* ---------- Bloco branco (período, pessoa, política, contato) ---------- */
-.bloco {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
-  padding: var(--card-padding);
-  background: var(--cor-fundo-superficie);
-  border: 1px solid var(--cor-borda-padrao);
-  border-radius: var(--raio-lg);
-  font-size: var(--texto-corpo-medio-tamanho);
-  line-height: var(--texto-corpo-medio-altura);
-}
-
-.bloco__rotulo {
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
-}
-
-.bloco__destaque,
-.bloco__titulo {
-  font-size: var(--texto-corpo-destaque-tamanho);
-  line-height: var(--texto-corpo-destaque-altura);
-  font-weight: var(--texto-corpo-destaque-peso);
-}
-
-.bloco__mensagem {
-  margin: 0;
-  color: var(--cor-texto-principal);
-}
-
-/* ---------- Valores: "3 diárias × R$ 25,00 ...... R$ 75,00" ---------- */
-.valores {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
-  margin: 0;
-}
-
-.valores__linha {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--espaco-4);
-  color: var(--cor-texto-secundario);
-}
-
-.valores__linha dd {
-  margin: 0;
-  color: var(--cor-texto-principal);
-  white-space: nowrap;
-}
-
-.valores__linha--total {
-  padding-top: var(--espaco-3);
-  border-top: 1px solid var(--cor-borda-padrao);
-  color: var(--cor-texto-principal);
-}
-
-.valores__linha--total dd {
-  font-weight: var(--fonte-peso-bold);
-}
-
-.valores__linha--multa dd {
-  color: var(--cor-estado-erro-texto);
-}
-
-/* ---------- Pessoa: avatar + nome + nota ---------- */
-.pessoa {
-  display: flex;
-  align-items: center;
-  gap: var(--espaco-3);
-}
-
-.pessoa__nome {
-  color: var(--cor-texto-principal);
-  font-weight: var(--fonte-peso-semibold);
-  text-decoration: none;
-}
-
-.pessoa__nome:hover {
-  text-decoration: underline;
-}
-
-.pessoa__nota {
+/* ---------- Números da faixa (T08) ---------- */
+.numeros {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--espaco-1);
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
-}
-
-.pessoa__nota strong {
-  color: var(--cor-texto-principal);
-}
-
-.pessoa__nota .icone {
-  width: var(--estrela-nota-tamanho);
-  height: var(--estrela-nota-tamanho);
-  color: var(--cor-estado-aviso);
-}
-
-/* "Novo usuário" e "Solicitação nº 4821": pílulas cinza/azuis */
-.selo-novo,
-.selo-numero {
-  padding: var(--espaco-1) var(--espaco-2);
-  border-radius: var(--raio-total);
-  font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
-}
-
-.selo-novo {
-  background: var(--cor-marca-primaria-sutil);
-  color: var(--cor-estado-info-texto);
-}
-
-.selo-numero {
-  align-self: center;
-  background: var(--cor-fundo-sutil);
-  color: var(--cor-texto-secundario);
-}
-
-/* ---------- Foto pequena (lista e resumo do item) ---------- */
-.aluguel-item__foto,
-.item-resumo__foto {
-  flex-shrink: 0;
-  width: var(--aluguel-foto-tamanho);
-  height: var(--aluguel-foto-tamanho);
-  border-radius: var(--raio-md);
-  background: var(--card-foto-fundo);
-}
-
-.item-resumo {
-  flex-direction: row;
-  align-items: center;
   gap: var(--espaco-3);
-}
-
-.item-resumo__titulo {
-  font-weight: var(--fonte-peso-semibold);
-}
-
-.item-resumo__linha {
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
-}
-
-/* ---------- Botões do fim da tela ---------- */
-.aluguel__acoes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--espaco-3);
-  margin-top: var(--espaco-2);
-}
-
-.aluguel__acoes--lado-a-lado {
-  flex-direction: row;
-}
-
-.aluguel__acoes--lado-a-lado > .botao {
-  flex: 1;
-}
-
-/* ==========================================================================
-   T08 · Meus aluguéis
-   ========================================================================== */
-
-/* Abas Todos / Locatário / Anunciante (radios escondidos + labels) */
-.abas {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--espaco-1);
-  margin: 0;
-  padding: var(--espaco-1);
-  border: 0;
-  border-radius: var(--raio-md);
-  background: var(--cor-fundo-sutil);
-}
-
-.abas__controle {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.abas__item {
-  padding: var(--espaco-2);
-  border-radius: var(--raio-sm);
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-rotulo-tamanho);
-  line-height: var(--texto-rotulo-altura);
-  font-weight: var(--texto-rotulo-peso);
-  text-align: center;
-  cursor: pointer;
-}
-
-.abas__controle:checked + .abas__item {
-  background: var(--cor-fundo-superficie);
-  color: var(--cor-texto-principal);
-  font-weight: var(--fonte-peso-semibold);
-  box-shadow: var(--sombra-baixa);
-}
-
-.abas__controle:focus-visible + .abas__item {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: 2px;
-}
-
-/* Filtro de status: pílula com o select dentro */
-.filtro-status {
-  display: inline-flex;
-  align-self: flex-start;
-  align-items: center;
-  gap: var(--espaco-1);
-  padding: var(--espaco-1) var(--espaco-3);
-  border: 1px solid var(--cor-borda-forte);
-  border-radius: var(--raio-total);
-  background: var(--cor-fundo-superficie);
-  font-size: var(--texto-rotulo-tamanho);
-  line-height: var(--texto-rotulo-altura);
-  font-weight: var(--texto-rotulo-peso);
-}
-
-.filtro-status .icone {
-  width: var(--estrela-nota-tamanho);
-  height: var(--estrela-nota-tamanho);
-}
-
-.filtro-status select {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-
-.filtro-status:focus-within {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: 2px;
-}
-
-.filtro-status select:focus {
-  outline: none;
-}
-
-/* Lista */
-.lista-alugueis {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-  margin: 0;
-  padding: 0;
   list-style: none;
 }
 
-.aluguel-item {
-  position: relative;
+.numeros li {
   display: flex;
-  align-items: flex-start;
-  gap: var(--espaco-3);
-  padding: var(--card-padding);
-  background: var(--card-fundo);
-  border: 1px solid var(--card-borda);
-  border-radius: var(--card-raio);
-}
-
-.aluguel-item:hover {
-  border-color: var(--cor-borda-forte);
-}
-
-.aluguel-item__info {
-  display: flex;
-  flex: 1;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--espaco-1);
-  min-width: 0;
-}
-
-.aluguel-item__titulo {
-  font-size: var(--texto-corpo-destaque-tamanho);
-  line-height: var(--texto-corpo-destaque-altura);
-  font-weight: var(--texto-corpo-destaque-peso);
-}
-
-/* O link do título cobre o card inteiro */
-.aluguel-item__titulo a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.aluguel-item__titulo a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--card-raio);
-}
-
-.aluguel-item__titulo a:focus-visible {
-  outline: none;
-}
-
-.aluguel-item__titulo a:focus-visible::after {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: 2px;
-}
-
-.aluguel-item__linha {
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
-}
-
-.aluguel-item__seta {
-  color: var(--cor-texto-secundario);
-}
-
-/* Filtros só com CSS: esconde o que não combina com a aba ou o status */
-.alugueis:has(#papel-locatario:checked)  .aluguel-item:not([data-papel="locatario"]),
-.alugueis:has(#papel-anunciante:checked) .aluguel-item:not([data-papel="anunciante"]),
-.alugueis:has(#filtro-status option[value="pendente"]:checked)     .aluguel-item:not([data-status="pendente"]),
-.alugueis:has(#filtro-status option[value="aceito"]:checked)       .aluguel-item:not([data-status="aceito"]),
-.alugueis:has(#filtro-status option[value="em-andamento"]:checked) .aluguel-item:not([data-status="em-andamento"]),
-.alugueis:has(#filtro-status option[value="concluido"]:checked)    .aluguel-item:not([data-status="concluido"]),
-.alugueis:has(#filtro-status option[value="recusado"]:checked)     .aluguel-item:not([data-status="recusado"]),
-.alugueis:has(#filtro-status option[value="cancelado"]:checked)    .aluguel-item:not([data-status="cancelado"]),
-.alugueis:has(#filtro-status option[value="expirado"]:checked)     .aluguel-item:not([data-status="expirado"]) {
-  display: none;
-}
-
-/* Paginação */
-.paginacao {
-  display: flex;
-  justify-content: center;
-  gap: var(--espaco-2);
-}
-
-.paginacao__item {
-  display: grid;
-  place-items: center;
-  min-width: var(--paginacao-item-tamanho);
-  height: var(--paginacao-item-tamanho);
+  min-width: 140px;
+  padding: var(--espaco-3) var(--espaco-4);
   border: 1px solid var(--cor-borda-padrao);
   border-radius: var(--raio-md);
-  background: var(--cor-fundo-superficie);
+  background: var(--cor-fundo-pagina);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
+}
+
+.numeros strong {
   color: var(--cor-texto-principal);
-  font-size: var(--texto-rotulo-tamanho);
-  font-weight: var(--texto-rotulo-peso);
-  text-decoration: none;
+  font-size: var(--texto-h3-tamanho);
+  line-height: var(--texto-h3-altura);
 }
 
-.paginacao__item .icone {
-  width: var(--estrela-nota-tamanho);
-  height: var(--estrela-nota-tamanho);
-}
-
-.paginacao__item:hover {
-  background: var(--cor-fundo-sutil);
-}
-
-.paginacao__item[aria-current="page"] {
-  border-color: var(--cor-marca-primaria);
-  background: var(--cor-marca-primaria);
-  color: var(--cor-texto-inverso);
-}
-
-.paginacao__item--desabilitado {
-  color: var(--cor-texto-desabilitado);
-}
-
-.paginacao__item--desabilitado:hover {
-  background: var(--cor-fundo-superficie);
-}
-
-/* Lista vazia (T08 e T18) */
-.alugueis-vazio {
+/* ---------- T08 lista ---------- */
+.alugueis__barra {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--espaco-3);
-  padding-block: var(--espaco-12);
-  text-align: center;
-}
-
-/* ==========================================================================
-   T09 · Detalhe do aluguel: um estado por status, escolhido pelo # do endereço
-   ========================================================================== */
-.aluguel-estado {
-  display: none;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
   gap: var(--espaco-4);
-  scroll-margin-top: var(--cabecalho-altura);
+  border-bottom: 1px solid var(--cor-borda-padrao);
 }
 
-/* Mostra o estado do # (ex.: #pendente); sem #, mostra o primeiro (Aceito) */
-.aluguel-estado:target,
-.alugueis:not(:has(.aluguel-estado:target)) .aluguel-estado:first-of-type {
+.alugueis__barra .abas {
+  border-bottom: 0;
+}
+
+.alugueis__filtro {
   display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  padding-bottom: var(--espaco-2);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
 }
 
-/* Com dados de verdade (JavaScript): o estado aparece sem precisar do # */
-.aluguel-estado--real {
+.alugueis__filtro .campo__caixa {
+  width: auto;
+  padding-block: var(--espaco-2);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.linha__valor {
   display: flex;
+  flex-direction: column;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-legenda-tamanho);
 }
 
+.linha__valor strong {
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-corpo-destaque-tamanho);
+}
+
+@media (min-width: 1024px) {
+  .linha--aluguel {
+    grid-template-columns: 120px minmax(0, 1fr) 160px 200px;
+  }
+}
+
+/* ---------- T09 detalhe ---------- */
 .aluguel__topo {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--espaco-3);
+  margin-bottom: var(--espaco-6);
 }
 
 .aluguel__numero {
   color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.linha-tempo {
+  display: flex;
+  gap: var(--espaco-2);
+  margin-bottom: var(--espaco-6);
+  padding: var(--espaco-4) var(--espaco-6);
+  overflow-x: auto;
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  background: var(--cor-fundo-superficie);
+  list-style: none;
+}
+
+.linha-tempo__etapa {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--espaco-2);
+  min-width: 130px;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-rotulo-tamanho);
+  white-space: nowrap;
+}
+
+.linha-tempo__etapa:not(:last-child)::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  margin-right: var(--espaco-2);
+  background: var(--cor-borda-padrao);
+}
+
+.linha-tempo__ponto {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--cor-borda-forte);
+  border-radius: var(--raio-total);
+  background: var(--cor-fundo-superficie);
+}
+
+.linha-tempo__etapa--feito {
+  color: var(--cor-texto-principal);
+}
+
+.linha-tempo__etapa--feito .linha-tempo__ponto {
+  border-color: var(--cor-estado-sucesso);
+  background: var(--cor-estado-sucesso);
+}
+
+.linha-tempo__etapa--feito::after {
+  background: var(--cor-estado-sucesso) !important;
+}
+
+.linha-tempo__etapa--atual {
+  color: var(--cor-marca-primaria);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.linha-tempo__etapa--atual .linha-tempo__ponto {
+  border-color: var(--cor-marca-primaria);
+  box-shadow: 0 0 0 4px var(--cor-marca-primaria-sutil);
+}
+
+.linha-tempo__etapa--parou {
+  color: var(--cor-estado-erro-texto);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+.linha-tempo__etapa--parou .linha-tempo__ponto {
+  border-color: var(--cor-estado-erro);
+  background: var(--cor-estado-erro);
+}
+
+.aluguel__valores {
+  margin-top: var(--espaco-4);
+  padding-top: var(--espaco-4);
+  border-top: 1px solid var(--cor-borda-padrao);
+}
+
+.aluguel__politica {
+  margin-top: var(--espaco-4);
+  color: var(--cor-texto-secundario);
   font-size: var(--texto-legenda-tamanho);
   line-height: var(--texto-legenda-altura);
 }
 
-/* Modal com título e X no topo */
-.modal__topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-3);
-}
-
-.modal__fechar {
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: var(--raio-sm);
-  background: none;
-  color: var(--cor-texto-secundario);
-  cursor: pointer;
-}
-
-.modal__fechar:focus-visible {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: 2px;
-}
-
-/* Caixa de texto de várias linhas (mensagem, comentário) */
-.campo__caixa--area {
-  resize: vertical;
-}
-
-/* Estrelas da avaliação: os radios vêm de 5 para 1 e a linha é invertida,
-   assim "~" pinta a estrela escolhida e as que ficam à esquerda dela */
-.estrelas {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  gap: var(--espaco-1);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.estrelas__controle {
-  position: absolute;
-  opacity: 0;
-}
-
-.estrelas__item {
-  width: var(--estrela-tamanho);
-  height: var(--estrela-tamanho);
-  background-color: var(--cor-borda-padrao);  /* o desenho vem de .icone--estrela */
-  cursor: pointer;
-}
-
-.estrelas__controle:checked ~ .estrelas__item,
-.estrelas__item:hover,
-.estrelas__item:hover ~ .estrelas__item {
-  background-color: var(--cor-estado-aviso);
-}
-
-.estrelas__controle:focus-visible + .estrelas__item {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: 2px;
-}
-
-/* ==========================================================================
-   T16 · Confirmar solicitação: formulário ou "Solicitação enviada" (#enviada)
-   ========================================================================== */
-.solicitacao-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-4);
-}
-
-.solicitacao-form .formulario {
-  gap: var(--espaco-4);
-}
-
-.solicitacao-enviada {
-  display: none;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--espaco-4);
-  padding-block: var(--espaco-12);
-  text-align: center;
-}
-
-.solicitacao-enviada:target {
-  display: flex;
-}
-
-.alugueis:has(#enviada:target) .solicitacao-form {
-  display: none;
-}
-
-/* ==========================================================================
-   T18 · Notificações
-   ========================================================================== */
-.notificacoes__topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-3);
-}
-
-.notificacoes {
-  margin: 0 calc(-1 * var(--grid-margem));
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--cor-borda-padrao);
-}
-
-.notificacoes > li {
-  border-bottom: 1px solid var(--cor-borda-padrao);
-}
-
-.notificacao {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-1);
-  padding: var(--espaco-4) var(--grid-margem);
+a.item-resumo__nome {
   color: var(--cor-texto-principal);
   text-decoration: none;
 }
 
-.notificacao:hover {
-  background: var(--cor-fundo-sutil);
+a.item-resumo__nome:hover {
+  color: var(--cor-texto-link);
+  text-decoration: underline;
 }
 
-.notificacao:focus-visible {
-  outline: 2px solid var(--cor-borda-foco);
-  outline-offset: -2px;
+.aluguel__mensagem {
+  padding: var(--espaco-3) var(--espaco-4);
+  border-left: 3px solid var(--cor-marca-secundaria);
+  border-radius: var(--raio-sm);
+  background: var(--cor-fundo-pagina);
+  color: var(--cor-texto-secundario);
+  font-style: italic;
 }
 
-.notificacao__titulo {
+.contato {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-4);
+  padding: var(--espaco-3) var(--espaco-4);
+  border-radius: var(--raio-md);
+  background: var(--cor-estado-sucesso-sutil);
+  font-size: var(--texto-corpo-medio-tamanho);
+}
+
+.contato p {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.contato .icone {
+  width: 18px;
+  height: 18px;
+  color: var(--cor-estado-sucesso-texto);
+}
+
+.contato__titulo {
+  color: var(--cor-estado-sucesso-texto);
   font-weight: var(--fonte-peso-semibold);
 }
 
-.notificacao__texto {
+.contato a {
+  color: var(--cor-texto-link);
+  font-weight: var(--fonte-peso-semibold);
+}
+
+#aluguel-acoes {
+  gap: var(--espaco-2);
+}
+
+.botao--perigo-texto {
+  color: var(--cor-estado-erro-texto);
+}
+
+.avaliacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  list-style: none;
+}
+
+.avaliacao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  padding: var(--espaco-3) var(--espaco-4);
+  border-radius: var(--raio-md);
+  background: var(--cor-fundo-pagina);
   color: var(--cor-texto-secundario);
   font-size: var(--texto-corpo-medio-tamanho);
-  line-height: var(--texto-corpo-medio-altura);
 }
 
-.notificacao__tempo {
+/* ---------- T16b enviada ---------- */
+.estado-vazio--sucesso {
+  border-style: solid;
+  border-color: var(--cor-borda-padrao);
+}
+
+.estado-vazio--sucesso .estado-vazio__icone {
+  background: var(--cor-estado-sucesso-sutil);
+  color: var(--cor-estado-sucesso);
+}
+
+/* ---------- T17 faixas de multa ---------- */
+.faixas-multa {
+  display: grid;
+  gap: var(--espaco-2);
+}
+
+@media (min-width: 768px) {
+  .faixas-multa { grid-auto-flow: column; grid-auto-columns: 1fr; }
+}
+
+.faixa-multa {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--espaco-3) var(--espaco-4);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
   color: var(--cor-texto-secundario);
   font-size: var(--texto-legenda-tamanho);
-  line-height: var(--texto-legenda-altura);
 }
 
-/* Não lida: fundo azul claro e ponto azul à esquerda do título */
-.notificacao--nova {
+.faixa-multa strong {
+  color: var(--cor-texto-principal);
+  font-size: var(--texto-h3-tamanho);
+}
+
+.faixa-multa--atual {
+  border-color: var(--cor-marca-primaria);
   background: var(--cor-marca-primaria-sutil);
 }
 
-.notificacao--nova::before {
-  content: "";
-  position: absolute;
-  top: calc(var(--espaco-4) + var(--espaco-2));
-  left: calc(var(--grid-margem) / 2 - var(--notificacao-ponto) / 2);
-  width: var(--notificacao-ponto);
-  height: var(--notificacao-ponto);
-  border-radius: 50%;
-  background: var(--cor-marca-primaria);
-}
-
-/* "Marcar como lidas" (#lidas): tudo vira lido e o número do sino some */
-body:has(#lidas:target) .notificacao--nova {
-  background: none;
-}
-
-body:has(#lidas:target) .notificacao--nova::before,
-body:has(#lidas:target) .contador {
-  display: none;
-}
-
-/* No computador a lista fica dentro de um card com cantos arredondados */
-@media (min-width: 768px) {
-  .notificacoes {
-    overflow: hidden;
-    margin-inline: 0;
-    border: 1px solid var(--cor-borda-padrao);
-    border-radius: var(--raio-lg);
-    background: var(--cor-fundo-superficie);
-  }
-
-  .notificacoes > li:last-child {
-    border-bottom: 0;
-  }
-
-  .notificacao {
-    padding-inline: var(--espaco-6);
-  }
-
-  .notificacao--nova::before {
-    left: calc(var(--espaco-6) / 2 - var(--notificacao-ponto) / 2);
-  }
+.faixa-multa__agora {
+  color: var(--cor-marca-primaria);
+  font-weight: var(--fonte-peso-semibold);
 }
