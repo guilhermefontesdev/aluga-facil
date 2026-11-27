@@ -75,9 +75,33 @@ window.AlugaFacil = window.AlugaFacil || {};
     return erros;
   }
 
+  /* Regras do período do aluguel (T15). As datas vêm como "AAAA-MM-DD".
+     Devolve { inicio: "mensagem", fim: "mensagem" } só com o que estiver errado */
+  function validarPeriodo(valores) {
+    var erros = {};
+    var hoje = AF.alugueis.hoje();
+    var inicio = AF.alugueis.dataDe(valores.inicio);
+    var fim = AF.alugueis.dataDe(valores.fim);
+
+    if (!inicio) erros.inicio = "Escolha a data de início.";
+    else if (inicio < hoje) erros.inicio = "A data de início não pode ser no passado.";
+
+    if (!fim) erros.fim = "Escolha a data de fim.";
+    else if (fim < hoje) erros.fim = "A data de fim não pode ser no passado.";
+    else if (inicio && fim < inicio) erros.fim = "A data de fim não pode ser antes do início.";
+
+    if (!erros.inicio && !erros.fim && valores.anuncioId &&
+        AF.alugueis.periodoOcupado(valores.anuncioId, valores.inicio, valores.fim)) {
+      erros.fim = "Esse item já está reservado em parte desse período. Escolha outras datas.";
+    }
+
+    return erros;
+  }
+
   AF.validacao = {
     mostrarErro: mostrarErro,
     limparErro: limparErro,
-    validarAnuncio: validarAnuncio
+    validarAnuncio: validarAnuncio,
+    validarPeriodo: validarPeriodo
   };
 })(window.AlugaFacil);
